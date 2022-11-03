@@ -1,11 +1,11 @@
 ﻿namespace OnlineClothes.Support.Entity;
 
-public interface IEntity<out TKey> : IDateTimeSupportEntity
+public interface IEntity<out TKey>
 {
 	TKey Id { get; }
 }
 
-public interface IEntity : IDateTimeSupportEntity
+public interface IEntity
 {
 	string Id { get; }
 }

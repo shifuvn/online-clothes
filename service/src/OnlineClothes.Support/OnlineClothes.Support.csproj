@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Builders\Predicate\" />
-    <Folder Include="HttpResponse\" />
     <Folder Include="Utilities\Extensions\" />
   </ItemGroup>
 

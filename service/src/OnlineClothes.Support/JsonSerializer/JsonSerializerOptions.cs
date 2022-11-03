@@ -19,6 +19,7 @@ public static class JsonSerializerOptions
 		{
 			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 		};
+
 		if (useCamelCaseNaming)
 		{
 			result.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;

@@ -4,9 +4,12 @@ using OnlineClothes.Support.Entity;
 
 namespace OnlineClothes.Domain.Entities;
 
-public abstract class MongoEntityBase : IEntity<string>
+public abstract class MongoEntityBase : IEntity<string>, IDateTimeSupportEntity
 {
 	private string? _id;
+
+	public DateTime CreatedAt { get; set; }
+	public DateTime ModifiedAt { get; set; }
 
 	[BsonId]
 	public string Id
@@ -22,7 +25,4 @@ public abstract class MongoEntityBase : IEntity<string>
 			return _id;
 		}
 	}
-
-	public DateTime CreatedAt { get; set; }
-	public DateTime ModifiedAt { get; set; }
 }
