@@ -28,7 +28,7 @@ public class UserAccount : MongoEntityBase
 	{
 		var hashedPassword = PasswordHasher.Hash(rawPassword);
 
-		return new UserAccount(email, hashedPassword, nameof(role));
+		return new UserAccount(email, hashedPassword, role.ToString());
 	}
 
 	public bool VerifyPassword(string providedPassword)
@@ -59,6 +59,6 @@ public class UserAccount : MongoEntityBase
 
 	public bool HasRole(UserAccountRole providedRole)
 	{
-		return Role.Equals(nameof(providedRole));
+		return Role.Equals(providedRole.ToString());
 	}
 }

@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace OnlineClothes.Support.Entity.Event;
+﻿namespace OnlineClothes.Support.Entity.Event;
 
 public class SupportDomainEvent : ISupportDomainEvent
 {
@@ -19,7 +17,7 @@ public class SupportDomainEvent : ISupportDomainEvent
 	public virtual TPayload? FindPayload<TPayload>(string keyName)
 	{
 		var payload = FindPayload(keyName);
-		return JsonSerializer.Deserialize<TPayload>(payload.Value?.ToString()!);
+		return System.Text.Json.JsonSerializer.Deserialize<TPayload>(payload.Value?.ToString()!);
 	}
 
 	public bool Contains(string keyName)
@@ -33,7 +31,7 @@ public interface ISupportDomainEvent
 	List<KeyValuePair<string, object?>> PayloadEvents { get; }
 
 	/// <summary>
-	///     Add payload event content
+	/// Add payload event content
 	/// </summary>
 	/// <param name="payloadEventName"></param>
 	/// <param name="eventPayload"></param>
