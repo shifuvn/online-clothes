@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Conventions;
 
-namespace OnlineClothes.Infrastructure.Context.Convention;
+namespace OnlineClothes.Persistence.Context.Convention;
 
 public static class MongoDbConventionConfig
 {

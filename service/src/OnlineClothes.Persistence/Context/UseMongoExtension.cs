@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace OnlineClothes.Infrastructure.Context;
+namespace OnlineClothes.Persistence.Context;
 
 public static class UseMongoExtension
 {

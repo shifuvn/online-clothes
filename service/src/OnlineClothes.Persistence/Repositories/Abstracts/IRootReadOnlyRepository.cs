@@ -4,7 +4,7 @@ using MongoDB.Driver.Linq;
 using OnlineClothes.Support.Builders.Predicate;
 using OnlineClothes.Support.Entity;
 
-namespace OnlineClothes.Persistence.Abstracts.Repositories;
+namespace OnlineClothes.Persistence.Repositories.Abstracts;
 
 public interface IRootReadOnlyRepository<TEntity, TKey> : IDisposable where TEntity : IEntity<TKey>
 {

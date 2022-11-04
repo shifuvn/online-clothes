@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using OnlineClothes.Support.Builders.Predicate;
 using OnlineClothes.Support.Entity;
 
-namespace OnlineClothes.Persistence.Abstracts.Repositories;
+namespace OnlineClothes.Persistence.Repositories.Abstracts;
 
 public interface IRootRepository<TEntity, TKey> : IRootReadOnlyRepository<TEntity, TKey>
 	where TEntity : IEntity<TKey>
@@ -25,7 +25,7 @@ public interface IRootRepository<TEntity, TKey> : IRootReadOnlyRepository<TEntit
 	Task InsertManyAsync(ICollection<TEntity> entities, CancellationToken cancellationToken = default);
 
 	Task InsertManyAsync<TDerived>(ICollection<TDerived> entities, CancellationToken cancellationToken = default)
-		where TDerived : class, TEntity;
+		where TDerived : TEntity;
 
 	#endregion
 
@@ -123,7 +123,7 @@ public interface IRootRepository<TEntity, TKey> : IRootReadOnlyRepository<TEntit
 	Task<TProjection> FindOneAndUpdateAsync<TProjection>(
 		FilterBuilder<TEntity> filterBuilder,
 		Func<UpdateDefinitionBuilder<TEntity>, UpdateDefinition<TEntity>> update,
-		ProjectionDefinition<TEntity, TProjection> returnProjection,
+		ProjectionDefinition<TEntity, TProjection> selector,
 		ReturnDocument returnDocument = ReturnDocument.After,
 		bool isUpsert = false,
 		CancellationToken cancellationToken = default);
@@ -155,7 +155,7 @@ public interface IRootRepository<TEntity, TKey> : IRootReadOnlyRepository<TEntit
 	Task<TProject> FindOneAndReplaceAsync<TProject>(
 		FilterBuilder<TEntity> filterBuilder,
 		TEntity replacement,
-		ProjectionDefinition<TEntity, TProject> returnProjection,
+		ProjectionDefinition<TEntity, TProject> selector,
 		ReturnDocument returnDocument = ReturnDocument.After,
 		bool isUpsert = false,
 		CancellationToken cancellationToken = default);

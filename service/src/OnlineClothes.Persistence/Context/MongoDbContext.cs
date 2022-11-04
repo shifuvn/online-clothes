@@ -3,9 +3,10 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
 using OnlineClothes.Domain.Attributes;
-using OnlineClothes.Infrastructure.Context.Convention;
+using OnlineClothes.Persistence.Context.Convention;
+using OnlineClothes.Support.Entity;
 
-namespace OnlineClothes.Infrastructure.Context;
+namespace OnlineClothes.Persistence.Context;
 
 public class MongoDbContext : IMongoDbContext
 {
@@ -26,11 +27,11 @@ public class MongoDbContext : IMongoDbContext
 		return Database;
 	}
 
-	public IMongoCollection<TCollection> GetCollection<TCollection>(string? name = null) where TCollection : class
+	public IMongoCollection<TEntity> GetCollection<TEntity, TKey>(string? name = null) where TEntity : IEntity<TKey>
 	{
 		Configure();
-		var collectionName = BsonCollectionAttribute.GetName<TCollection>();
-		var collection = Database.GetCollection<TCollection>(collectionName);
+		var collectionName = BsonCollectionAttribute.GetName<TEntity>();
+		var collection = Database.GetCollection<TEntity>(collectionName);
 		return collection;
 	}
 

@@ -12,7 +12,7 @@ public class BsonCollectionAttribute : Attribute
 
 	public string Name { get; }
 
-	public static string GetName<T>() where T : class
+	public static string GetName<T>()
 	{
 		var collectionName = typeof(T).GetCustomAttribute<BsonCollectionAttribute>();
 		return collectionName is null ? typeof(T).Name : collectionName.Name;

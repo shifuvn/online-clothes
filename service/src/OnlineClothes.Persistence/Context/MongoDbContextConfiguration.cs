@@ -1,4 +1,4 @@
-﻿namespace OnlineClothes.Infrastructure.Context;
+﻿namespace OnlineClothes.Persistence.Context;
 
 public class MongoDbContextConfiguration
 {

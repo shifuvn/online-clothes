@@ -2,20 +2,28 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using OnlineClothes.Persistence.Abstracts.Repositories;
+using OnlineClothes.Persistence.Context;
+using OnlineClothes.Persistence.Repositories.Abstracts;
 using OnlineClothes.Support.Builders.Predicate;
 using OnlineClothes.Support.Entity;
 
 namespace OnlineClothes.Persistence.Repositories;
 
+public abstract class RootReadOnlyRepositoryBase<T> : RootReadOnlyRepositoryBase<T, string> where T : IEntity<string>
+{
+	protected RootReadOnlyRepositoryBase(IMongoDbContext dbContext) : base(dbContext)
+	{
+	}
+}
+
 public abstract class RootReadOnlyRepositoryBase<T, TKey> : IRootReadOnlyRepository<T, TKey>
 	where T : IEntity<TKey>
 {
-	protected readonly IMongoCollection<T> Collection;
+	protected IMongoCollection<T> Collection;
 
-	protected RootReadOnlyRepositoryBase(IMongoCollection<T> collection)
+	protected RootReadOnlyRepositoryBase(IMongoDbContext dbContext)
 	{
-		Collection = collection;
+		Collection = dbContext.GetCollection<T, TKey>();
 	}
 
 	public virtual void Dispose()
