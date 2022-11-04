@@ -10,4 +10,8 @@
     <ProjectReference Include="..\OnlineClothes.Persistence\OnlineClothes.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Context\Convention\" />
+  </ItemGroup>
+
 </Project>
