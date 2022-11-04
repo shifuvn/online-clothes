@@ -10,4 +10,10 @@
     <ProjectReference Include="..\OnlineClothes.Domain\OnlineClothes.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstracts\Services\" />
+    <Folder Include="Abstracts\Repositories\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>
