@@ -14,13 +14,13 @@ public class ApiV1ControllerBase : ControllerBase
 		Mediator = mediator;
 	}
 
-	protected ActionResult ApiResponse<T>(JsonApiResponse<T> responseApi, string redirect = null) where T : class
+	protected ActionResult ApiResponse<T>(JsonApiResponse<T> responseApi, string? redirect = null) where T : class
 	{
 		if (!responseApi.IsError)
 		{
 			return responseApi.Status switch
 			{
-				StatusCodes.Status302Found => Redirect(redirect),
+				//StatusCodes.Status302Found => Redirect(redirect),
 				_ => StatusCode(responseApi.Status, responseApi)
 			};
 		}

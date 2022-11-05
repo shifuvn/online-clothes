@@ -30,14 +30,14 @@ public class JsonApiResponse<TResponse> where TResponse : class
 
 	[JsonIgnore] public bool IsError => Status is >= 400 and <= 599;
 
-	public static JsonApiResponse<TResponse> Success(string message, TResponse? data = null)
+	public static JsonApiResponse<TResponse> Success(string message, int? code = null, TResponse? data = null)
 	{
-		return new JsonApiResponse<TResponse>(200, message, data);
+		return new JsonApiResponse<TResponse>(code ?? 200, message, data);
 	}
 
-	public static JsonApiResponse<TResponse> Success(TResponse? data = null)
+	public static JsonApiResponse<TResponse> Success(int? code = null, TResponse? data = null)
 	{
-		return new JsonApiResponse<TResponse>(200, null, data);
+		return new JsonApiResponse<TResponse>(code ?? 200, null, data);
 	}
 
 	public static JsonApiResponse<TResponse> Fail(string? message = null)

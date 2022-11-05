@@ -51,4 +51,9 @@ public class FilterBuilder<T>
 		Statement.Or(other);
 		return this;
 	}
+
+	public static FilterBuilder<T> Where(Expression<Func<T, bool>> expr)
+	{
+		return new FilterBuilder<T>(expr);
+	}
 }

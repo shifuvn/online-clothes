@@ -3,7 +3,7 @@ using OnlineClothes.Domain.Entities;
 
 namespace OnlineClothes.UnitTest.Domain;
 
-[Collection("Entities")]
+[Collection("Domain UserAccount")]
 public class AccountEntityTest : IClassFixture<AccountEntityTestFixture>
 {
 	private readonly AccountEntityTestFixture fixture;
@@ -14,7 +14,7 @@ public class AccountEntityTest : IClassFixture<AccountEntityTestFixture>
 	}
 
 	[Fact]
-	[Trait("Category", "Account")]
+	[Trait("Category", "Domain_Account")]
 	public void Account_CreateNew()
 	{
 		// arrange
@@ -30,7 +30,7 @@ public class AccountEntityTest : IClassFixture<AccountEntityTestFixture>
 	}
 
 	[Fact]
-	[Trait("Category", "Account")]
+	[Trait("Category", "Domain_Account")]
 	public void Account_Activate()
 	{
 		// arrange
@@ -44,7 +44,7 @@ public class AccountEntityTest : IClassFixture<AccountEntityTestFixture>
 	}
 
 	[Fact]
-	[Trait("Category", "Account")]
+	[Trait("Category", "Domain_Account")]
 	public void Account_GivenClientAccount_HasClientRole()
 	{
 		// arrange
@@ -58,7 +58,7 @@ public class AccountEntityTest : IClassFixture<AccountEntityTestFixture>
 	}
 
 	[Fact]
-	[Trait("Category", "Account")]
+	[Trait("Category", "Domain_Account")]
 	public void Account_GivenUser_ShouldVerifyPasswordTrue()
 	{
 		// arrange
@@ -72,7 +72,7 @@ public class AccountEntityTest : IClassFixture<AccountEntityTestFixture>
 	}
 
 	[Fact]
-	[Trait("Category", "Account")]
+	[Trait("Category", "Domain_Account")]
 	public void Account_GivenUser_ShouldVerifyPasswordFalse()
 	{
 		// arrange

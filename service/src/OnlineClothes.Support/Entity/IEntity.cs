@@ -5,7 +5,6 @@ public interface IEntity<out TKey>
 	TKey Id { get; }
 }
 
-public interface IEntity
+public interface IEntity : IEntity<string>
 {
-	string Id { get; }
 }

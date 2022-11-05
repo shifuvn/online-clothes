@@ -8,11 +8,11 @@ using OnlineClothes.Application.PipelineBehaviors;
 
 namespace OnlineClothes.Application.DependencyInjection;
 
-public static class InjectApplicationLayerExtension
+public static class RegisterLayerExtension
 {
-	public static void InjectApplicationLayer(this IServiceCollection services,
+	public static void RegisterApplicationLayer(this IServiceCollection services,
 		IConfiguration configuration,
-		Assembly assembly)
+		Assembly? assembly = null)
 	{
 		services.AddMediatR(Assembly.GetExecutingAssembly());
 		services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
