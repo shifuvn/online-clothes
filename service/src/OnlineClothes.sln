@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineClothes.Persistence",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineClothes.Support", "OnlineClothes.Support\OnlineClothes.Support.csproj", "{E917799F-E44B-497A-AFA3-AC2908D82D6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineClothes.UnitTest", "..\test\OnlineClothes.UnitTest\OnlineClothes.UnitTest.csproj", "{54E2A39B-B432-411A-B8A4-649E1FE36535}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineClothes.UnitTest", "..\test\OnlineClothes.UnitTest\OnlineClothes.UnitTest.csproj", "{54E2A39B-B432-411A-B8A4-649E1FE36535}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

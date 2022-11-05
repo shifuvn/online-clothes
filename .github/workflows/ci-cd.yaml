@@ -47,11 +47,3 @@ jobs:
           chmod +x ./scripts/github-action/start-compose.sh
           ./scripts/github-action/start-compose.sh
         shell: bash
-
-      - name: Setup cache@v3.0.8
-        uses: actions/cache@v3.0.8
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-build-

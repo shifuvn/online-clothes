@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -10,15 +10,18 @@
     <ProjectReference Include="..\OnlineClothes.Persistence\OnlineClothes.Persistence.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Configurations\" />
-    <Folder Include="Repositories\Abstracts\" />
-    <Folder Include="Services\Abstracts\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ItemGroup>
+    <PackageReference Include="MailKit" Version="3.4.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="MimeKit" Version="3.4.2" />
+    <PackageReference Include="Polly" Version="7.2.3" />
+    <PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
+    <PackageReference Include="RazorEngineCore" Version="2022.8.1" />
   </ItemGroup>
+
+	<ItemGroup>
+        <Content Include=".\Services\Mailing\Templates\**" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
 
 </Project>
