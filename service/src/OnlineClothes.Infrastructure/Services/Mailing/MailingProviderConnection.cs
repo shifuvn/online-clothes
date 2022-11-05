@@ -83,6 +83,7 @@ public class MailingProviderConnection : IMailingProviderConnection
 
 	private bool CheckConnection()
 	{
-		return _smtpClient is not null && _smtpClient.IsConnected && _smtpClient.IsAuthenticated;
+		return _smtpClient is not null && _smtpClient.IsConnected &&
+		       (_mailingConfiguration.LocalEnv || _smtpClient!.IsAuthenticated);
 	}
 }

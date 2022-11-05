@@ -6,8 +6,7 @@ using OnlineClothes.Domain.Entities;
 using OnlineClothes.Infrastructure.Repositories.Abstracts;
 using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
 using OnlineClothes.Infrastructure.Services.Mailing.Models;
-using OnlineClothes.MailLib.Constants;
-using OnlineClothes.MailLib.Views.Emails.VerifyAccount;
+using OnlineClothes.Infrastructure.Services.Mailing.Templates;
 using OnlineClothes.Support.Builders.Predicate;
 using OnlineClothes.Support.HttpResponse;
 
@@ -43,12 +42,13 @@ internal sealed class
 
 		var newAccount = UserAccount.Create(request.Email, request.Password, UserAccountRole.Client);
 
-		var mailTemplate = new MailingTemplate<VerifyAccountEmailModel>(newAccount.Email,
-			"test",
-			EmailTemplateName.VerifyAccount,
-			new VerifyAccountEmailModel("haha.com"));
+		var mail = new MailingTemplate(newAccount.Email, "Verify Account", EmailTemplateNames.VerifyAccount,
+			new
+			{
+				ConfirmedUrl = "test.com"
+			});
 
-		await _mailingService.SendEmailAsync(mailTemplate, cancellationToken);
+		await _mailingService.SendEmailAsync(mail, cancellationToken);
 
 		await _userAccountRepository.InsertAsync(newAccount, cancellationToken);
 		_logger.LogInformation("Create new account {Email}", newAccount.Email);

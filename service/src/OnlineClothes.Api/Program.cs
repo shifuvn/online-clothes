@@ -16,7 +16,7 @@ builder.Services.AddControllers()
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.Config(builder.Configuration);
+builder.Services.ConfigStartup(builder.Configuration);
 
 var app = builder.Build();
 
@@ -24,14 +24,14 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
-	app.UseSwaggerUI(cfg =>
+	app.UseSwaggerUI(c =>
 	{
-		cfg.DisplayOperationId();
-		cfg.DisplayRequestDuration();
+		c.DisplayOperationId();
+		c.DisplayRequestDuration();
 	});
 }
 
-app.UseCors(ConfigServices.CorsAnyOrigin);
+app.UseCors(StartupConfigServicesExtension.CorsAnyOrigin);
 app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
@@ -40,6 +40,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapRazorPages();
 
 app.Run();

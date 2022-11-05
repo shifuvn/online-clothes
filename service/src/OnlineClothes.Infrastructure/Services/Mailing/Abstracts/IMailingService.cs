@@ -9,5 +9,5 @@ public interface IMailingService
 		IList<IFormFile>? attachments = null,
 		CancellationToken cancellationToken = default);
 
-	Task SendEmailAsync<TModel>(MailingTemplate<TModel> mailing, CancellationToken cancellationToken = default);
+	Task SendEmailAsync(MailingTemplate mailing, CancellationToken cancellationToken = default);
 }

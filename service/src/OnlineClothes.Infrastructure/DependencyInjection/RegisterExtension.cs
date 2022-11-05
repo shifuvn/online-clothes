@@ -6,6 +6,7 @@ using OnlineClothes.Infrastructure.Services.Auth;
 using OnlineClothes.Infrastructure.Services.Auth.Abstracts;
 using OnlineClothes.Infrastructure.Services.Mailing;
 using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
+using OnlineClothes.Infrastructure.Services.Mailing.Engine;
 
 namespace OnlineClothes.Infrastructure.DependencyInjection;
 
@@ -24,5 +25,6 @@ public static class RegisterExtension
 		services.AddSingleton<IMailingProviderConnection, MailingProviderConnection>();
 		services.AddTransient<IMailingService, MailingService>();
 		services.Configure<MailingProviderConfiguration>(configuration.GetSection("Mailing"));
+		services.AddTransient<RazorEngineRenderer>();
 	}
 }

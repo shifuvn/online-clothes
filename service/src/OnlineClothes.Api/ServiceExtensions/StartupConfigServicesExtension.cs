@@ -5,16 +5,15 @@ using Microsoft.OpenApi.Models;
 using OnlineClothes.Application.DependencyInjection;
 using OnlineClothes.Infrastructure.DependencyInjection;
 using OnlineClothes.Infrastructure.Services.Auth;
-using OnlineClothes.MailLib.Service;
 using OnlineClothes.Persistence.Context;
 
 namespace OnlineClothes.Api.ServiceExtensions;
 
-public static class ConfigServices
+public static class StartupConfigServicesExtension
 {
 	public const string CorsAnyOrigin = "AnyOrigin";
 
-	public static void Config(this IServiceCollection services, IConfiguration configuration)
+	public static void ConfigStartup(this IServiceCollection services, IConfiguration configuration)
 	{
 		services.ConfigSwagger();
 		services.ConfigAuth(configuration);
@@ -24,10 +23,6 @@ public static class ConfigServices
 
 		services.RegisterApplicationLayer(configuration);
 		services.RegisterInfrastructureLayer(configuration);
-
-		// config mail template
-		services.AddRazorPages();
-		services.UseRazorRenderer();
 	}
 
 	/// <summary>

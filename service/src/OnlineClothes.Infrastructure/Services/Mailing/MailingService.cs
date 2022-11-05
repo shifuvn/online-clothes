@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
+using OnlineClothes.Infrastructure.Services.Mailing.Engine;
 using OnlineClothes.Infrastructure.Services.Mailing.Models;
-using OnlineClothes.MailLib.Service;
 
 namespace OnlineClothes.Infrastructure.Services.Mailing;
 
@@ -13,17 +13,16 @@ internal sealed class MailingService : IMailingService
 	private readonly ILogger<MailingService> _logger;
 	private readonly MailingProviderConfiguration _mailingConfiguration;
 	private readonly IMailingProviderConnection _mailingProvider;
-	private readonly IRazorRenderer _razorRenderer;
+	private readonly RazorEngineRenderer _razorEngineRenderer;
 
 	public MailingService(ILogger<MailingService> logger,
 		IOptions<MailingProviderConfiguration> mailingConfigurationOption,
-		IMailingProviderConnection mailingProvider,
-		IRazorRenderer razorRenderer)
+		IMailingProviderConnection mailingProvider, RazorEngineRenderer razorEngineRenderer)
 	{
 		_logger = logger;
 		_mailingConfiguration = mailingConfigurationOption.Value;
 		_mailingProvider = mailingProvider;
-		_razorRenderer = razorRenderer;
+		_razorEngineRenderer = razorEngineRenderer;
 	}
 
 	public async Task SendEmailAsync(string to, string subject, string content, string? from = null,
@@ -78,13 +77,14 @@ internal sealed class MailingService : IMailingService
 		}
 	}
 
-	public async Task SendEmailAsync<TModel>(MailingTemplate<TModel> mailing,
+	public async Task SendEmailAsync(MailingTemplate mailing,
 		CancellationToken cancellationToken = default)
 	{
-		var htmlContent = await _razorRenderer.RenderToStringAsync(mailing.TemplateName, mailing.Model);
+		var bodyContent = _razorEngineRenderer.RenderToString(mailing.TemplateName, mailing.Model);
+
 		await SendEmailAsync(mailing.To,
 			mailing.Subject,
-			htmlContent,
+			bodyContent,
 			mailing.From,
 			mailing.AttachmentsFile,
 			cancellationToken);

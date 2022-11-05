@@ -2,12 +2,12 @@
 
 namespace OnlineClothes.Infrastructure.Services.Mailing.Models;
 
-public class MailingTemplate<TModel>
+public class MailingTemplate
 {
 	public MailingTemplate(string to,
 		string subject,
 		string templateName,
-		TModel model,
+		object model,
 		IList<IFormFile>? attachmentsFile = null,
 		string? from = null)
 	{
@@ -22,7 +22,7 @@ public class MailingTemplate<TModel>
 	public string To { get; set; }
 	public string Subject { get; set; }
 	public string TemplateName { get; set; }
-	public TModel Model { get; set; }
+	public object Model { get; set; }
 	public IList<IFormFile>? AttachmentsFile { get; set; }
 	public string? From { get; set; }
 }
