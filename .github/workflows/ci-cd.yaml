@@ -22,15 +22,15 @@ jobs:
 
       - name: Restore dependencies
         working-directory: ${{ secrets.WORKING_DIR }} # working_dir should be folder contain solution file (./service/src)
-        run: dotnet restore src.sln
+        run: dotnet restore OnlineClothes.sln
 
       - name: Build
         working-directory: ${{ secrets.WORKING_DIR }}
-        run: dotnet build --no-restore src.sln
+        run: dotnet build --no-restore OnlineClothes.sln
 
       - name: Test
         working-directory: ${{ secrets.WORKING_DIR }}
-        run: dotnet test --no-build --verbosity normal src.sln
+        run: dotnet test --no-build --verbosity normal OnlineClothes.sln
 
   docker-build:
     name: Docker build dev
