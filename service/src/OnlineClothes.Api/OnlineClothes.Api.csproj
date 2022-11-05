@@ -14,4 +14,9 @@
     <ProjectReference Include="..\OnlineClothes.Application\OnlineClothes.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="ServiceExtensions\" />
+  </ItemGroup>
+
 </Project>
