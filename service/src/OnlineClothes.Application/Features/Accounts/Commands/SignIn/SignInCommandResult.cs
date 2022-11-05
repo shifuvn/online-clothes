@@ -1,8 +1,8 @@
 ﻿namespace OnlineClothes.Application.Features.Accounts.Commands.SignIn;
 
-public sealed class SignInAccountCommandResult
+public sealed class SignInCommandResult
 {
-	public SignInAccountCommandResult(string accessToken)
+	public SignInCommandResult(string accessToken)
 	{
 		AccessToken = accessToken;
 	}

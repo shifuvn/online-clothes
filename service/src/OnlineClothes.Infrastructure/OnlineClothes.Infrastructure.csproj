@@ -24,4 +24,8 @@
         <Content Include=".\Services\Mailing\Templates\**" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="StandaloneConfigurations\" />
+	</ItemGroup>
+
 </Project>

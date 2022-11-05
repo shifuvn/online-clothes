@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Accounts\Commands\SignUp\" />
+    <Folder Include="Features\Accounts\Commands\Activate\" />
     <Folder Include="Features\Accounts\Queries\" />
     <Folder Include="Middlewares\" />
     <Folder Include="PipelineBehaviors\" />
