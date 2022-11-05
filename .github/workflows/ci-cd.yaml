@@ -1,4 +1,4 @@
-name: dotnet
+name: CI/CD
 
 on:
   push:
@@ -31,3 +31,27 @@ jobs:
       - name: Test
         working-directory: ${{ secrets.WORKING_DIR }}
         run: dotnet test --no-build --verbosity normal src.sln
+
+  docker-build:
+    name: Docker build dev
+    runs-on: ubuntu-20.04
+    needs: [build-and-test]
+
+    steps:
+      - name: Setup checkout@v3
+        uses: actions/checkout@v3
+
+      - name: Build infra services
+        working-directory: ${{ secrets.WORKING_DIR }}
+        run: |
+          chmod +x ./scripts/github-action/start-compose.sh
+          ./scripts/github-action/start-compose.sh
+        shell: bash
+
+      - name: Setup cache@v3.0.8
+        uses: actions/cache@v3.0.8
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-build-
