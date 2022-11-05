@@ -99,47 +99,47 @@ public interface IRootReadOnlyRepository<TEntity, TKey> : IDisposable where TEnt
 		string regexOptions = "i",
 		FindOptions? options = null) where TDerived : TEntity;
 
-	Task<IAsyncCursor<TEntity>> FindAsync(
+	Task<IAsyncCursor<TEntity>?> FindAsync(
 		FilterBuilder<TEntity> filterBuilder,
 		FindOptions<TEntity, TEntity>? options = null,
 		CancellationToken cancellationToken = default);
 
-	Task<IAsyncCursor<TEntity>> FindAsync(
+	Task<IAsyncCursor<TEntity>?> FindAsync(
 		FilterDefinition<TEntity> filter,
 		FindOptions<TEntity, TEntity>? options = null,
 		CancellationToken cancellationToken = default);
 
-	Task<IAsyncCursor<TDerived>> FindAsync<TDerived>(
+	Task<IAsyncCursor<TDerived>?> FindAsync<TDerived>(
 		FilterBuilder<TDerived> filterBuilder,
 		FindOptions<TDerived, TDerived>? options = null,
 		CancellationToken cancellationToken = default) where TDerived : TEntity;
 
-	Task<IAsyncCursor<TReturnProjection>> FindAsync<TReturnProjection>(
+	Task<IAsyncCursor<TReturnProjection>?> FindAsync<TReturnProjection>(
 		FilterBuilder<TEntity> filterBuilder,
 		Expression<Func<TEntity, TReturnProjection>> selector,
 		FindOptions<TEntity, TReturnProjection>? options = null,
 		CancellationToken cancellationToken = default);
 
-	Task<IAsyncCursor<TReturnProject>> FindAsync<TDerived, TReturnProject>(
+	Task<IAsyncCursor<TReturnProject>?> FindAsync<TDerived, TReturnProject>(
 		FilterBuilder<TDerived> filterBuilder,
 		Expression<Func<TDerived, TReturnProject>> returnProjection,
 		FindOptions<TDerived, TReturnProject>? options = null,
 		CancellationToken cancellationToken = default) where TDerived : TEntity;
 
-	Task<TEntity> FindOneAsync(
+	Task<TEntity?> FindOneAsync(
 		FilterBuilder<TEntity> filterBuilder,
 		CancellationToken cancellationToken = default);
 
-	Task<TDerived> FindOneAsync<TDerived>(
+	Task<TDerived?> FindOneAsync<TDerived>(
 		FilterBuilder<TDerived> filterBuilder,
 		CancellationToken cancellationToken = default) where TDerived : TEntity;
 
-	Task<TReturnProject> FindOneAsync<TReturnProject>(
+	Task<TReturnProject?> FindOneAsync<TReturnProject>(
 		Expression<Func<TEntity, bool>> filter,
 		Expression<Func<TEntity, TReturnProject>> selector,
 		CancellationToken cancellationToken = default);
 
-	Task<TReturnProject> FindOneAsync<TDerived, TReturnProject>(
+	Task<TReturnProject?> FindOneAsync<TDerived, TReturnProject>(
 		FilterBuilder<TDerived> filterBuilder,
 		Expression<Func<TDerived, TReturnProject>> selector,
 		CancellationToken cancellationToken = default) where TDerived : TEntity;

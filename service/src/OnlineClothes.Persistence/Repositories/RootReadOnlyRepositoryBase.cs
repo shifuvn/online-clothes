@@ -210,26 +210,26 @@ public abstract class RootReadOnlyRepositoryBase<T, TKey> : IRootReadOnlyReposit
 			.Find(Builders<TDerived>.Filter.Or(filters), options);
 	}
 
-	public virtual Task<IAsyncCursor<T>> FindAsync(FilterBuilder<T> filterBuilder, FindOptions<T, T>? options = null,
+	public virtual Task<IAsyncCursor<T>?> FindAsync(FilterBuilder<T> filterBuilder, FindOptions<T, T>? options = null,
 		CancellationToken cancellationToken = default)
 	{
 		return Collection.FindAsync(filterBuilder.Statement, options, cancellationToken);
 	}
 
-	public virtual Task<IAsyncCursor<T>> FindAsync(FilterDefinition<T> filter, FindOptions<T, T>? options = null,
+	public virtual Task<IAsyncCursor<T>?> FindAsync(FilterDefinition<T> filter, FindOptions<T, T>? options = null,
 		CancellationToken cancellationToken = default)
 	{
 		return Collection.FindAsync(filter, options, cancellationToken);
 	}
 
-	public virtual Task<IAsyncCursor<TDerived>> FindAsync<TDerived>(FilterBuilder<TDerived> filterBuilder,
+	public virtual Task<IAsyncCursor<TDerived>?> FindAsync<TDerived>(FilterBuilder<TDerived> filterBuilder,
 		FindOptions<TDerived, TDerived>? options = null,
 		CancellationToken cancellationToken = default) where TDerived : T
 	{
 		return Collection.OfType<TDerived>().FindAsync(filterBuilder.Statement, options, cancellationToken);
 	}
 
-	public virtual Task<IAsyncCursor<TReturnProjection>> FindAsync<TReturnProjection>(
+	public virtual Task<IAsyncCursor<TReturnProjection>?> FindAsync<TReturnProjection>(
 		FilterBuilder<T> filterBuilder,
 		Expression<Func<T, TReturnProjection>> selector,
 		FindOptions<T, TReturnProjection>? options = null,
@@ -241,7 +241,7 @@ public abstract class RootReadOnlyRepositoryBase<T, TKey> : IRootReadOnlyReposit
 		return Collection.FindAsync(filterBuilder.Statement, opt, cancellationToken);
 	}
 
-	public virtual Task<IAsyncCursor<TReturnProject>> FindAsync<TDerived, TReturnProject>(
+	public virtual Task<IAsyncCursor<TReturnProject>?> FindAsync<TDerived, TReturnProject>(
 		FilterBuilder<TDerived> filterBuilder,
 		Expression<Func<TDerived, TReturnProject>> returnProjection,
 		FindOptions<TDerived, TReturnProject>? options = null, CancellationToken cancellationToken = default)
@@ -253,14 +253,14 @@ public abstract class RootReadOnlyRepositoryBase<T, TKey> : IRootReadOnlyReposit
 		return Collection.OfType<TDerived>().FindAsync(filterBuilder.Statement, opt, cancellationToken);
 	}
 
-	public virtual async Task<T> FindOneAsync(FilterBuilder<T> filterBuilder,
+	public virtual async Task<T?> FindOneAsync(FilterBuilder<T> filterBuilder,
 		CancellationToken cancellationToken = default)
 	{
 		return await (await Collection.FindAsync(filterBuilder.Statement, cancellationToken: cancellationToken))
 			.FirstOrDefaultAsync(cancellationToken);
 	}
 
-	public virtual async Task<TDerived> FindOneAsync<TDerived>(FilterBuilder<TDerived> filterBuilder,
+	public virtual async Task<TDerived?> FindOneAsync<TDerived>(FilterBuilder<TDerived> filterBuilder,
 		CancellationToken cancellationToken = default) where TDerived : T
 	{
 		return await (await Collection.OfType<TDerived>()
@@ -268,7 +268,7 @@ public abstract class RootReadOnlyRepositoryBase<T, TKey> : IRootReadOnlyReposit
 			.FirstOrDefaultAsync(cancellationToken);
 	}
 
-	public virtual async Task<TReturnProject> FindOneAsync<TReturnProject>(Expression<Func<T, bool>> filter,
+	public virtual async Task<TReturnProject?> FindOneAsync<TReturnProject>(Expression<Func<T, bool>> filter,
 		Expression<Func<T, TReturnProject>> selector,
 		CancellationToken cancellationToken = default)
 	{
@@ -280,7 +280,7 @@ public abstract class RootReadOnlyRepositoryBase<T, TKey> : IRootReadOnlyReposit
 			.FirstOrDefaultAsync(cancellationToken);
 	}
 
-	public virtual async Task<TReturnProject> FindOneAsync<TDerived, TReturnProject>(
+	public virtual async Task<TReturnProject?> FindOneAsync<TDerived, TReturnProject>(
 		FilterBuilder<TDerived> filterBuilder,
 		Expression<Func<TDerived, TReturnProject>> selector,
 		CancellationToken cancellationToken = default) where TDerived : T

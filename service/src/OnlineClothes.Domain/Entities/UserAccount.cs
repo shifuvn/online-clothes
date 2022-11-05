@@ -1,7 +1,9 @@
-﻿using OnlineClothes.Domain.Common;
+﻿using OnlineClothes.Domain.Attributes;
+using OnlineClothes.Domain.Common;
 
 namespace OnlineClothes.Domain.Entities;
 
+[BsonCollection("userAccounts")]
 public class UserAccount : MongoEntityBase
 {
 	public UserAccount()

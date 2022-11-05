@@ -1,20 +1,23 @@
 ﻿using System.Reflection;
+using OnlineClothes.Support.Exceptions;
 
 namespace OnlineClothes.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class BsonCollectionAttribute : Attribute
 {
-	public BsonCollectionAttribute(string name)
+	public BsonCollectionAttribute(string? name = null)
 	{
 		Name = name;
 	}
 
-	public string Name { get; }
+	public string? Name { get; }
 
 	public static string GetName<T>()
 	{
-		var collectionName = typeof(T).GetCustomAttribute<BsonCollectionAttribute>();
-		return collectionName is null ? typeof(T).Name : collectionName.Name;
+		var collection = typeof(T).GetCustomAttribute<BsonCollectionAttribute>();
+		NullValueReferenceException.ThrowIfNull(collection);
+
+		return string.IsNullOrEmpty(collection.Name) ? typeof(T).Name : collection.Name;
 	}
 }

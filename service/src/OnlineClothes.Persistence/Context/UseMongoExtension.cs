@@ -4,9 +4,9 @@ namespace OnlineClothes.Persistence.Context;
 
 public static class UseMongoExtension
 {
-	public static void UseMongoDb(this IServiceCollection services, Action<MongoDbContextConfiguration> config)
+	public static void UseMongoDb(this IServiceCollection services, Action<MongoDbContextConfiguration> configOptions)
 	{
-		services.Configure(config);
+		services.Configure(configOptions);
 
 		services.AddScoped<IMongoDbContext, MongoDbContext>();
 	}

@@ -48,7 +48,7 @@ public class MongoDbContext : IMongoDbContext
 
 		var mongoClientSetting = ConfigureMongoClientSettings();
 		Client = new MongoClient(mongoClientSetting);
-		Database = Client.GetDatabase(_configuration.DatabaseName);
+		Database = Client.GetDatabase(_configuration.Database);
 	}
 
 	private MongoClientSettings ConfigureMongoClientSettings()
