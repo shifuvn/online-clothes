@@ -1,0 +1,36 @@
+name: Docker Setup
+
+on:
+  push:
+    branches: ["main", "master", "develop", "action-workflow"]
+  pull_request:
+    branches: ["main", "master", "develop"]
+  workflow_run:
+    workflows: [".NET Core"]
+    branches: ["main", "master", "develop"]
+    types:
+      - completed
+
+jobs:
+  docker-build:
+    name: Build dev
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Setup checkout@v3
+        uses: actions/checkout@v3
+
+      - name: Setup cache@v3.0.8
+        uses: actions/cache@v3.0.8
+        with:
+          path: ~/.build/
+          key: ${{ runner.os }}-build-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      - name: Build infra services
+        working-directory: ${{ secrets.WORKING_DIR }}
+        run: |
+          chmod +x ./scripts/github-action/start-compose.sh
+          ./scripts/github-action/start-compose.sh
+        shell: bash

@@ -20,14 +20,6 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: Setup cache@v3.0.8
-        uses: actions/cache@v3.0.8
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
       - name: Restore dependencies
         working-directory: ${{ secrets.WORKING_DIR }} # working_dir should be folder contain solution file (./service/src)
         run: dotnet restore src.sln
