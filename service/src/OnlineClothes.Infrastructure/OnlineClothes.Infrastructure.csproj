@@ -7,18 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OnlineClothes.MailLib\OnlineClothes.MailLib.csproj" />
     <ProjectReference Include="..\OnlineClothes.Persistence\OnlineClothes.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configurations\" />
     <Folder Include="Repositories\Abstracts\" />
-    <Folder Include="Services\Abstracts\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="3.4.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="MimeKit" Version="3.4.2" />
+    <PackageReference Include="Polly" Version="7.2.3" />
+    <PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

@@ -5,11 +5,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OnlineClothes.Domain.Entities;
-using OnlineClothes.Infrastructure.Configurations;
-using OnlineClothes.Infrastructure.Services.Abstracts;
+using OnlineClothes.Infrastructure.Services.Auth.Abstracts;
 using OnlineClothes.Support.Utilities;
 
-namespace OnlineClothes.Infrastructure.Services;
+namespace OnlineClothes.Infrastructure.Services.Auth;
 
 internal sealed class AuthService : IAuthService
 {

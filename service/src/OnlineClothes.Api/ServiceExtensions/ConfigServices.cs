@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OnlineClothes.Application.DependencyInjection;
-using OnlineClothes.Infrastructure.Configurations;
 using OnlineClothes.Infrastructure.DependencyInjection;
+using OnlineClothes.Infrastructure.Services.Auth;
+using OnlineClothes.MailLib.Service;
 using OnlineClothes.Persistence.Context;
 
 namespace OnlineClothes.Api.ServiceExtensions;
@@ -23,6 +24,10 @@ public static class ConfigServices
 
 		services.RegisterApplicationLayer(configuration);
 		services.RegisterInfrastructureLayer(configuration);
+
+		// config mail template
+		services.AddRazorPages();
+		services.UseRazorRenderer();
 	}
 
 	/// <summary>

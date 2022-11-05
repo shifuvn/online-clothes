@@ -1,18 +1,19 @@
 ﻿using MediatR;
 using OnlineClothes.Domain.Entities;
 using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Infrastructure.Services.Abstracts;
+using OnlineClothes.Infrastructure.Services.Auth.Abstracts;
 using OnlineClothes.Support.Builders.Predicate;
 using OnlineClothes.Support.HttpResponse;
 
 namespace OnlineClothes.Application.Features.Accounts.Commands.SignIn;
 
-public class
+internal sealed class
 	SignInAccountCommandHandler : IRequestHandler<SignInAccountCommand, JsonApiResponse<SignInAccountCommandResult>>
 {
-	private const string LoginFailMessage = "Email hoặc mật khẩu không chính xác";
-	private readonly IAuthService _authService;
+	private const string ErrorLoginFailMessage = "Email hoặc mật khẩu không chính xác";
+	private const string ErrorAccountNotActivateMessage = "Tài khoảng chưa được kích hoạt";
 
+	private readonly IAuthService _authService;
 	private readonly IUserAccountRepository _userAccountRepository;
 
 	public SignInAccountCommandHandler(IUserAccountRepository userAccountRepository, IAuthService authService)
@@ -30,7 +31,12 @@ public class
 
 		if (account is null || !account.VerifyPassword(request.Password))
 		{
-			return JsonApiResponse<SignInAccountCommandResult>.Fail(LoginFailMessage);
+			return JsonApiResponse<SignInAccountCommandResult>.Fail(ErrorLoginFailMessage);
+		}
+
+		if (!account.IsValid())
+		{
+			return JsonApiResponse<SignInAccountCommandResult>.Fail(ErrorAccountNotActivateMessage);
 		}
 
 		var responseModel = new SignInAccountCommandResult(_authService.CreateJwtAccessToken(account));

@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using OnlineClothes.Domain.Entities;
 
-namespace OnlineClothes.Infrastructure.Services.Abstracts;
+namespace OnlineClothes.Infrastructure.Services.Auth.Abstracts;
 
 public interface IAuthService
 {
