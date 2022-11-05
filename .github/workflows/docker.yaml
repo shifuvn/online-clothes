@@ -1,19 +1,14 @@
-name: Docker Setup
+name: docker
 
 on:
-  push:
-    branches: ["main", "master", "develop", "action-workflow"]
-  pull_request:
-    branches: ["main", "master", "develop"]
   workflow_run:
-    workflows: [".NET Core"]
-    branches: ["main", "master", "develop"]
-    types:
-      - completed
+    workflows: [dotnet]
+    types: [completed]
 
 jobs:
   docker-build:
     name: Build dev
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-20.04
 
     steps:
