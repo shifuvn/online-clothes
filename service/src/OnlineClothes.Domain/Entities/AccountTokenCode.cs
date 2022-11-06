@@ -3,7 +3,7 @@
 namespace OnlineClothes.Domain.Entities;
 
 [BsonCollection("accountTokenCodes")]
-public class AccountTokenCode : MongoEntityBase
+public class AccountTokenCode : RootMongoDocumentBase
 {
 	public AccountTokenCode(string email, AccountTokenType type, TimeSpan lifeTimeSpan)
 	{

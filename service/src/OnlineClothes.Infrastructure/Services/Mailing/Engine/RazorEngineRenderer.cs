@@ -6,6 +6,8 @@ namespace OnlineClothes.Infrastructure.Services.Mailing.Engine;
 
 public class RazorEngineRenderer
 {
+	private const string RootDirectoryContainTemplate = @"./Views/MailTemplates/";
+
 	private readonly ConcurrentDictionary<string, string> _templates = new();
 
 	public string RenderToString(string templateName, object model)
@@ -16,7 +18,7 @@ public class RazorEngineRenderer
 		}
 
 		var rawLoadedHtml =
-			File.ReadAllText(@"../OnlineClothes.Infrastructure/Services/Mailing/Templates/" + templateName);
+			File.ReadAllText(RootDirectoryContainTemplate + templateName);
 		NullValueReferenceException.ThrowIfNull(rawLoadedHtml);
 
 		_templates.TryAdd(templateName, rawLoadedHtml);

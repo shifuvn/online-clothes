@@ -105,6 +105,14 @@ public static class PasswordHasher
 		}
 	}
 
+	public static string RandomPassword(int length)
+	{
+		var tokenBuffer = new byte[length];
+		DefaultOptions.DefaultRng.GetBytes(tokenBuffer);
+
+		return Convert.ToBase64String(tokenBuffer);
+	}
+
 	private static uint ReadNetworkByteOrder(byte[] buffer, int offset)
 	{
 		return ((uint)buffer[offset + 0] << 24)

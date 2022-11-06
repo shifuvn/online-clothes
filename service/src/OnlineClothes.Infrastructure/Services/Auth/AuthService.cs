@@ -69,10 +69,8 @@ internal sealed class AuthService : IAuthService
 
 	private IEnumerable<Claim> CreateClaims(UserAccount account)
 	{
-		_logger.LogInformation("Request for access token: {NameIdentifier}, {Email}, {Role}",
-			account.Id,
-			account.Email,
-			account.Role);
+		var logRequestInfo = "{" + $"{account.Id} {account.Email} {account.Role}" + "}";
+		_logger.LogInformation("Request for access token -- {Info}", logRequestInfo);
 
 		return new List<Claim>
 		{

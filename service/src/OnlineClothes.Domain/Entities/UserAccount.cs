@@ -4,7 +4,7 @@ using OnlineClothes.Domain.Common;
 namespace OnlineClothes.Domain.Entities;
 
 [BsonCollection("userAccounts")]
-public class UserAccount : MongoEntityBase
+public class UserAccount : RootMongoDocumentBase
 {
 	public UserAccount()
 	{

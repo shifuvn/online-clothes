@@ -2,6 +2,9 @@
 
 namespace OnlineClothes.Infrastructure.StandaloneConfigurations;
 
+/// <summary>
+/// Config app domain, read from appsetting.json
+/// </summary>
 public class AppDomainConfiguration
 {
 	public string Host { get; init; } = null!;

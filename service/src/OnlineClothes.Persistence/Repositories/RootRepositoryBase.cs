@@ -77,6 +77,7 @@ public abstract class RootRepositoryBase<T, TKey> : RootReadOnlyRepositoryBase<T
 		ArgumentNullException.ThrowIfNull(id, nameof(id));
 
 		var filter = Builders<T>.Filter.Eq("_id", ObjectId.Parse(id));
+
 		return await Collection
 			.UpdateOneAsync(filter, update(Builders<T>.Update), options, cancellationToken)
 			.ConfigureAwait(false);

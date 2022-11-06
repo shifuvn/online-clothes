@@ -20,12 +20,8 @@
     <PackageReference Include="RazorEngineCore" Version="2022.8.1" />
   </ItemGroup>
 
-	<ItemGroup>
-        <Content Include=".\Services\Mailing\Templates\**" CopyToOutputDirectory="PreserveNewest" />
+    <ItemGroup>
+      <Folder Include="Services\UserContext\Abstracts\" />
     </ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="StandaloneConfigurations\" />
-	</ItemGroup>
 
 </Project>

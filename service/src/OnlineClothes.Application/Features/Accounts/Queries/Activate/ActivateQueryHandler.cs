@@ -6,15 +6,15 @@ using OnlineClothes.Support.Builders.Predicate;
 using OnlineClothes.Support.Exceptions;
 using OnlineClothes.Support.HttpResponse;
 
-namespace OnlineClothes.Application.Features.Accounts.Commands.Activate;
+namespace OnlineClothes.Application.Features.Accounts.Queries.Activate;
 
-internal sealed class ActivateCommandHandler : IRequestHandler<ActivateCommand, JsonApiResponse<EmptyUnitResponse>>
+internal sealed class ActivateQueryHandler : IRequestHandler<ActivateQuery, JsonApiResponse<EmptyUnitResponse>>
 {
 	private readonly IAccountTokenCodeRepository _accountTokenCodeRepository;
-	private readonly ILogger<ActivateCommandHandler> _logger;
+	private readonly ILogger<ActivateQueryHandler> _logger;
 	private readonly IUserAccountRepository _userAccountRepository;
 
-	public ActivateCommandHandler(ILogger<ActivateCommandHandler> logger, IUserAccountRepository userAccountRepository,
+	public ActivateQueryHandler(ILogger<ActivateQueryHandler> logger, IUserAccountRepository userAccountRepository,
 		IAccountTokenCodeRepository accountTokenCodeRepository)
 	{
 		_logger = logger;
@@ -22,7 +22,7 @@ internal sealed class ActivateCommandHandler : IRequestHandler<ActivateCommand, 
 		_accountTokenCodeRepository = accountTokenCodeRepository;
 	}
 
-	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(ActivateCommand request,
+	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(ActivateQuery request,
 		CancellationToken cancellationToken)
 	{
 		var tokenCode = await _accountTokenCodeRepository.FindOneAsync(FilterBuilder<AccountTokenCode>.Where(x =>

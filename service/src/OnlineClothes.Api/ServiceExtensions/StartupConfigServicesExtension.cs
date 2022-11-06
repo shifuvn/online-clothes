@@ -23,6 +23,8 @@ public static class StartupConfigServicesExtension
 
 		services.RegisterApplicationLayer(configuration);
 		services.RegisterInfrastructureLayer(configuration);
+
+		services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 	}
 
 	/// <summary>
