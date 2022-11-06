@@ -1,36 +1,42 @@
 ﻿using OnlineClothes.Domain.Attributes;
 using OnlineClothes.Domain.Common;
+using OnlineClothes.Domain.Entities.Common;
 
 namespace OnlineClothes.Domain.Entities;
 
-[BsonCollection("userAccounts")]
-public class UserAccount : MongoEntityBase
+[BsonCollection("accountUsers")]
+public class AccountUser : RootDocumentBase
 {
-	public UserAccount()
+	public AccountUser()
 	{
 	}
 
-	public UserAccount(string email, string hashedPassword, string role)
+	public AccountUser(string email, string hashedPassword, string firstName, string lastName, string role)
 	{
 		Email = email;
 		NormalizeEmail = email.ToUpper();
 		HashedPassword = hashedPassword;
+		FirstName = firstName;
+		LastName = lastName;
 		Role = role;
 	}
 
 	public string Email { get; set; } = null!;
 	public string NormalizeEmail { get; set; } = null!;
+	public string FirstName { get; set; } = null!;
+	public string LastName { get; set; } = null!;
 	public string HashedPassword { get; set; } = null!;
 	public string Role { get; set; } = null!;
 	public string ImageUrl { get; set; } = null!;
 	public bool IsActivated { get; set; }
 	public DateTime LastLogin { get; set; }
 
-	public static UserAccount Create(string email, string rawPassword, UserAccountRole role)
+	public static AccountUser Create(string email, string rawPassword, AccountUserFullName fullName,
+		UserAccountRole role)
 	{
 		var hashedPassword = PasswordHasher.Hash(rawPassword);
 
-		return new UserAccount(email, hashedPassword, role.ToString());
+		return new AccountUser(email, hashedPassword, fullName.FirstName, fullName.LastName, role.ToString());
 	}
 
 	public bool VerifyPassword(string providedPassword)

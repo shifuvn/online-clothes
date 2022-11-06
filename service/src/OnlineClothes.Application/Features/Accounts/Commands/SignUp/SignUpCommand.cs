@@ -4,16 +4,18 @@ using OnlineClothes.Support.HttpResponse;
 
 namespace OnlineClothes.Application.Features.Accounts.Commands.SignUp;
 
-public sealed class SignUpAccountCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
+public sealed class SignUpCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 {
 	public string Email { get; init; } = null!;
 	public string Password { get; init; } = null!;
 	public string ConfirmPassword { get; init; } = null!;
+	public string FirstName { get; init; } = null!;
+	public string LastName { get; init; } = null!;
 }
 
-public sealed class SignUpAccountCommandValidation : AbstractValidator<SignUpAccountCommand>
+public sealed class SignUpCommandValidation : AbstractValidator<SignUpCommand>
 {
-	public SignUpAccountCommandValidation()
+	public SignUpCommandValidation()
 	{
 		RuleFor(q => q.Email)
 			.EmailAddress().WithMessage("Email is invalid")

@@ -21,7 +21,7 @@ internal sealed class AuthService : IAuthService
 		_authConfiguration = authConfigurationOption.Value;
 	}
 
-	public string CreateJwtAccessToken(UserAccount account)
+	public string CreateJwtAccessToken(AccountUser account)
 	{
 		// credential & using SHA256
 		var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authConfiguration.Secret));
@@ -67,12 +67,10 @@ internal sealed class AuthService : IAuthService
 		return principal.Claims.ToList();
 	}
 
-	private IEnumerable<Claim> CreateClaims(UserAccount account)
+	private IEnumerable<Claim> CreateClaims(AccountUser account)
 	{
-		_logger.LogInformation("Request for access token: {NameIdentifier}, {Email}, {Role}",
-			account.Id,
-			account.Email,
-			account.Role);
+		var logRequestInfo = "{" + $"{account.Id} {account.Email} {account.Role}" + "}";
+		_logger.LogInformation("Request for access token -- {Info}", logRequestInfo);
 
 		return new List<Claim>
 		{

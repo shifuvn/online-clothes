@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using Microsoft.Extensions.Logging;
 using OnlineClothes.Support.Exceptions;
 using RazorEngineCore;
 
@@ -6,7 +7,16 @@ namespace OnlineClothes.Infrastructure.Services.Mailing.Engine;
 
 public class RazorEngineRenderer
 {
+	private const string RootDirectoryContainTemplate = @"./Views/MailTemplates/";
+
+	private readonly ILogger<RazorEngineRenderer> _logger;
+
 	private readonly ConcurrentDictionary<string, string> _templates = new();
+
+	public RazorEngineRenderer(ILogger<RazorEngineRenderer> logger)
+	{
+		_logger = logger;
+	}
 
 	public string RenderToString(string templateName, object model)
 	{
@@ -16,7 +26,7 @@ public class RazorEngineRenderer
 		}
 
 		var rawLoadedHtml =
-			File.ReadAllText(@"../OnlineClothes.Infrastructure/Services/Mailing/Templates/" + templateName);
+			File.ReadAllText(RootDirectoryContainTemplate + templateName);
 		NullValueReferenceException.ThrowIfNull(rawLoadedHtml);
 
 		_templates.TryAdd(templateName, rawLoadedHtml);
@@ -28,5 +38,22 @@ public class RazorEngineRenderer
 		var razorEngine = new RazorEngine();
 		var compiledTemplate = razorEngine.Compile(raw);
 		return compiledTemplate.Run(model);
+	}
+
+	internal void LoadTemplateToMemory()
+	{
+		var directoryInfo = new DirectoryInfo(RootDirectoryContainTemplate);
+		var files = directoryInfo.GetFiles();
+
+		_logger.LogInformation("Loading mail templates from @\"{Directory}\"", directoryInfo.FullName);
+
+
+		foreach (var fileInfo in files)
+		{
+			var rawContent = File.ReadAllText(fileInfo.FullName);
+			_templates.TryAdd(fileInfo.Name, rawContent);
+		}
+
+		_logger.LogInformation("Loaded mail templates [{Names}]", _templates.Keys);
 	}
 }

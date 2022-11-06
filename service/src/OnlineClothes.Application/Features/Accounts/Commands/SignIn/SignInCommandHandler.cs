@@ -8,7 +8,7 @@ using OnlineClothes.Support.HttpResponse;
 namespace OnlineClothes.Application.Features.Accounts.Commands.SignIn;
 
 internal sealed class
-	SignInAccountCommandHandler : IRequestHandler<SignInAccountCommand, JsonApiResponse<SignInAccountCommandResult>>
+	SignInCommandHandler : IRequestHandler<SignInCommand, JsonApiResponse<SignInCommandResult>>
 {
 	private const string ErrorLoginFailMessage = "Email hoặc mật khẩu không chính xác";
 	private const string ErrorAccountNotActivateMessage = "Tài khoảng chưa được kích hoạt";
@@ -16,31 +16,31 @@ internal sealed class
 	private readonly IAuthService _authService;
 	private readonly IUserAccountRepository _userAccountRepository;
 
-	public SignInAccountCommandHandler(IUserAccountRepository userAccountRepository, IAuthService authService)
+	public SignInCommandHandler(IUserAccountRepository userAccountRepository, IAuthService authService)
 	{
 		_userAccountRepository = userAccountRepository;
 		_authService = authService;
 	}
 
-	public async Task<JsonApiResponse<SignInAccountCommandResult>> Handle(SignInAccountCommand request,
+	public async Task<JsonApiResponse<SignInCommandResult>> Handle(SignInCommand request,
 		CancellationToken cancellationToken)
 	{
 		var account =
 			await _userAccountRepository.FindOneAsync(
-				FilterBuilder<UserAccount>.Where(acc => acc.Email.Equals(request.Email)), cancellationToken);
+				FilterBuilder<AccountUser>.Where(acc => acc.Email.Equals(request.Email)), cancellationToken);
 
 		if (account is null || !account.VerifyPassword(request.Password))
 		{
-			return JsonApiResponse<SignInAccountCommandResult>.Fail(ErrorLoginFailMessage);
+			return JsonApiResponse<SignInCommandResult>.Fail(ErrorLoginFailMessage);
 		}
 
 		if (!account.IsValid())
 		{
-			return JsonApiResponse<SignInAccountCommandResult>.Fail(ErrorAccountNotActivateMessage);
+			return JsonApiResponse<SignInCommandResult>.Fail(ErrorAccountNotActivateMessage);
 		}
 
-		var responseModel = new SignInAccountCommandResult(_authService.CreateJwtAccessToken(account));
+		var responseModel = new SignInCommandResult(_authService.CreateJwtAccessToken(account));
 
-		return JsonApiResponse<SignInAccountCommandResult>.Success(data: responseModel);
+		return JsonApiResponse<SignInCommandResult>.Success(data: responseModel);
 	}
 }

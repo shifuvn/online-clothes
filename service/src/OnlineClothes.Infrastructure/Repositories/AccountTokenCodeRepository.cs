@@ -5,10 +5,9 @@ using OnlineClothes.Persistence.Repositories;
 
 namespace OnlineClothes.Infrastructure.Repositories;
 
-public sealed class UserAccountRepository : RootRepositoryBase<AccountUser, string>,
-	IUserAccountRepository
+public class AccountTokenCodeRepository : RootRepositoryBase<AccountTokenCode, string>, IAccountTokenCodeRepository
 {
-	public UserAccountRepository(IMongoDbContext dbContext) : base(dbContext)
+	public AccountTokenCodeRepository(IMongoDbContext dbContext) : base(dbContext)
 	{
 	}
 }
