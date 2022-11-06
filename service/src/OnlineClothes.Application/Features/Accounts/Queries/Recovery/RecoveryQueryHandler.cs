@@ -47,7 +47,7 @@ internal sealed class RecoveryQueryHandler : IRequestHandler<RecoveryQuery, Json
 		var newPassword = PasswordHasher.RandomPassword(6);
 
 		var updatedResult = await _userAccountRepository.UpdateOneAsync(
-			FilterBuilder<UserAccount>.Where(acc => acc.Email.Equals(tokenCode.Email)),
+			FilterBuilder<AccountUser>.Where(acc => acc.Email.Equals(tokenCode.Email)),
 			p => p.Set(acc => acc.HashedPassword, PasswordHasher.Hash(newPassword)),
 			cancellationToken: cancellationToken);
 

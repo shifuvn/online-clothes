@@ -27,7 +27,7 @@ internal sealed class
 	{
 		var account =
 			await _userAccountRepository.FindOneAsync(
-				FilterBuilder<UserAccount>.Where(acc => acc.Email.Equals(request.Email)), cancellationToken);
+				FilterBuilder<AccountUser>.Where(acc => acc.Email.Equals(request.Email)), cancellationToken);
 
 		if (account is null || !account.VerifyPassword(request.Password))
 		{

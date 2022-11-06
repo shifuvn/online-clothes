@@ -30,8 +30,16 @@ public static class RegisterExtension
 		services.AddTransient<IMailingService, MailingService>();
 		services.Configure<MailingProviderConfiguration>(configuration.GetSection("Mailing"));
 		services.AddTransient<RazorEngineRenderer>();
+		services.LoadMailTemplate();
 
 		// context
 		services.AddTransient<IUserContext, UserContext>();
+	}
+
+	private static void LoadMailTemplate(this IServiceCollection services)
+	{
+		var scope = services.BuildServiceProvider().CreateScope();
+		var renderer = scope.ServiceProvider.GetRequiredService<RazorEngineRenderer>();
+		renderer.LoadTemplateToMemory();
 	}
 }

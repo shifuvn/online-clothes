@@ -5,7 +5,7 @@ namespace OnlineClothes.Infrastructure.Services.Auth.Abstracts;
 
 public interface IAuthService
 {
-	string CreateJwtAccessToken(UserAccount account);
+	string CreateJwtAccessToken(AccountUser account);
 
 	List<Claim> ValidateJwtToken(string jwt);
 }

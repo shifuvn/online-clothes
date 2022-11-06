@@ -30,7 +30,7 @@ public static class StartupConfigServicesExtension
 	/// <summary>
 	/// Config swagger
 	/// </summary>
-	public static void ConfigSwagger(this IServiceCollection services)
+	private static void ConfigSwagger(this IServiceCollection services)
 	{
 		services.AddSwaggerGen(c =>
 		{
@@ -60,7 +60,7 @@ public static class StartupConfigServicesExtension
 	/// <summary>
 	/// Config authentication
 	/// </summary>
-	public static void ConfigAuth(this IServiceCollection services, IConfiguration configuration)
+	private static void ConfigAuth(this IServiceCollection services, IConfiguration configuration)
 	{
 		var jwtAuthConfigureSection = configuration.GetSection("DefaultJwtAuthentication");
 		services.Configure<AuthConfiguration>(jwtAuthConfigureSection);
@@ -93,7 +93,7 @@ public static class StartupConfigServicesExtension
 	/// <summary>
 	/// Config cors
 	/// </summary>
-	public static void ConfigCors(this IServiceCollection services)
+	private static void ConfigCors(this IServiceCollection services)
 	{
 		services.AddCors(opt =>
 		{

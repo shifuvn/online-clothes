@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OnlineClothes.Domain.Common;
 using OnlineClothes.Domain.Entities;
+using OnlineClothes.Domain.Entities.Common;
 using OnlineClothes.Infrastructure.Repositories.Abstracts;
 using OnlineClothes.Infrastructure.Services.Mailing;
 using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
@@ -40,7 +41,7 @@ internal sealed class
 		CancellationToken cancellationToken)
 	{
 		var existingAccount =
-			await _userAccountRepository.FindOneAsync(FilterBuilder<UserAccount>.Where(p => p.Email == request.Email),
+			await _userAccountRepository.FindOneAsync(FilterBuilder<AccountUser>.Where(p => p.Email == request.Email),
 				cancellationToken);
 
 		if (existingAccount is not null)
@@ -48,7 +49,8 @@ internal sealed class
 			return JsonApiResponse<EmptyUnitResponse>.Fail("Tài khoảng đã tồn tại");
 		}
 
-		var newAccount = UserAccount.Create(request.Email, request.Password, UserAccountRole.Client);
+		var newAccount = AccountUser.Create(request.Email, request.Password,
+			AccountUserFullName.Create(request.FirstName, request.LastName), UserAccountRole.Client);
 		var verifyAccountTokenCode =
 			new AccountTokenCode(newAccount.Email, AccountTokenType.Verification, TimeSpan.FromHours(24));
 

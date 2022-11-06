@@ -36,7 +36,7 @@ internal sealed class ActivateQueryHandler : IRequestHandler<ActivateQuery, Json
 		}
 
 		var updateResult = await _userAccountRepository.UpdateOneAsync(
-			FilterBuilder<UserAccount>.Where(acc => acc.Email.Equals(tokenCode.Email)),
+			FilterBuilder<AccountUser>.Where(acc => acc.Email.Equals(tokenCode.Email)),
 			p => p.Set(acc => acc.IsActivated, true),
 			cancellationToken: cancellationToken);
 

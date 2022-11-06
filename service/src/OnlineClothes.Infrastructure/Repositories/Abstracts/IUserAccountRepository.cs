@@ -3,6 +3,6 @@ using OnlineClothes.Persistence.Repositories.Abstracts;
 
 namespace OnlineClothes.Infrastructure.Repositories.Abstracts;
 
-public interface IUserAccountRepository : IRootRepository<UserAccount, string>
+public interface IUserAccountRepository : IRootRepository<AccountUser, string>
 {
 }

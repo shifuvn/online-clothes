@@ -37,7 +37,7 @@ internal sealed class ResetCommandHandler : IRequestHandler<ResetCommand, JsonAp
 		CancellationToken cancellationToken)
 	{
 		var account = await _userAccountRepository.FindOneAsync(
-			FilterBuilder<UserAccount>.Where(acc => acc.Email.Equals(request.Email)), cancellationToken);
+			FilterBuilder<AccountUser>.Where(acc => acc.Email.Equals(request.Email)), cancellationToken);
 
 		NullValueReferenceException.ThrowIfNull(account, nameof(account));
 
