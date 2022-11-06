@@ -11,23 +11,23 @@ namespace OnlineClothes.Application.Features.Accounts.Commands.ChangePassword;
 internal sealed class
 	ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, JsonApiResponse<EmptyUnitResponse>>
 {
+	private readonly IAccountRepository _accountRepository;
 	private readonly ILogger<ChangePasswordCommandHandler> _logger;
-	private readonly IUserAccountRepository _userAccountRepository;
 	private readonly IUserContext _userContext;
 
 	public ChangePasswordCommandHandler(ILogger<ChangePasswordCommandHandler> logger,
-		IUserAccountRepository userAccountRepository,
+		IAccountRepository accountRepository,
 		IUserContext userContext)
 	{
 		_logger = logger;
-		_userAccountRepository = userAccountRepository;
+		_accountRepository = accountRepository;
 		_userContext = userContext;
 	}
 
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(ChangePasswordCommand request,
 		CancellationToken cancellationToken)
 	{
-		var account = await _userAccountRepository.GetOneAsync(_userContext.GetNameIdentifier(), cancellationToken);
+		var account = await _accountRepository.GetOneAsync(_userContext.GetNameIdentifier(), cancellationToken);
 
 		if (!account.VerifyPassword(request.CurrentPassword))
 		{
@@ -36,7 +36,7 @@ internal sealed class
 
 		var newHashPassword = PasswordHasher.Hash(request.NewPassword);
 
-		var updatedResult = await _userAccountRepository.UpdateOneAsync(account.Id,
+		var updatedResult = await _accountRepository.UpdateOneAsync(account.Id,
 			p => p.Set(acc => acc.HashedPassword, newHashPassword),
 			cancellationToken: cancellationToken);
 

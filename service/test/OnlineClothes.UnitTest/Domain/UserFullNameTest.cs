@@ -16,7 +16,7 @@ public class UserFullNameTest
 		var expectedName = first + " " + last;
 
 		// act
-		var fullName = AccountUserFullName.Create(first, last);
+		var fullName = FullNameHelper.Create(first, last);
 
 		// assert
 		Assert.Equal(expectedName, fullName.FullName);
@@ -33,7 +33,7 @@ public class UserFullNameTest
 		// arrange
 
 		// act
-		var fullName = AccountUserFullName.Create(full);
+		var fullName = FullNameHelper.Create(full);
 
 		// assert
 		Assert.Equal(expectedFirst, fullName.FirstName);
@@ -53,7 +53,7 @@ public class UserFullNameTest
 		// act
 
 		// assert
-		var ex = Assert.Throws<InvalidOperationException>(() => AccountUserFullName.Create(first, last));
+		var ex = Assert.Throws<InvalidOperationException>(() => FullNameHelper.Create(first, last));
 		Assert.Equal("FirstName or LastName is invalid", ex.Message);
 	}
 
@@ -70,7 +70,7 @@ public class UserFullNameTest
 		// act
 
 		// assert
-		var ex = Assert.Throws<InvalidOperationException>(() => AccountUserFullName.Create(full));
+		var ex = Assert.Throws<InvalidOperationException>(() => FullNameHelper.Create(full));
 		Assert.Equal("FirstName or LastName is invalid", ex.Message);
 	}
 }

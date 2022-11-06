@@ -5,10 +5,10 @@ using OnlineClothes.Persistence.Repositories;
 
 namespace OnlineClothes.Infrastructure.Repositories;
 
-public sealed class UserAccountRepository : RootRepositoryBase<AccountUser, string>,
-	IUserAccountRepository
+public sealed class AccountRepository : RootRepositoryBase<AccountUser, string>,
+	IAccountRepository
 {
-	public UserAccountRepository(IMongoDbContext dbContext) : base(dbContext)
+	public AccountRepository(IMongoDbContext dbContext) : base(dbContext)
 	{
 	}
 }

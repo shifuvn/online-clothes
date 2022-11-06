@@ -19,6 +19,8 @@
   <ItemGroup>
     <Folder Include="Features\Accounts\Commands\ChangePassword\" />
     <Folder Include="Features\Accounts\Queries\Recovery\" />
+    <Folder Include="Features\Profile\Commands\EditInformation\" />
+    <Folder Include="Features\Profile\Queries\FetchInformation\" />
     <Folder Include="Middlewares\" />
     <Folder Include="PipelineBehaviors\" />
   </ItemGroup>
