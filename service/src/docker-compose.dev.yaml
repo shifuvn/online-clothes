@@ -15,6 +15,16 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
 
+  mail-server-smtp:
+    image: jijiechen/papercut
+    hostname: mail-server-smtp
+    container_name: oop-mail-server
+    networks:
+      - oop-infra
+    ports:
+      - 25:25
+      - 37408:37408
+
 networks:
   oop-infra:
   oop-app:
