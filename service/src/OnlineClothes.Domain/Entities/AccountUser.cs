@@ -31,12 +31,13 @@ public class AccountUser : RootDocumentBase
 	public bool IsActivated { get; set; }
 	public DateTime LastLogin { get; set; }
 
-	public static AccountUser Create(string email, string rawPassword, AccountUserFullName fullName,
+	public static AccountUser Create(string email, string rawPassword, FullNameHelper fullNameHelper,
 		UserAccountRole role)
 	{
 		var hashedPassword = PasswordHasher.Hash(rawPassword);
 
-		return new AccountUser(email, hashedPassword, fullName.FirstName, fullName.LastName, role.ToString());
+		return new AccountUser(email, hashedPassword, fullNameHelper.FirstName, fullNameHelper.LastName,
+			role.ToString());
 	}
 
 	public bool VerifyPassword(string providedPassword)

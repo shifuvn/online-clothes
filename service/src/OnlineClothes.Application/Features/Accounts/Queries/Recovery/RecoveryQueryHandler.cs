@@ -13,19 +13,19 @@ namespace OnlineClothes.Application.Features.Accounts.Queries.Recovery;
 
 internal sealed class RecoveryQueryHandler : IRequestHandler<RecoveryQuery, JsonApiResponse<RecoveryQueryResult>>
 {
+	private readonly IAccountRepository _accountRepository;
 	private readonly IAccountTokenCodeRepository _accountTokenCodeRepository;
 	private readonly ILogger<RecoveryQueryHandler> _logger;
 	private readonly IMailingService _mailingService;
-	private readonly IUserAccountRepository _userAccountRepository;
 
 	public RecoveryQueryHandler(ILogger<RecoveryQueryHandler> logger,
 		IAccountTokenCodeRepository accountTokenCodeRepository,
-		IUserAccountRepository userAccountRepository,
+		IAccountRepository accountRepository,
 		IMailingService mailingService)
 	{
 		_logger = logger;
 		_accountTokenCodeRepository = accountTokenCodeRepository;
-		_userAccountRepository = userAccountRepository;
+		_accountRepository = accountRepository;
 		_mailingService = mailingService;
 	}
 
@@ -46,7 +46,7 @@ internal sealed class RecoveryQueryHandler : IRequestHandler<RecoveryQuery, Json
 
 		var newPassword = PasswordHasher.RandomPassword(6);
 
-		var updatedResult = await _userAccountRepository.UpdateOneAsync(
+		var updatedResult = await _accountRepository.UpdateOneAsync(
 			FilterBuilder<AccountUser>.Where(acc => acc.Email.Equals(tokenCode.Email)),
 			p => p.Set(acc => acc.HashedPassword, PasswordHasher.Hash(newPassword)),
 			cancellationToken: cancellationToken);

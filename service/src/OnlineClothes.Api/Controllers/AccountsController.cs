@@ -16,6 +16,20 @@ public class AccountsController : ApiV1ControllerBase
 	{
 	}
 
+	[HttpGet("recovery")]
+	[AllowAnonymous]
+	public async Task<IActionResult> Recovery([FromQuery] RecoveryQuery query)
+	{
+		return ApiResponse(await Mediator.Send(query));
+	}
+
+	[HttpPost("change-password")]
+	[AllowAnonymous]
+	public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
+	{
+		return ApiResponse(await Mediator.Send(command));
+	}
+
 	[HttpPost("sign-up")]
 	[AllowAnonymous]
 	public async Task<IActionResult> SignUp([FromBody] SignUpCommand command)
@@ -38,19 +52,6 @@ public class AccountsController : ApiV1ControllerBase
 		return ApiResponse(await Mediator.Send(query));
 	}
 
-	[HttpGet("recovery")]
-	[AllowAnonymous]
-	public async Task<IActionResult> Recovery([FromQuery] RecoveryQuery query)
-	{
-		return ApiResponse(await Mediator.Send(query));
-	}
-
-	[HttpPost("change-password")]
-	[AllowAnonymous]
-	public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
-	{
-		return ApiResponse(await Mediator.Send(command));
-	}
 
 	[HttpPost("reset")]
 	[AllowAnonymous]

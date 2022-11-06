@@ -6,6 +6,7 @@ using OnlineClothes.Persistence.Context;
 using OnlineClothes.Persistence.Repositories.Abstracts;
 using OnlineClothes.Support.Builders.Predicate;
 using OnlineClothes.Support.Entity;
+using OnlineClothes.Support.Exceptions;
 
 namespace OnlineClothes.Persistence.Repositories;
 
@@ -54,8 +55,11 @@ public abstract class RootReadOnlyRepositoryBase<T, TKey> : IRootReadOnlyReposit
 		var cursor = await Collection.FindAsync(filter, null, cancellationToken)
 			.ConfigureAwait(false);
 
-		return await cursor.FirstOrDefaultAsync(cancellationToken)
+		var result = await cursor.FirstOrDefaultAsync(cancellationToken)
 			.ConfigureAwait(false);
+		NullValueReferenceException.ThrowIfNull(result, nameof(result));
+
+		return result;
 	}
 
 	public virtual async Task<TDerived> GetOneAsync<TDerived>(string id, CancellationToken cancellationToken = default)

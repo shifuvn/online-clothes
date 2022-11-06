@@ -18,20 +18,20 @@ namespace OnlineClothes.Application.Features.Accounts.Commands.SignUp;
 internal sealed class
 	SignUpCommandHandler : IRequestHandler<SignUpCommand, JsonApiResponse<EmptyUnitResponse>>
 {
+	private readonly IAccountRepository _accountRepository;
 	private readonly IAccountTokenCodeRepository _accountTokenCodeRepository;
 	private readonly AppDomainConfiguration _domainConfiguration;
 	private readonly ILogger<SignUpCommandHandler> _logger;
 	private readonly IMailingService _mailingService;
-	private readonly IUserAccountRepository _userAccountRepository;
 
 	public SignUpCommandHandler(ILogger<SignUpCommandHandler> logger,
-		IUserAccountRepository userAccountRepository,
+		IAccountRepository accountRepository,
 		IMailingService mailingService,
 		IAccountTokenCodeRepository accountTokenCodeRepository,
 		IOptions<AppDomainConfiguration> appDomainOption)
 	{
 		_logger = logger;
-		_userAccountRepository = userAccountRepository;
+		_accountRepository = accountRepository;
 		_mailingService = mailingService;
 		_accountTokenCodeRepository = accountTokenCodeRepository;
 		_domainConfiguration = appDomainOption.Value;
@@ -41,7 +41,7 @@ internal sealed class
 		CancellationToken cancellationToken)
 	{
 		var existingAccount =
-			await _userAccountRepository.FindOneAsync(FilterBuilder<AccountUser>.Where(p => p.Email == request.Email),
+			await _accountRepository.FindOneAsync(FilterBuilder<AccountUser>.Where(p => p.Email == request.Email),
 				cancellationToken);
 
 		if (existingAccount is not null)
@@ -50,7 +50,7 @@ internal sealed class
 		}
 
 		var newAccount = AccountUser.Create(request.Email, request.Password,
-			AccountUserFullName.Create(request.FirstName, request.LastName), UserAccountRole.Client);
+			FullNameHelper.Create(request.FirstName, request.LastName), UserAccountRole.Client);
 		var verifyAccountTokenCode =
 			new AccountTokenCode(newAccount.Email, AccountTokenType.Verification, TimeSpan.FromHours(24));
 
@@ -64,7 +64,7 @@ internal sealed class
 
 		await _mailingService.SendEmailAsync(mail, cancellationToken);
 
-		await _userAccountRepository.InsertAsync(newAccount, cancellationToken);
+		await _accountRepository.InsertAsync(newAccount, cancellationToken);
 		_logger.LogInformation("Create new account {Email}", newAccount.Email);
 
 		return JsonApiResponse<EmptyUnitResponse>.Success(StatusCodes.Status201Created);

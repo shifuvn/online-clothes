@@ -16,7 +16,7 @@ public static class RegisterExtension
 {
 	public static void RegisterRepositories(this IServiceCollection services)
 	{
-		services.AddTransient<IUserAccountRepository, UserAccountRepository>();
+		services.AddTransient<IAccountRepository, AccountRepository>();
 		services.AddTransient<IAccountTokenCodeRepository, AccountTokenCodeRepository>();
 	}
 
