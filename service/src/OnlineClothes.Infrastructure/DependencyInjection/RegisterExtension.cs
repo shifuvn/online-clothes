@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Amazon.S3;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineClothes.Infrastructure.Repositories;
 using OnlineClothes.Infrastructure.Repositories.Abstracts;
@@ -7,6 +8,8 @@ using OnlineClothes.Infrastructure.Services.Auth.Abstracts;
 using OnlineClothes.Infrastructure.Services.Mailing;
 using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
 using OnlineClothes.Infrastructure.Services.Mailing.Engine;
+using OnlineClothes.Infrastructure.Services.Storage.Abstracts;
+using OnlineClothes.Infrastructure.Services.Storage.AwsS3;
 using OnlineClothes.Infrastructure.Services.UserContext;
 using OnlineClothes.Infrastructure.Services.UserContext.Abstracts;
 using OnlineClothes.Infrastructure.StandaloneConfigurations;
@@ -38,6 +41,11 @@ public static class RegisterExtension
 
 		// account activate
 		services.Configure<AccountActivationConfiguration>(configuration.GetSection("AccountActivation"));
+
+		// amazon s3
+		services.AddAWSService<IAmazonS3>();
+		services.AddTransient<IObjectFileStorage, AwsObjectStorage>();
+		services.Configure<AwsS3Configuration>(configuration.GetSection("AwsS3"));
 	}
 
 	/// <summary>
