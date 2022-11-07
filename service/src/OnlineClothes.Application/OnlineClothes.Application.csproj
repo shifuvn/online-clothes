@@ -22,6 +22,7 @@
     <Folder Include="Features\Profile\Commands\EditInformation\" />
     <Folder Include="Features\Profile\Queries\FetchInformation\" />
     <Folder Include="Middlewares\" />
+    <Folder Include="Helpers\" />
     <Folder Include="PipelineBehaviors\" />
   </ItemGroup>
 

@@ -7,6 +7,7 @@ using OnlineClothes.Application.Features.Accounts.Commands.SignIn;
 using OnlineClothes.Application.Features.Accounts.Commands.SignUp;
 using OnlineClothes.Application.Features.Accounts.Queries.Activate;
 using OnlineClothes.Application.Features.Accounts.Queries.Recovery;
+using OnlineClothes.Application.Features.Accounts.Queries.ResendActivation;
 
 namespace OnlineClothes.Api.Controllers;
 
@@ -23,12 +24,20 @@ public class AccountsController : ApiV1ControllerBase
 		return ApiResponse(await Mediator.Send(query));
 	}
 
-	[HttpPost("change-password")]
+	[HttpGet("activate")]
 	[AllowAnonymous]
-	public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
+	public async Task<IActionResult> Activate([FromQuery] ActivateQuery query)
 	{
-		return ApiResponse(await Mediator.Send(command));
+		return ApiResponse(await Mediator.Send(query));
 	}
+
+	[HttpGet("resend-activate")]
+	[AllowAnonymous]
+	public async Task<IActionResult> ResendActivate([FromQuery] ResendActivationQuery query)
+	{
+		return ApiResponse(await Mediator.Send(query));
+	}
+
 
 	[HttpPost("sign-up")]
 	[AllowAnonymous]
@@ -45,11 +54,11 @@ public class AccountsController : ApiV1ControllerBase
 		return ApiResponse(await Mediator.Send(command, cancellationToken));
 	}
 
-	[HttpGet("activate")]
+	[HttpPost("change-password")]
 	[AllowAnonymous]
-	public async Task<IActionResult> Activate([FromQuery] ActivateQuery query)
+	public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
 	{
-		return ApiResponse(await Mediator.Send(query));
+		return ApiResponse(await Mediator.Send(command));
 	}
 
 

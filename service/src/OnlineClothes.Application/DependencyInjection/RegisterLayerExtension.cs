@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OnlineClothes.Application.Helpers;
 using OnlineClothes.Application.Middlewares;
 using OnlineClothes.Application.PipelineBehaviors;
 
@@ -19,5 +20,7 @@ public static class RegisterLayerExtension
 
 		services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 		services.AddTransient<ExceptionHandlingMiddleware>();
+
+		services.AddTransient<AccountActivationHelper>();
 	}
 }

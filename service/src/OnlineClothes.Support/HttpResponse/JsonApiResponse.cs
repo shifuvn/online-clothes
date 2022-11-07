@@ -19,13 +19,10 @@ public class JsonApiResponse<TResponse> where TResponse : class
 
 	public int Status { get; set; }
 
-	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 	public string? Message { get; set; }
 
-	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 	public TResponse? Data { get; set; }
 
-	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 	public object? Errors { get; set; }
 
 	[JsonIgnore] public bool IsError => Status is >= 400 and <= 599;
