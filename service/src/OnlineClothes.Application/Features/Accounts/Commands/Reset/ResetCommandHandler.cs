@@ -15,19 +15,19 @@ namespace OnlineClothes.Application.Features.Accounts.Commands.Reset;
 
 internal sealed class ResetCommandHandler : IRequestHandler<ResetCommand, JsonApiResponse<EmptyUnitResponse>>
 {
+	private readonly IAccountRepository _accountRepository;
 	private readonly IAccountTokenCodeRepository _accountTokenCodeRepository;
 	private readonly AppDomainConfiguration _domainConfiguration;
 	private readonly ILogger<ResetCommand> _logger;
 	private readonly IMailingService _mailingService;
-	private readonly IUserAccountRepository _userAccountRepository;
 
 	public ResetCommandHandler(ILogger<ResetCommand> logger,
-		IUserAccountRepository userAccountRepository,
+		IAccountRepository accountRepository,
 		IAccountTokenCodeRepository accountTokenCodeRepository,
 		IOptions<AppDomainConfiguration> appDomainOptions, IMailingService mailingService)
 	{
 		_logger = logger;
-		_userAccountRepository = userAccountRepository;
+		_accountRepository = accountRepository;
 		_accountTokenCodeRepository = accountTokenCodeRepository;
 		_mailingService = mailingService;
 		_domainConfiguration = appDomainOptions.Value;
@@ -36,7 +36,7 @@ internal sealed class ResetCommandHandler : IRequestHandler<ResetCommand, JsonAp
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(ResetCommand request,
 		CancellationToken cancellationToken)
 	{
-		var account = await _userAccountRepository.FindOneAsync(
+		var account = await _accountRepository.FindOneAsync(
 			FilterBuilder<AccountUser>.Where(acc => acc.Email.Equals(request.Email)), cancellationToken);
 
 		NullValueReferenceException.ThrowIfNull(account, nameof(account));

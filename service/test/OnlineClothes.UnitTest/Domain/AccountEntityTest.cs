@@ -94,11 +94,11 @@ public class AccountEntityTest : IClassFixture<AccountEntityTestFixture>
 public class AccountEntityTestFixture : IDisposable
 {
 	public string Email = "test@mail.com";
-	public AccountUserFullName FullName = AccountUserFullName.Create("test acc");
+	public FullNameHelper FullNameHelper = FullNameHelper.Create("test acc");
 	public string Password = "hello123";
 
-	public AccountUser TestClient => AccountUser.Create(Email, Password, FullName, UserAccountRole.Client);
-	public AccountUser TestAdmin => AccountUser.Create(Email, Password, FullName, UserAccountRole.Admin);
+	public AccountUser TestClient => AccountUser.Create(Email, Password, FullNameHelper, UserAccountRole.Client);
+	public AccountUser TestAdmin => AccountUser.Create(Email, Password, FullNameHelper, UserAccountRole.Admin);
 
 
 	public void Dispose()

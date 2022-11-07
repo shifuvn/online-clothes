@@ -9,6 +9,7 @@ using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
 using OnlineClothes.Infrastructure.Services.Mailing.Engine;
 using OnlineClothes.Infrastructure.Services.UserContext;
 using OnlineClothes.Infrastructure.Services.UserContext.Abstracts;
+using OnlineClothes.Infrastructure.StandaloneConfigurations;
 
 namespace OnlineClothes.Infrastructure.DependencyInjection;
 
@@ -16,7 +17,7 @@ public static class RegisterExtension
 {
 	public static void RegisterRepositories(this IServiceCollection services)
 	{
-		services.AddTransient<IUserAccountRepository, UserAccountRepository>();
+		services.AddTransient<IAccountRepository, AccountRepository>();
 		services.AddTransient<IAccountTokenCodeRepository, AccountTokenCodeRepository>();
 	}
 
@@ -30,13 +31,20 @@ public static class RegisterExtension
 		services.AddTransient<IMailingService, MailingService>();
 		services.Configure<MailingProviderConfiguration>(configuration.GetSection("Mailing"));
 		services.AddTransient<RazorEngineRenderer>();
-		services.LoadMailTemplate();
+		services.CacheEmailTemplateInMemory();
 
 		// context
 		services.AddTransient<IUserContext, UserContext>();
+
+		// account activate
+		services.Configure<AccountActivationConfiguration>(configuration.GetSection("AccountActivation"));
 	}
 
-	private static void LoadMailTemplate(this IServiceCollection services)
+	/// <summary>
+	/// Cache raw html email template to memory
+	/// </summary>
+	/// <param name="services"></param>
+	private static void CacheEmailTemplateInMemory(this IServiceCollection services)
 	{
 		var scope = services.BuildServiceProvider().CreateScope();
 		var renderer = scope.ServiceProvider.GetRequiredService<RazorEngineRenderer>();

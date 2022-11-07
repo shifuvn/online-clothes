@@ -10,15 +10,15 @@ namespace OnlineClothes.Application.Features.Accounts.Queries.Activate;
 
 internal sealed class ActivateQueryHandler : IRequestHandler<ActivateQuery, JsonApiResponse<EmptyUnitResponse>>
 {
+	private readonly IAccountRepository _accountRepository;
 	private readonly IAccountTokenCodeRepository _accountTokenCodeRepository;
 	private readonly ILogger<ActivateQueryHandler> _logger;
-	private readonly IUserAccountRepository _userAccountRepository;
 
-	public ActivateQueryHandler(ILogger<ActivateQueryHandler> logger, IUserAccountRepository userAccountRepository,
+	public ActivateQueryHandler(ILogger<ActivateQueryHandler> logger, IAccountRepository accountRepository,
 		IAccountTokenCodeRepository accountTokenCodeRepository)
 	{
 		_logger = logger;
-		_userAccountRepository = userAccountRepository;
+		_accountRepository = accountRepository;
 		_accountTokenCodeRepository = accountTokenCodeRepository;
 	}
 
@@ -35,7 +35,7 @@ internal sealed class ActivateQueryHandler : IRequestHandler<ActivateQuery, Json
 			return JsonApiResponse<EmptyUnitResponse>.Fail();
 		}
 
-		var updateResult = await _userAccountRepository.UpdateOneAsync(
+		var updateResult = await _accountRepository.UpdateOneAsync(
 			FilterBuilder<AccountUser>.Where(acc => acc.Email.Equals(tokenCode.Email)),
 			p => p.Set(acc => acc.IsActivated, true),
 			cancellationToken: cancellationToken);

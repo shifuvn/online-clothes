@@ -12,13 +12,13 @@ internal sealed class
 {
 	private const string ErrorLoginFailMessage = "Email hoặc mật khẩu không chính xác";
 	private const string ErrorAccountNotActivateMessage = "Tài khoảng chưa được kích hoạt";
+	private readonly IAccountRepository _accountRepository;
 
 	private readonly IAuthService _authService;
-	private readonly IUserAccountRepository _userAccountRepository;
 
-	public SignInCommandHandler(IUserAccountRepository userAccountRepository, IAuthService authService)
+	public SignInCommandHandler(IAccountRepository accountRepository, IAuthService authService)
 	{
-		_userAccountRepository = userAccountRepository;
+		_accountRepository = accountRepository;
 		_authService = authService;
 	}
 
@@ -26,7 +26,7 @@ internal sealed class
 		CancellationToken cancellationToken)
 	{
 		var account =
-			await _userAccountRepository.FindOneAsync(
+			await _accountRepository.FindOneAsync(
 				FilterBuilder<AccountUser>.Where(acc => acc.Email.Equals(request.Email)), cancellationToken);
 
 		if (account is null || !account.VerifyPassword(request.Password))

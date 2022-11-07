@@ -1,8 +1,8 @@
 ﻿namespace OnlineClothes.Domain.Entities.Common;
 
-public class AccountUserFullName
+public class FullNameHelper
 {
-	public AccountUserFullName(string firstName, string lastName)
+	public FullNameHelper(string firstName, string lastName)
 	{
 		if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
 		{
@@ -18,12 +18,12 @@ public class AccountUserFullName
 
 	public string FullName => BuildFullName();
 
-	public static AccountUserFullName Create(string firstName, string lastName)
+	public static FullNameHelper Create(string firstName, string lastName)
 	{
-		return new AccountUserFullName(firstName, lastName);
+		return new FullNameHelper(firstName, lastName);
 	}
 
-	public static AccountUserFullName Create(string fullName)
+	public static FullNameHelper Create(string fullName)
 	{
 		var fullNameSpan = fullName.AsSpan();
 		var firstDelimiter = fullNameSpan.IndexOf(' ');
@@ -35,7 +35,7 @@ public class AccountUserFullName
 
 		var nextDelimiter = firstDelimiter + 1;
 
-		return new AccountUserFullName(
+		return new FullNameHelper(
 			fullNameSpan[..firstDelimiter].ToString(),
 			fullNameSpan.Slice(nextDelimiter, fullNameSpan.Length - nextDelimiter).ToString());
 	}
