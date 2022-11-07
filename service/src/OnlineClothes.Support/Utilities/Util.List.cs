@@ -1,6 +1,6 @@
 ﻿namespace OnlineClothes.Support.Utilities;
 
-public static class Util
+public static partial class Util
 {
 	public static class List
 	{
@@ -9,9 +9,9 @@ public static class Util
 			return Array.Empty<T>().ToList();
 		}
 
-		public static bool IsNullOrEmpty<T>(ICollection<T>? target)
+		public static bool IsNullOrEmpty<T>(IEnumerable<T>? target)
 		{
-			return target is null || target.Count == 0;
+			return target is null || !target.Any();
 		}
 	}
 }
