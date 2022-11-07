@@ -1,25 +1,29 @@
 import logo from './logo.svg';
-import './App.css';
+//import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css"
+// import { BrowserRouter, Routes, Route,Router } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import LogSign from "./components/User/LogSign.js";
+
+import Demo from './components/demo';
+//import User from "./components/User"
+//import a from "./a"
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // <BrowserRouter>
+
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/login" element={<LogSign />} />
+          <Route path="/demo" element={<Demo />} />
+        </Routes>
+      </div>
+    </Router>
+
   );
 }
+{/* </BrowserRouter> */ }
 
 export default App;
