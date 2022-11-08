@@ -1,6 +1,6 @@
 ﻿namespace OnlineClothes.Domain.Common;
 
-public enum UserAccountRole
+public enum AccountRole
 {
 	Client,
 	Manager,

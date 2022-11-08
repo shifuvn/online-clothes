@@ -19,7 +19,7 @@
   <ItemGroup>
     <Folder Include="Features\Accounts\Commands\ChangePassword\" />
     <Folder Include="Features\Accounts\Queries\Recovery\" />
-    <Folder Include="Features\Product\Queries\" />
+    <Folder Include="Features\Product\Queries\Detail\" />
     <Folder Include="Features\Profile\Commands\EditInformation\" />
     <Folder Include="Features\Profile\Commands\EditAvatar\" />
     <Folder Include="Features\Profile\Queries\FetchInformation\" />

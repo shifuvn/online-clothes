@@ -21,12 +21,12 @@ public class ProductClothe : RootDocumentBase
 
 	public string Name { get; set; } = null!;
 	public string Description { get; set; } = null!;
-	public HashSet<string> Tags { get; set; } = new();
-	public HashSet<string> Categories { get; set; } = new();
+	public HashSet<string> Tags { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+	public HashSet<string> Categories { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 	public double Price { get; set; }
 	public uint Stock { get; set; }
 
-	public HashSet<string> ImageUrls { get; set; } = new();
+	public List<string> ImageUrls { get; set; } = new();
 
 	public ClotheDetail Detail { get; set; } = new(default);
 
