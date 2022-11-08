@@ -1,4 +1,5 @@
-﻿using OnlineClothes.Support.Utilities;
+﻿using Microsoft.AspNetCore.Http;
+using OnlineClothes.Support.Utilities;
 
 namespace OnlineClothes.Infrastructure.Services.Storage.Models;
 
@@ -11,6 +12,18 @@ public class CloudObjectFile
 		PrefixDirectory = prefixDirectory;
 
 		contentType ??= MimeTypes.GetMimeType(name);
+		ContentType = contentType;
+	}
+
+	public CloudObjectFile(IFormFile file, string prefixDirectory, string? fileName = null, string? contentType = null)
+	{
+		Stream = file.OpenReadStream();
+		PrefixDirectory = prefixDirectory;
+
+		fileName ??= file.FileName;
+		Name = fileName;
+
+		contentType ??= file.ContentType;
 		ContentType = contentType;
 	}
 
