@@ -38,7 +38,7 @@ public class AwsObjectStorage : IObjectFileStorage
 	}
 
 
-	public async Task<string?> UploadAsync(CloudObjectFile @object)
+	public async Task<string> UploadAsync(CloudObjectFile @object, CancellationToken cancellationToken = default)
 	{
 		var putObject = new PutObjectRequest
 		{
@@ -51,10 +51,11 @@ public class AwsObjectStorage : IObjectFileStorage
 
 		return await _asyncRetryPolicy.ExecuteAsync(async () =>
 		{
-			var httpResponse = await _amazonS3.PutObjectAsync(putObject);
+			var httpResponse = await _amazonS3.PutObjectAsync(putObject, cancellationToken);
 			if (httpResponse.HttpStatusCode == HttpStatusCode.OK)
 			{
-				return putObject.Key;
+				_logger.LogInformation("Uploaded [{Key}] to S3", putObject.Key);
+				return _awsS3Configuration.Endpoint + putObject.Key;
 			}
 
 			_logger.LogError("Fail to upload file to bucket with key: {Key}", putObject.Key);
@@ -62,7 +63,7 @@ public class AwsObjectStorage : IObjectFileStorage
 		});
 	}
 
-	public async Task<Stream?> DownloadAsync(string objectIdentifier)
+	public async Task<Stream?> DownloadAsync(string objectIdentifier, CancellationToken cancellationToken = default)
 	{
 		var getObject = new GetObjectRequest
 		{
@@ -72,13 +73,13 @@ public class AwsObjectStorage : IObjectFileStorage
 
 		return await _asyncRetryPolicy.ExecuteAsync(async () =>
 		{
-			var httpResponse = await _amazonS3.GetObjectAsync(getObject);
+			var httpResponse = await _amazonS3.GetObjectAsync(getObject, cancellationToken);
 
 			return httpResponse.HttpStatusCode == HttpStatusCode.OK ? httpResponse.ResponseStream : Stream.Null;
 		});
 	}
 
-	public async Task<bool> DeleteAsync(string objectIdentifier)
+	public async Task<bool> DeleteAsync(string objectIdentifier, CancellationToken cancellationToken = default)
 	{
 		var deleteObject = new DeleteObjectRequest
 		{
@@ -88,12 +89,13 @@ public class AwsObjectStorage : IObjectFileStorage
 
 		return await _asyncRetryPolicy.ExecuteAsync(async () =>
 		{
-			var httpResponse = await _amazonS3.DeleteObjectAsync(deleteObject);
+			var httpResponse = await _amazonS3.DeleteObjectAsync(deleteObject, cancellationToken);
 			return httpResponse.HttpStatusCode == HttpStatusCode.NoContent;
 		});
 	}
 
-	public async Task<bool> DeleteManyAsync(IEnumerable<string> objectIdentifiers)
+	public async Task<bool> DeleteManyAsync(IEnumerable<string> objectIdentifiers,
+		CancellationToken cancellationToken = default)
 	{
 		var deleteObjects = new DeleteObjectsRequest { BucketName = _awsS3Configuration.BucketName };
 
@@ -105,7 +107,7 @@ public class AwsObjectStorage : IObjectFileStorage
 
 		return await _asyncRetryPolicy.ExecuteAsync(async () =>
 		{
-			var httpResponse = await _amazonS3.DeleteObjectsAsync(deleteObjects);
+			var httpResponse = await _amazonS3.DeleteObjectsAsync(deleteObjects, cancellationToken);
 			return httpResponse.HttpStatusCode == HttpStatusCode.NoContent;
 		});
 	}
