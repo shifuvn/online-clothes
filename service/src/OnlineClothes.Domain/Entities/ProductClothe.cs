@@ -22,12 +22,13 @@ public class ProductClothe : RootDocumentBase
 	public string Name { get; set; } = null!;
 	public string Description { get; set; } = null!;
 	public HashSet<string> Tags { get; set; } = new();
+	public HashSet<string> Categories { get; set; } = new();
 	public double Price { get; set; }
 	public uint Stock { get; set; }
 
 	public HashSet<string> ImageUrls { get; set; } = new();
 
-	public ClotheDetail Detail { get; set; } = new();
+	public ClotheDetail Detail { get; set; } = new(default);
 
 	public bool IsValid()
 	{
@@ -56,6 +57,7 @@ public class ProductClothe : RootDocumentBase
 		string description,
 		double price = 0,
 		uint stock = 0,
+		ICollection<string>? categories = null,
 		ICollection<string>? tags = null,
 		ClotheDetail? detail = null)
 	{
@@ -72,6 +74,11 @@ public class ProductClothe : RootDocumentBase
 			product.Tags = tags!.ToHashSet();
 		}
 
+		if (!Util.Array.IsNullOrEmpty(categories))
+		{
+			product.Categories = categories!.ToHashSet();
+		}
+
 		if (detail is not null)
 		{
 			product.Detail = detail;
@@ -83,14 +90,24 @@ public class ProductClothe : RootDocumentBase
 
 	public class ClotheDetail
 	{
-		public ClotheDetail() : this(new HashSet<ClotheSize>(), new List<ClotheMaterial>())
+		public ClotheDetail() : this(default)
 		{
 		}
 
-		public ClotheDetail(IEnumerable<ClotheSize> sizes, IEnumerable<ClotheMaterial> materials)
+		public ClotheDetail(ClotheType type) : this(new HashSet<ClotheSize>(), new List<ClotheMaterial>(), type)
+		{
+		}
+
+		public ClotheDetail(IEnumerable<ClotheSize> sizes, IEnumerable<ClotheMaterial> materials) : this(sizes,
+			materials, default)
+		{
+		}
+
+		public ClotheDetail(IEnumerable<ClotheSize> sizes, IEnumerable<ClotheMaterial> materials, ClotheType type)
 		{
 			Sizes = sizes.ToHashSet();
 			Materials = materials.ToHashSet();
+			Type = type;
 		}
 
 		public HashSet<ClotheSize> Sizes { get; set; }
