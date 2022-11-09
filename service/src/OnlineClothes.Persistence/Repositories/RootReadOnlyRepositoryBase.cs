@@ -190,8 +190,8 @@ public abstract class RootReadOnlyRepositoryBase<T, TKey> : IRootReadOnlyReposit
 
 	public virtual IFindFluent<TDerived, TDerived> FindFluent<TDerived>(
 		IEnumerable<Expression<Func<TDerived, object>>> properties,
-		string regexPattern
-		, string regexOptions = "i",
+		string regexPattern,
+		string regexOptions = "i",
 		FindOptions? options = null) where TDerived : T
 	{
 		var filters = properties.Select(p =>

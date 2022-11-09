@@ -52,7 +52,7 @@ public class AccountEntityTest : IClassFixture<AccountEntityTestFixture>
 		var newAccount = fixture.TestClient;
 
 		// act
-		var hasRole = newAccount.HasRole(UserAccountRole.Client);
+		var hasRole = newAccount.HasRole(AccountRole.Client);
 
 		// assert
 		Assert.True(hasRole);
@@ -97,8 +97,8 @@ public class AccountEntityTestFixture : IDisposable
 	public FullNameHelper FullNameHelper = FullNameHelper.Create("test acc");
 	public string Password = "hello123";
 
-	public AccountUser TestClient => AccountUser.Create(Email, Password, FullNameHelper, UserAccountRole.Client);
-	public AccountUser TestAdmin => AccountUser.Create(Email, Password, FullNameHelper, UserAccountRole.Admin);
+	public AccountUser TestClient => AccountUser.Create(Email, Password, FullNameHelper, AccountRole.Client);
+	public AccountUser TestAdmin => AccountUser.Create(Email, Password, FullNameHelper, AccountRole.Admin);
 
 
 	public void Dispose()

@@ -50,7 +50,9 @@ internal sealed class AuthService : IAuthService
 	{
 		var tokenHandler = new JwtSecurityTokenHandler();
 		if (tokenHandler.ReadToken(jwt) is not JwtSecurityToken)
-			return Util.List.Empty<Claim>();
+		{
+			return Util.Array.EmptyList<Claim>();
+		}
 
 		var symmetricKey = Encoding.UTF8.GetBytes(_authConfiguration.Secret);
 

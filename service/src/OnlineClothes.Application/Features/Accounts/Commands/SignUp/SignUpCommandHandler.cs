@@ -40,7 +40,7 @@ internal sealed class
 		}
 
 		var newAccount = AccountUser.Create(request.Email, request.Password,
-			FullNameHelper.Create(request.FirstName, request.LastName), UserAccountRole.Client);
+			FullNameHelper.Create(request.FirstName, request.LastName), AccountRole.Client);
 
 		var activateResult = await _accountActivationHelper.StartNewAccount(newAccount, cancellationToken);
 

@@ -5,7 +5,7 @@ using OnlineClothes.Application.Features.Profile.Commands.EditAvatar;
 using OnlineClothes.Application.Features.Profile.Commands.EditInformation;
 using OnlineClothes.Application.Features.Profile.Queries.FetchInformation;
 
-namespace OnlineClothes.Api.Controllers;
+namespace OnlineClothes.Api.Controllers.V1;
 
 [Authorize]
 public class ProfilesController : ApiV1ControllerBase

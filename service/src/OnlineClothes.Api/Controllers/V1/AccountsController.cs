@@ -9,7 +9,7 @@ using OnlineClothes.Application.Features.Accounts.Queries.Activate;
 using OnlineClothes.Application.Features.Accounts.Queries.Recovery;
 using OnlineClothes.Application.Features.Accounts.Queries.ResendActivation;
 
-namespace OnlineClothes.Api.Controllers;
+namespace OnlineClothes.Api.Controllers.V1;
 
 public class AccountsController : ApiV1ControllerBase
 {

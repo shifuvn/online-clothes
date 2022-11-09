@@ -32,7 +32,7 @@ public class AccountUser : RootDocumentBase
 	public DateTime LastLogin { get; set; }
 
 	public static AccountUser Create(string email, string rawPassword, FullNameHelper fullNameHelper,
-		UserAccountRole role)
+		AccountRole role)
 	{
 		var hashedPassword = PasswordHasher.Hash(rawPassword);
 
@@ -66,7 +66,7 @@ public class AccountUser : RootDocumentBase
 		return IsActivated;
 	}
 
-	public bool HasRole(UserAccountRole providedRole)
+	public bool HasRole(AccountRole providedRole)
 	{
 		return Role.Equals(providedRole.ToString());
 	}
