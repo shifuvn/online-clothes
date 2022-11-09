@@ -23,6 +23,7 @@ public static class RegisterExtension
 		services.AddTransient<IAccountRepository, AccountRepository>();
 		services.AddTransient<IAccountTokenCodeRepository, AccountTokenCodeRepository>();
 		services.AddTransient<IProductRepository, ProductRepository>();
+		services.AddTransient<ICartRepository, CartRepository>();
 	}
 
 	public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
