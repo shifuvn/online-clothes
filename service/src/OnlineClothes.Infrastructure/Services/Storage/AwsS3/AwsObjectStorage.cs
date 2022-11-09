@@ -38,7 +38,7 @@ public class AwsObjectStorage : IObjectFileStorage
 	}
 
 
-	public async Task<string> UploadAsync(CloudObjectFile @object, CancellationToken cancellationToken = default)
+	public async Task<string> UploadAsync(ObjectFileStorage @object, CancellationToken cancellationToken = default)
 	{
 		var putObject = new PutObjectRequest
 		{

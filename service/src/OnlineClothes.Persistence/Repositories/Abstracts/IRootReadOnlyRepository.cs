@@ -38,6 +38,8 @@ public interface IRootReadOnlyRepository<TEntity, TKey> : IDisposable where TEnt
 	Task<long> CountAsync(CancellationToken cancellationToken = default);
 	Task<long> CountAsync(FilterBuilder<TEntity> filterBuilder, CancellationToken cancellationToken = default);
 	Task<long> CountAsync(FilterDefinition<TEntity> filter, CancellationToken cancellationToken = default);
+	Task<bool> IsExistAsync(string id, CancellationToken cancellationToken = default);
+	Task<bool> IsExistAsync(FilterBuilder<TEntity> filterBuilder, CancellationToken cancellationToken = default);
 
 	#endregion
 

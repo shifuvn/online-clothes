@@ -7,7 +7,7 @@ public static partial class Util
 {
 	public static class Url
 	{
-		private const string RegCharPattern = "(?:[^a-z0-9-./]|(?<=['\"])s)";
+		private const string RegCharPattern = "(?:[^a-z0-9-_./]|(?<=['\"])s)";
 
 		[Pure]
 		public static string RemoveSpecialCharacters(string input)

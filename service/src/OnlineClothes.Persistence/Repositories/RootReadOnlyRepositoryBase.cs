@@ -115,6 +115,19 @@ public abstract class RootReadOnlyRepositoryBase<T, TKey> : IRootReadOnlyReposit
 		return await Collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
 	}
 
+	public virtual async Task<bool> IsExistAsync(string id, CancellationToken cancellationToken = default)
+	{
+		var filter = new BsonDocument("_id", ObjectId.Parse(id));
+
+		return await Collection.Find(filter).AnyAsync(cancellationToken);
+	}
+
+	public virtual async Task<bool> IsExistAsync(FilterBuilder<T> filterBuilder,
+		CancellationToken cancellationToken = default)
+	{
+		return await Collection.Find(filterBuilder.Statement).AnyAsync(cancellationToken);
+	}
+
 	public virtual IFindFluent<T, T> FindFluent(FilterBuilder<T> filterBuilder, FindOptions? options = null)
 	{
 		return Collection.Find(filterBuilder.Statement, options);
