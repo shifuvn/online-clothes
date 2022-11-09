@@ -6,22 +6,22 @@ namespace OnlineClothes.UnitTest.Support;
 public class UtilListTest
 {
 	[Fact]
-	[Trait("Category", "Support_Util.List")]
+	[Trait("Category", "Support_Util.Array")]
 	public void EmptyList_ReturnEmpty()
 	{
-		var emptyList = Util.List.Empty<string>();
+		var emptyList = Util.Array.Empty<string>();
 
 		Assert.NotNull(emptyList);
 		Assert.Empty(emptyList);
 	}
 
 	[Theory]
-	[Trait("Category", "Support_Util.List")]
+	[Trait("Category", "Support_Util.Array")]
 	[MemberData(nameof(ProvidedTestData))]
 	public void Empty_ReturnTrue(IEnumerable<int>? list)
 	{
 		// arrange
-		var check = Util.List.IsNullOrEmpty(list);
+		var check = Util.Array.IsNullOrEmpty(list);
 
 		// act
 
@@ -30,14 +30,14 @@ public class UtilListTest
 	}
 
 	[Fact]
-	[Trait("Category", "Support_Util.List")]
+	[Trait("Category", "Support_Util.Array")]
 	public void Null_ReturnTrue()
 	{
 		// arrange
 		IEnumerable<int>? enumerable = null;
 
 		// act
-		var check = Util.List.IsNullOrEmpty(enumerable);
+		var check = Util.Array.IsNullOrEmpty(enumerable);
 
 		// assert
 		Assert.True(check);

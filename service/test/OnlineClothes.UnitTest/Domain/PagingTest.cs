@@ -10,11 +10,14 @@ public class PagingTest
 	[InlineData(1, 20)]
 	[InlineData(2, 30)]
 	[InlineData(100, 1)]
-	[InlineData(0, 0)]
-	public void PagingRequest_WithUintValue(uint pageIndex, uint pageSize)
+	public void PagingRequest_WithUintValue(int pageIndex, int pageSize)
 	{
 		// arrange
-		var pagingReq = new PagingRequest(pageIndex, pageSize);
+		var pagingReq = new PagingRequest
+		{
+			PageIndex = pageIndex,
+			PageSize = pageSize
+		};
 
 		// act
 
@@ -31,13 +34,17 @@ public class PagingTest
 	public void PagingRequest_WithNegativeValue(int pageIndex, int pageSize)
 	{
 		// arrange
-		var pagingReq = new PagingRequest(pageIndex, pageSize);
+		var pagingReq = new PagingRequest
+		{
+			PageIndex = pageIndex,
+			PageSize = pageSize
+		};
 
 		// act
 
 		// assert
 		Assert.NotNull(pagingReq);
-		Assert.Equal((uint)0, pagingReq.PageIndex);
-		Assert.Equal((uint)0, pagingReq.PageIndex);
+		Assert.Equal(1, pagingReq.PageIndex);
+		Assert.Equal(1, pagingReq.PageSize);
 	}
 }

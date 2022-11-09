@@ -2,7 +2,7 @@
 
 public class PagingModel<T> where T : class
 {
-	public PagingModel(ulong totalCount, IEnumerable<T> items)
+	public PagingModel(long totalCount, IEnumerable<T> items)
 	{
 		Total = totalCount;
 
@@ -11,7 +11,7 @@ public class PagingModel<T> where T : class
 		Items = enumerable;
 	}
 
-	public ulong Total { get; set; }
+	public long Total { get; set; }
 	public uint ItemCount { get; set; }
 	public IEnumerable<T>? Items { get; set; }
 }
