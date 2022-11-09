@@ -48,7 +48,7 @@ public class
 		var filter = new FilterBuilder<ProductClothe>();
 		if (!string.IsNullOrEmpty(request.Q))
 		{
-			filter.And(q => q.Name.Contains(request.Q, StringComparison.OrdinalIgnoreCase));
+			filter.And(q => q.Name.ToLower().Contains(request.Q.ToLower()));
 		}
 
 		if (!string.IsNullOrEmpty(request.Category))
