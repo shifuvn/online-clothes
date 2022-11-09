@@ -37,7 +37,7 @@ public class AddCartItemCommandHandler : IRequestHandler<AddCartItemCommand, Jso
 			new AccountCart
 			{
 				AccountId = _userContext.GetNameIdentifier(),
-				Items = new HashSet<AccountCart.CartItem>()
+				Items = new List<AccountCart.CartItem>()
 			},
 			selector: e => e,
 			cancellationToken: cancellationToken);

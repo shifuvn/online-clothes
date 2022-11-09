@@ -22,7 +22,6 @@
     <Folder Include="Features\Cart\Commands\AddItem\" />
     <Folder Include="Features\Cart\Commands\RemoveItem\" />
     <Folder Include="Features\Cart\Queries\GetInfo\" />
-    <Folder Include="Features\Cart\Queries\GetItemNumber\" />
     <Folder Include="Features\Product\Queries\Detail\" />
     <Folder Include="Features\Profile\Commands\EditInformation\" />
     <Folder Include="Features\Profile\Commands\EditAvatar\" />

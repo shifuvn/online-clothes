@@ -1,13 +1,26 @@
-﻿using OnlineClothes.Domain.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using OnlineClothes.Domain.Attributes;
 
 namespace OnlineClothes.Domain.Entities;
 
 [BsonCollection("carts")]
 public class AccountCart : RootDocumentBase
 {
+	public AccountCart()
+	{
+	}
+
+	public AccountCart(string accountId, List<CartItem> items)
+	{
+		AccountId = accountId;
+		Items = items;
+	}
+
+	[BsonRepresentation(BsonType.ObjectId)]
 	public string AccountId { get; set; }
 
-	public HashSet<CartItem> Items { get; set; } = new();
+	public List<CartItem> Items { get; set; }
 
 	public void AddItem(string productId, int quantity)
 	{
@@ -53,7 +66,17 @@ public class AccountCart : RootDocumentBase
 			Quantity = quantity;
 		}
 
+		public CartItem(string productId, int quantity, ProductClothe detail) : this(productId, quantity)
+		{
+			Detail = detail;
+		}
+
+		[BsonRepresentation(BsonType.ObjectId)]
 		public string ProductId { get; set; }
+
 		public int Quantity { get; set; }
+
+		// used for $lookup
+		public ProductClothe Detail { get; set; }
 	}
 }

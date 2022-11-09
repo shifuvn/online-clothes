@@ -4,6 +4,7 @@ using OnlineClothes.Infrastructure.Repositories.Abstracts;
 using OnlineClothes.Infrastructure.Services.UserContext.Abstracts;
 using OnlineClothes.Persistence.Extensions;
 using OnlineClothes.Support.Builders.Predicate;
+using OnlineClothes.Support.Exceptions;
 using OnlineClothes.Support.HttpResponse;
 
 namespace OnlineClothes.Application.Features.Cart.Commands.RemoveItem;
@@ -22,15 +23,10 @@ public class RemoveCartItemCommandHandler : IRequestHandler<RemoveCartItemComman
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(RemoveCartItemCommand request,
 		CancellationToken cancellationToken)
 	{
-		var cart = await _cartRepository.FindOneOrInsertAsync(
+		var cart = await _cartRepository.FindOneAsync(
 			FilterBuilder<AccountCart>.Where(q => q.AccountId == _userContext.GetNameIdentifier()),
-			new AccountCart
-			{
-				AccountId = _userContext.GetNameIdentifier(),
-				Items = new HashSet<AccountCart.CartItem> { new(request.ProductId, request.Quantity) }
-			},
-			selector: e => e,
 			cancellationToken: cancellationToken);
+		NullValueReferenceException.ThrowIfNull(cart, nameof(cart));
 
 		cart.RemoveItem(request.ProductId, request.Quantity);
 
