@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineClothes.Application.Features.Product.Commands.ImportProducts;
 using OnlineClothes.Application.Features.Product.Commands.NewProduct;
 using OnlineClothes.Application.Features.Product.Commands.UpdateInfo;
+using OnlineClothes.Application.Features.Product.Commands.UploadImage;
 using OnlineClothes.Application.Features.Product.Queries.Detail;
 using OnlineClothes.Application.Features.Product.Queries.Listing;
 using OnlineClothes.Domain.Common;
@@ -60,5 +61,12 @@ public class ProductsController : ApiV1ControllerBase
 			ProductId = productId,
 			Quantity = quantity
 		}));
+	}
+
+	[HttpPut("{productId}/upload-image")]
+	[Authorize(Roles = nameof(AccountRole.Admin))]
+	public async Task<IActionResult> UploadImage(string productId, [FromForm] IFormFile file)
+	{
+		return ApiResponse(await Mediator.Send(new UploadProductImageCommand(productId, file)));
 	}
 }

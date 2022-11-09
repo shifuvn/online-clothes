@@ -32,9 +32,9 @@ internal sealed class EditAvatarCommandHandler : IRequestHandler<EditAvatarComma
 		var account = await _accountRepository.GetOneAsync(_userContext.GetNameIdentifier(), cancellationToken);
 
 
-		var prefixDirectory = CloudObjectFile.CombinePrefixDirectory("avatars");
+		var prefixDirectory = ObjectFileStorage.CombinePrefixDirectory("avatars");
 		var fileName = $"{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}_{request.Avatar.FileName}";
-		var storageObject = new CloudObjectFile(request.Avatar, prefixDirectory, fileName);
+		var storageObject = new ObjectFileStorage(request.Avatar, prefixDirectory, fileName);
 
 		var cloudObjectUrl = await _objectFileStorage.UploadAsync(storageObject, cancellationToken);
 		account.ImageUrl = cloudObjectUrl;

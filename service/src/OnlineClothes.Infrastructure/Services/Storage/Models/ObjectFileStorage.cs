@@ -3,9 +3,9 @@ using OnlineClothes.Support.Utilities;
 
 namespace OnlineClothes.Infrastructure.Services.Storage.Models;
 
-public class CloudObjectFile
+public class ObjectFileStorage
 {
-	public CloudObjectFile(Stream stream, string name, string prefixDirectory, string? contentType = null)
+	public ObjectFileStorage(Stream stream, string name, string prefixDirectory, string? contentType = null)
 	{
 		Stream = stream;
 		Name = name;
@@ -15,7 +15,7 @@ public class CloudObjectFile
 		ContentType = contentType;
 	}
 
-	public CloudObjectFile(IFormFile file, string prefixDirectory, string? fileName = null, string? contentType = null)
+	public ObjectFileStorage(IFormFile file, string prefixDirectory, string? fileName = null, string? contentType = null)
 	{
 		Stream = file.OpenReadStream();
 		PrefixDirectory = prefixDirectory;
