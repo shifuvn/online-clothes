@@ -20,7 +20,7 @@ public class AccountCart : RootDocumentBase
 	[BsonRepresentation(BsonType.ObjectId)]
 	public string AccountId { get; set; }
 
-	public List<CartItem> Items { get; set; }
+	public List<CartItem> Items { get; set; } = new();
 
 	public void AddItem(string productId, int quantity)
 	{

@@ -28,7 +28,7 @@ public class AccountCartTest
 		var cart = new AccountCart
 		{
 			AccountId = "0xabc",
-			Items = new HashSet<AccountCart.CartItem> { new("0x123", 2) }
+			Items = new List<AccountCart.CartItem> { new("0x123", 2) }
 		};
 
 		// act
@@ -51,7 +51,7 @@ public class AccountCartTest
 		var cart = new AccountCart
 		{
 			AccountId = "0xabc",
-			Items = new HashSet<AccountCart.CartItem>
+			Items = new List<AccountCart.CartItem>
 			{
 				new("0x123", 2),
 				new("0x456", 2)
