@@ -1,9 +1,18 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.Contracts;
+using System.Linq.Expressions;
 
 namespace OnlineClothes.Support.Utilities.Extensions;
 
 public static class ExpressionExtension
 {
+	/// <summary>
+	/// Combine 2 expression condition with AND operator
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="main"></param>
+	/// <param name="other"></param>
+	/// <returns></returns>
+	[Pure]
 	public static Expression<Func<T, bool>> And<T>(
 		this Expression<Func<T, bool>> main,
 		Expression<Func<T, bool>> other)
@@ -13,6 +22,14 @@ public static class ExpressionExtension
 		return Expression.Lambda<Func<T, bool>>(Expression.AndAlso(left, right), parameter);
 	}
 
+	/// <summary>
+	/// Combine 2 expression condition with OR operator
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="main"></param>
+	/// <param name="other"></param>
+	/// <returns></returns>
+	[Pure]
 	public static Expression<Func<T, bool>> Or<T>(
 		this Expression<Func<T, bool>> main,
 		Expression<Func<T, bool>> other)

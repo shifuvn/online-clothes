@@ -5,7 +5,7 @@ using OnlineClothes.Support.HttpResponse;
 
 namespace OnlineClothes.Application.Features.Product.Queries.Listing;
 
-public class ListingProductsQuery : PagingRequest,
+public class ListingProductQuery : PagingRequest,
 	IRequest<JsonApiResponse<PagingModel<ListingProductQueryResultModel>>>
 {
 	// search query

@@ -41,14 +41,14 @@ public class FilterBuilder<T>
 
 	public FilterBuilder<T> And(Expression<Func<T, bool>> other)
 	{
-		Statement.And(other);
+		Statement = Statement.And(other);
 
 		return this;
 	}
 
 	public FilterBuilder<T> Or(Expression<Func<T, bool>> other)
 	{
-		Statement.Or(other);
+		Statement = Statement.Or(other);
 		return this;
 	}
 

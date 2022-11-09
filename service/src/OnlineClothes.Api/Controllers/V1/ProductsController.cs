@@ -19,7 +19,7 @@ public class ProductsController : ApiV1ControllerBase
 
 	[HttpGet]
 	[AllowAnonymous]
-	public async Task<IActionResult> Listing([FromQuery] ListingProductsQuery query)
+	public async Task<IActionResult> Listing([FromQuery] ListingProductQuery query)
 	{
 		return ApiResponse(await Mediator.Send(query));
 	}

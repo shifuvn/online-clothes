@@ -12,7 +12,7 @@ using OnlineClothes.Support.HttpResponse;
 namespace OnlineClothes.Application.Features.Product.Queries.Listing;
 
 public class
-	ListingProductQueryHandler : IRequestHandler<ListingProductsQuery,
+	ListingProductQueryHandler : IRequestHandler<ListingProductQuery,
 		JsonApiResponse<PagingModel<ListingProductQueryResultModel>>>
 {
 	private readonly ILogger<ListingProductQueryHandler> _logger;
@@ -24,7 +24,7 @@ public class
 		_logger = logger;
 	}
 
-	public async Task<JsonApiResponse<PagingModel<ListingProductQueryResultModel>>> Handle(ListingProductsQuery request,
+	public async Task<JsonApiResponse<PagingModel<ListingProductQueryResultModel>>> Handle(ListingProductQuery request,
 		CancellationToken cancellationToken)
 	{
 		var filterDef = PrepareSearchQuery(request);
@@ -43,7 +43,7 @@ public class
 		return JsonApiResponse<PagingModel<ListingProductQueryResultModel>>.Success(data: viewModel);
 	}
 
-	private static FilterBuilder<ProductClothe> PrepareSearchQuery(ListingProductsQuery request)
+	private static FilterBuilder<ProductClothe> PrepareSearchQuery(ListingProductQuery request)
 	{
 		var filter = new FilterBuilder<ProductClothe>();
 		if (!string.IsNullOrEmpty(request.Q))
@@ -59,7 +59,7 @@ public class
 		return filter;
 	}
 
-	private static FindOptions<ProductClothe, ProductClothe> PrepareFindOptions(ListingProductsQuery request)
+	private static FindOptions<ProductClothe, ProductClothe> PrepareFindOptions(ListingProductQuery request)
 	{
 		var sortField = request.SortBy;
 		var findOptions = new FindOptions<ProductClothe, ProductClothe>
