@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineClothes.Application.Features.Order.Commands.Checkout;
 using OnlineClothes.Application.Features.Order.Queries.Detail;
+using OnlineClothes.Application.Features.Order.Queries.Listing;
 
 namespace OnlineClothes.Api.Controllers.V1;
 
@@ -12,7 +13,15 @@ public class OrdersController : ApiV1ControllerBase
 	{
 	}
 
+	[HttpGet]
+	[Authorize]
+	public async Task<IActionResult> Listing(CancellationToken cancellationToken = default)
+	{
+		return ApiResponse(await Mediator.Send(new OrderListingQuery(), cancellationToken));
+	}
+
 	[HttpGet("{productId}")]
+	[Authorize]
 	public async Task<IActionResult> Detail(string productId, CancellationToken cancellationToken = default)
 	{
 		return ApiResponse(await Mediator.Send(new OrderDetailQuery(productId), cancellationToken));

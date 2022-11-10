@@ -7,11 +7,13 @@ public class PagingModel<T> where T : class
 		Total = totalCount;
 
 		var enumerable = items as T[] ?? items.ToArray();
-		ItemCount = (uint)enumerable.Length;
+		ItemCount = enumerable.Length;
 		Items = enumerable;
 	}
 
-	public long Total { get; set; }
-	public uint ItemCount { get; set; }
+	private long Total { get; }
+	private int ItemCount { get; }
 	public IEnumerable<T>? Items { get; set; }
+
+	public int Pages => (int)(Total / ItemCount);
 }

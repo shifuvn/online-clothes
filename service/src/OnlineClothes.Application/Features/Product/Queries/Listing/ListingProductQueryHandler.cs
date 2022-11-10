@@ -77,7 +77,7 @@ public class
 		return sort switch
 		{
 			QuerySortOrder.Ascending => 1, // giam dan
-			QuerySortOrder.Descending => -2, // tang dan
+			QuerySortOrder.Descending => -1, // tang dan
 			_ => 1
 		};
 	}
