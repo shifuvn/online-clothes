@@ -40,6 +40,11 @@ public class
 			FilterBuilder<AccountCart>.Where(q => q.AccountId == _userContext.GetNameIdentifier()), cancellationToken);
 		NullValueReferenceException.ThrowIfNull(accountCart, nameof(accountCart));
 
+		if (!accountCart.Items.Any())
+		{
+			return JsonApiResponse<CheckoutOrderCommandViewModel>.Fail("Empty cart");
+		}
+
 		var itemsInCart = accountCart.Items.Select(q => new KeyValuePair<string, int>(q.ProductId, q.Quantity))
 			.ToArray();
 		var itemInCardIds = itemsInCart.Select(x => x.Key).ToHashSet();

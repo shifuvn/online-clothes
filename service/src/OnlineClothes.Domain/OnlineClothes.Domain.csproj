@@ -12,11 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Attributes\" />
-    <Folder Include="Paging\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\OnlineClothes.Support\OnlineClothes.Support.csproj" />
   </ItemGroup>
 
