@@ -45,7 +45,7 @@ public class
 
 	private static FilterBuilder<ProductClothe> PrepareSearchQuery(ListingProductQuery request)
 	{
-		var filter = new FilterBuilder<ProductClothe>();
+		var filter = new FilterBuilder<ProductClothe>(q => !q.IsDeleted);
 		if (!string.IsNullOrEmpty(request.Q))
 		{
 			filter.And(q => q.Name.ToLower().Contains(request.Q.ToLower()));

@@ -30,9 +30,11 @@ public class ProductClothe : RootDocumentBase
 
 	public ClotheDetail Detail { get; set; } = new(default);
 
+	public bool IsDeleted { get; set; }
+
 	public bool IsValid()
 	{
-		return Stock > 0 && Price > 0;
+		return Stock > 0 && Price > 0 && !IsDeleted;
 	}
 
 	public void ChangePrice(double newPrice)

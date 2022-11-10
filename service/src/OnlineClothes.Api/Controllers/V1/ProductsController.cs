@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineClothes.Application.Features.Product.Commands.Delete;
 using OnlineClothes.Application.Features.Product.Commands.ImportProducts;
 using OnlineClothes.Application.Features.Product.Commands.NewProduct;
 using OnlineClothes.Application.Features.Product.Commands.UpdateInfo;
@@ -68,5 +69,12 @@ public class ProductsController : ApiV1ControllerBase
 	public async Task<IActionResult> UploadImage(string productId, [FromForm] IFormFile file)
 	{
 		return ApiResponse(await Mediator.Send(new UploadProductImageCommand(productId, file)));
+	}
+
+	[HttpDelete("{productId}")]
+	[Authorize(Roles = nameof(AccountRole.Admin))]
+	public async Task<IActionResult> Delete(string productId)
+	{
+		return ApiResponse(await Mediator.Send(new DeleteProductCommand(productId)));
 	}
 }
