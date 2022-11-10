@@ -23,8 +23,11 @@
     <Folder Include="Features\Cart\Commands\RemoveItem\" />
     <Folder Include="Features\Cart\Queries\GetInfo\" />
     <Folder Include="Features\Order\Commands\Cancel\" />
-    <Folder Include="Features\Order\Queries\" />
+    <Folder Include="Features\Order\Commands\Export\" />
+    <Folder Include="Features\Order\Queries\Listing\" />
+    <Folder Include="Features\Order\Queries\Detail\" />
     <Folder Include="Features\Product\Commands\Delete\" />
+    <Folder Include="Features\Product\Commands\Restore\" />
     <Folder Include="Features\Product\Commands\UploadImage\" />
     <Folder Include="Features\Product\Queries\Detail\" />
     <Folder Include="Features\Profile\Commands\EditInformation\" />
