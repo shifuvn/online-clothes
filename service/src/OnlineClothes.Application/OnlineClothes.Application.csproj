@@ -22,6 +22,8 @@
     <Folder Include="Features\Cart\Commands\AddItem\" />
     <Folder Include="Features\Cart\Commands\RemoveItem\" />
     <Folder Include="Features\Cart\Queries\GetInfo\" />
+    <Folder Include="Features\Order\Commands\Cancel\" />
+    <Folder Include="Features\Order\Queries\" />
     <Folder Include="Features\Product\Commands\Delete\" />
     <Folder Include="Features\Product\Commands\UploadImage\" />
     <Folder Include="Features\Product\Queries\Detail\" />

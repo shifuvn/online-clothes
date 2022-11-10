@@ -11,7 +11,7 @@ public class ProductClothe : RootDocumentBase
 	{
 	}
 
-	public ProductClothe(string name, string description, double price, uint stock)
+	public ProductClothe(string name, string description, double price, int stock)
 	{
 		Name = name;
 		Description = description;
@@ -24,7 +24,7 @@ public class ProductClothe : RootDocumentBase
 	public HashSet<string> Tags { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 	public HashSet<string> Categories { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 	public double Price { get; set; }
-	public uint Stock { get; set; }
+	public int Stock { get; set; }
 
 	public List<string> ImageUrls { get; set; } = new();
 
@@ -42,12 +42,12 @@ public class ProductClothe : RootDocumentBase
 		Price = newPrice;
 	}
 
-	public void ImportStock(uint count = 1)
+	public void ImportStock(int count = 1)
 	{
 		Stock += count;
 	}
 
-	public void ExportStock(uint count = 1)
+	public void ExportStock(int count = 1)
 	{
 		if (Stock >= count)
 		{
@@ -58,7 +58,7 @@ public class ProductClothe : RootDocumentBase
 	public static ProductClothe Create(string name,
 		string description,
 		double price = 0,
-		uint stock = 0,
+		int stock = 0,
 		ICollection<string>? categories = null,
 		ICollection<string>? tags = null,
 		ClotheDetail? detail = null)

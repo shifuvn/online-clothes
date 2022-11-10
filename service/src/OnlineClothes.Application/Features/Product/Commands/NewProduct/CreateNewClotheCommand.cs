@@ -12,7 +12,7 @@ public class CreateNewClotheCommand : IRequest<JsonApiResponse<EmptyUnitResponse
 	public HashSet<string> Tags { get; init; } = new();
 	public HashSet<string> Categories { get; init; } = new();
 	public double Price { get; init; }
-	public uint Stock { get; init; }
+	public int Stock { get; init; }
 	public HashSet<ClotheSize> Sizes { get; init; } = new();
 	public HashSet<ClotheMaterial> Materials { get; init; } = new();
 	public ClotheType Type { get; set; }

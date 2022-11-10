@@ -6,5 +6,5 @@ namespace OnlineClothes.Infrastructure.Repositories.Abstracts;
 
 public interface ICartRepository : IRootRepository<AccountCart, string>
 {
-	Task<AggregateCartInfoModel> GetItems(CancellationToken cancellationToken = default);
+	Task<AggregateCartInfoModel?> GetItems(CancellationToken cancellationToken = default);
 }

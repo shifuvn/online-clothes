@@ -1,30 +1,76 @@
 ﻿using OnlineClothes.Domain.Attributes;
+using OnlineClothes.Domain.Common;
 
 namespace OnlineClothes.Domain.Entities;
 
 [BsonCollection("orders")]
 public class OrderProduct : RootDocumentBase
 {
-	public OrderProduct(string customerEmail, string customerName, string deliveryAddress, double total,
-		OrderDetail detail)
+	public OrderProduct(string customerId, string customerEmail, string deliveryAddress)
 	{
+		CustomerId = customerId;
 		CustomerEmail = customerEmail;
-		CustomerName = customerName;
 		DeliveryAddress = deliveryAddress;
-		Total = total;
-		Detail = detail;
 	}
 
+	public string CustomerId { get; set; }
 	public string CustomerEmail { get; set; }
-	public string CustomerName { get; set; }
 	public string DeliveryAddress { get; set; }
+
 	public double Total { get; set; }
 
-	public OrderDetail Detail { get; set; }
+	public OrderState State { get; set; }
 
-	public class OrderDetail
+	public List<OrderItem> Items { get; set; } = new();
+
+	public void UpdateState(OrderState newState)
 	{
-		public OrderDetail(string id, uint quantity, double price)
+		switch (newState)
+		{
+			case OrderState.Pending:
+				if (State != OrderState.Canceled)
+				{
+					throw new InvalidOperationException("Order state pipeline");
+				}
+
+				break;
+			case OrderState.Canceled:
+				if (State != OrderState.Pending || State != OrderState.Delivering)
+				{
+					throw new InvalidOperationException("Order state pipeline");
+				}
+
+				break;
+			case OrderState.Success:
+				if (State != OrderState.Delivering)
+				{
+					throw new InvalidOperationException("Order state pipeline");
+				}
+
+				break;
+			case OrderState.Delivering:
+				if (State != OrderState.Pending)
+				{
+					throw new InvalidOperationException("Order state pipeline");
+				}
+
+				break;
+			default:
+				throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+		}
+
+		State = newState;
+	}
+
+	public void Add(OrderItem item)
+	{
+		Items.Add(item);
+		Total += item.Price * item.Quantity;
+	}
+
+	public class OrderItem
+	{
+		public OrderItem(string id, int quantity, double price)
 		{
 			ProductId = id;
 			Quantity = quantity;
@@ -32,7 +78,7 @@ public class OrderProduct : RootDocumentBase
 		}
 
 		public string ProductId { get; set; }
-		public uint Quantity { get; set; }
+		public int Quantity { get; set; }
 		public double Price { get; set; }
 	}
 }

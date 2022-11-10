@@ -55,7 +55,7 @@ public class ProductsController : ApiV1ControllerBase
 
 	[HttpPut("import-stock/{productId}/{quantity}")]
 	[Authorize(Roles = nameof(AccountRole.Admin))]
-	public async Task<IActionResult> ImportStock(string productId, uint quantity)
+	public async Task<IActionResult> ImportStock(string productId, int quantity)
 	{
 		return ApiResponse(await Mediator.Send(new ImportProductStockCommand
 		{

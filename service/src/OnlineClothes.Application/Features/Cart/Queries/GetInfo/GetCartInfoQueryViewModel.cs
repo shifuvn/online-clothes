@@ -4,12 +4,12 @@ namespace OnlineClothes.Application.Features.Cart.Queries.GetInfo;
 
 public class GetCartInfoQueryViewModel
 {
-	public GetCartInfoQueryViewModel(List<Item> items)
+	public GetCartInfoQueryViewModel(List<Item>? items)
 	{
 		Items = items;
 	}
 
-	public List<Item> Items { get; set; }
+	public List<Item>? Items { get; set; }
 
 	public class Item
 	{
