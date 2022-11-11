@@ -13,14 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\MailTemplates\ResetMail.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\MailTemplates\ResetMail.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 

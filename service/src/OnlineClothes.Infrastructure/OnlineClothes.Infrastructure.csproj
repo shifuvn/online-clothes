@@ -9,8 +9,8 @@
   <ItemGroup>
     <ProjectReference Include="..\OnlineClothes.Persistence\OnlineClothes.Persistence.csproj" />
   </ItemGroup>
-
-    <ItemGroup>
+    
+  <ItemGroup>
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.2" />
     <PackageReference Include="AWSSDK.S3" Version="3.7.101.9" />
     <PackageReference Include="MailKit" Version="3.4.2" />
@@ -25,9 +25,5 @@
     <PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
     <PackageReference Include="RazorEngineCore" Version="2022.8.1" />
   </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Services\UserContext\Abstracts\" />
-    </ItemGroup>
 
 </Project>

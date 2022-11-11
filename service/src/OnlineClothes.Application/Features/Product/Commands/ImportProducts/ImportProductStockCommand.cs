@@ -7,7 +7,7 @@ namespace OnlineClothes.Application.Features.Product.Commands.ImportProducts;
 public class ImportProductStockCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 {
 	public string ProductId { get; set; } = null!;
-	public uint Quantity { get; set; }
+	public int Quantity { get; set; }
 }
 
 public class ImportProductsCommandValidation : AbstractValidator<ImportProductStockCommand>

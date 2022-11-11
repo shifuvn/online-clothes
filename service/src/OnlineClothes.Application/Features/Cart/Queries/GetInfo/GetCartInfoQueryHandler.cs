@@ -18,7 +18,7 @@ public class GetCartInfoQueryHandler : IRequestHandler<GetCartInfoQuery, JsonApi
 	{
 		var cartInfo = await _cartRepository.GetItems(cancellationToken);
 
-		var data = cartInfo.Items.Select(GetCartInfoQueryViewModel.Item.Create).ToList();
+		var data = cartInfo?.Items.Select(GetCartInfoQueryViewModel.Item.Create).ToList();
 
 		var viewModel = new GetCartInfoQueryViewModel(data);
 
