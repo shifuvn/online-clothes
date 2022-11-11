@@ -19,7 +19,7 @@ public class CartRepository : RootRepositoryBase<AccountCart, string>, ICartRepo
 		_userContext = userContext;
 	}
 
-	public async Task<AggregateCartInfoModel> GetItems(CancellationToken cancellationToken = default)
+	public async Task<AggregateCartInfoModel?> GetItems(CancellationToken cancellationToken = default)
 	{
 		var lookupStage = new BsonDocument(
 			"$lookup",
@@ -36,7 +36,12 @@ public class CartRepository : RootRepositoryBase<AccountCart, string>, ICartRepo
 			.AppendStage<AggregateLookupCart>(lookupStage)
 			.ToListAsync(cancellationToken);
 
-		var result = data
+		if (!data.Any())
+		{
+			return null;
+		}
+
+		var result = data?
 			.GroupBy(q => q.Id)
 			.Select(q => new AggregateCartInfoModel(
 				q.Key,

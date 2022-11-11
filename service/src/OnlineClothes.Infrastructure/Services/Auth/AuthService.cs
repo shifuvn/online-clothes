@@ -32,7 +32,7 @@ internal sealed class AuthService : IAuthService
 		var tokenDescriptor = new SecurityTokenDescriptor
 		{
 			Subject = new ClaimsIdentity(CreateClaims(account)),
-			Expires = DateTime.Now.Add(TimeSpan.FromMinutes(_authConfiguration.ExpirationInMinutes)),
+			Expires = DateTime.UtcNow.Add(TimeSpan.FromMinutes(_authConfiguration.ExpirationInMinutes)),
 			SigningCredentials = credentials,
 			Issuer = _authConfiguration.Issuer,
 			Audience = _authConfiguration.Audience

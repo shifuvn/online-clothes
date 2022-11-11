@@ -32,10 +32,10 @@ public class JsonApiResponse<TResponse> where TResponse : class
 		return new JsonApiResponse<TResponse>(code ?? 200, message, data);
 	}
 
-	public static JsonApiResponse<TResponse> Fail(string? message = null)
+	public static JsonApiResponse<TResponse> Fail(string? message = null, TResponse? data = null)
 	{
 		message ??= "Cannot find anything!";
-		return new JsonApiResponse<TResponse>(400, message);
+		return new JsonApiResponse<TResponse>(400, message, data);
 	}
 }
 

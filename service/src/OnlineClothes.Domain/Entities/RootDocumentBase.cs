@@ -4,9 +4,9 @@ using OnlineClothes.Support.Entity;
 
 namespace OnlineClothes.Domain.Entities;
 
-public abstract class RootDocumentBase : IEntity<string>, IDateTimeSupportEntity
+public abstract class RootDocumentBase : IEntity<string>
 {
-	public DateTime CreatedAt { get; set; }
+	public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 	public DateTime ModifiedAt { get; set; }
 
 	[BsonId]
