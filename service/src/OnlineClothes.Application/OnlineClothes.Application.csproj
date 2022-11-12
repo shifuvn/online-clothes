@@ -15,4 +15,10 @@
   <ItemGroup>
     <ProjectReference Include="..\OnlineClothes.Infrastructure\OnlineClothes.Infrastructure.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Order\Commands\Delivery\" />
+    <Folder Include="Features\Order\Commands\Cancel\" />
+    <Folder Include="Features\Order\Commands\Success\" />
+  </ItemGroup>
 </Project>

@@ -45,7 +45,7 @@ public class
 		var model = new PagingModel<OrderListingQueryViewModel>(
 			totalCountTask.Result,
 			ordersCursorTask.Result.ToList()
-				.Select(q => new OrderListingQueryViewModel(q.Id, q.CustomerId, q.Total, q.CreatedAt)));
+				.Select(q => new OrderListingQueryViewModel(q.Id, q.CustomerId, q.Total, q.CreatedAt, q.State)));
 
 		return JsonApiResponse<PagingModel<OrderListingQueryViewModel>>.Success(data: model);
 	}

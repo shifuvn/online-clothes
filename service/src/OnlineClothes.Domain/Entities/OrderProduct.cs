@@ -27,27 +27,6 @@ public class OrderProduct : RootDocumentBase
 	{
 		switch (newState)
 		{
-			case OrderState.Pending:
-				if (State != OrderState.Canceled)
-				{
-					throw new InvalidOperationException("Order state pipeline");
-				}
-
-				break;
-			case OrderState.Canceled:
-				if (State != OrderState.Pending || State != OrderState.Delivering)
-				{
-					throw new InvalidOperationException("Order state pipeline");
-				}
-
-				break;
-			case OrderState.Success:
-				if (State != OrderState.Delivering)
-				{
-					throw new InvalidOperationException("Order state pipeline");
-				}
-
-				break;
 			case OrderState.Delivering:
 				if (State != OrderState.Pending)
 				{
@@ -55,6 +34,24 @@ public class OrderProduct : RootDocumentBase
 				}
 
 				break;
+
+			case OrderState.Canceled:
+				if (State != OrderState.Pending || State != OrderState.Delivering)
+				{
+					throw new InvalidOperationException("Order state pipeline");
+				}
+
+				break;
+
+			case OrderState.Success:
+				if (State != OrderState.Delivering)
+				{
+					throw new InvalidOperationException("Order state pipeline");
+				}
+
+				break;
+
+			case OrderState.Pending:
 			default:
 				throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
 		}
