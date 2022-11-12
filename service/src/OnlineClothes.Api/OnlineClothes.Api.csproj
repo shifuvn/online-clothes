@@ -13,6 +13,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\MailTemplates\CheckoutOrderReceiptMail.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\MailTemplates\CheckoutOrderReceiptMail.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
