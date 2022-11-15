@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import LogSign from "./components/User/LogSign.js";
 
-import Demo from './components/demo';
+//import Demo from './components/demo';
 //import User from "./components/User"
 //import a from "./a"
 function App() {
@@ -17,7 +17,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/login" element={<LogSign />} />
-          <Route path="/demo" element={<Demo />} />
+
         </Routes>
       </div>
     </Router>
