@@ -12,9 +12,9 @@
     "OnlineClothes.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7005;http://localhost:5005",
+      "applicationUrl": "https://localhost:5556;http://localhost:5555",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
