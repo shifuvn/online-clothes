@@ -1,11 +1,15 @@
 
 import './App.css';
-import Header from "./components/Layout/Header.js"
+import Header from "./components/Header.js"
 import { BrowserRouter as Router } from "react-router-dom"
-import Slider from './components/Layout/Slider';
+import Slider from './components/Slider';
+import Categories from './components/Categories';
 //import LogSign from './component/layout/LogSign';
 const App = () => {
-  return (<><Header /><Slider /></>);
+  return (<><Header />
+    <Slider />
+    <Categories />
+  </>);
 
 }
 
