@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using OnlineClothes.Application.DependencyInjection;
-using OnlineClothes.Infrastructure.DependencyInjection;
+using OnlineClothes.Application;
+using OnlineClothes.Infrastructure;
 using OnlineClothes.Infrastructure.Services.Auth;
 using OnlineClothes.Persistence.Context;
 
 namespace OnlineClothes.Api.ServiceExtensions;
 
-public static class StartupConfigServicesExtension
+public static class StartupServiceExtensions
 {
 	public const string CorsAnyOrigin = "AnyOrigin";
 

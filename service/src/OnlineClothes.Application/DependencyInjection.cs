@@ -7,9 +7,9 @@ using OnlineClothes.Application.Helpers;
 using OnlineClothes.Application.Middlewares;
 using OnlineClothes.Application.PipelineBehaviors;
 
-namespace OnlineClothes.Application.DependencyInjection;
+namespace OnlineClothes.Application;
 
-public static class RegisterLayerExtension
+public static class DependencyInjection
 {
 	public static void RegisterApplicationLayer(this IServiceCollection services,
 		IConfiguration configuration,

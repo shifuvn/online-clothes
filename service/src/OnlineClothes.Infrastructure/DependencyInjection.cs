@@ -1,4 +1,5 @@
-﻿using Amazon.S3;
+﻿using System.Reflection;
+using Amazon.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineClothes.Infrastructure.Repositories;
@@ -14,10 +15,20 @@ using OnlineClothes.Infrastructure.Services.UserContext;
 using OnlineClothes.Infrastructure.Services.UserContext.Abstracts;
 using OnlineClothes.Infrastructure.StandaloneConfigurations;
 
-namespace OnlineClothes.Infrastructure.DependencyInjection;
+namespace OnlineClothes.Infrastructure;
 
-public static class RegisterExtension
+public static class DependencyInjection
 {
+	public static void RegisterInfrastructureLayer(this IServiceCollection services,
+		IConfiguration configuration,
+		Assembly? assembly = null)
+	{
+		services.RegisterRepositories();
+		services.RegisterServices(configuration);
+
+		services.Configure<AppDomainConfiguration>(configuration.GetSection("AppDomain"));
+	}
+
 	public static void RegisterRepositories(this IServiceCollection services)
 	{
 		services.AddTransient<IAccountRepository, AccountRepository>();
@@ -52,7 +63,7 @@ public static class RegisterExtension
 	}
 
 	/// <summary>
-	/// Cache raw html email template to memory
+	///     Cache raw html email template to memory
 	/// </summary>
 	/// <param name="services"></param>
 	private static void CacheEmailTemplateInMemory(this IServiceCollection services)
