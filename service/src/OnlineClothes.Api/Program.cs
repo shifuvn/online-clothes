@@ -31,7 +31,7 @@ if (app.Environment.IsDevelopment())
 	});
 }
 
-app.UseCors(StartupConfigServicesExtension.CorsAnyOrigin);
+app.UseCors(StartupServiceExtensions.CorsAnyOrigin);
 app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
