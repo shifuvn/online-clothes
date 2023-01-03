@@ -1,5 +1,5 @@
 ﻿using MongoDB.Driver;
-using OnlineClothes.Domain.Entities;
+using OnlineClothes.Domain.Entities.Aggregate;
 
 namespace OnlineClothes.Persistence.Context.Indexing;
 

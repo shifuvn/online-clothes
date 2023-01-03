@@ -19,7 +19,7 @@ public class UpdateProductCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 		public HashSet<string> Tags { get; set; } = new();
 		public HashSet<string> Categories { get; init; } = new();
 
-		public HashSet<ClotheSize> Sizes { get; init; } = new();
+		public HashSet<ClotheSizeType> Sizes { get; init; } = new();
 		public HashSet<ClotheMaterial> Materials { get; init; } = new();
 	}
 }

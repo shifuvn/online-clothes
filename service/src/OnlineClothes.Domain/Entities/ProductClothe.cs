@@ -96,24 +96,27 @@ public class ProductClothe : RootDocumentBase
 		{
 		}
 
-		public ClotheDetail(ClotheType type) : this(new HashSet<ClotheSize>(), new List<ClotheMaterial>(), type)
+		public ClotheDetail(ClotheType type) : this(new HashSet<ClotheSizeType>(), new List<ClotheMaterialType>(), type)
 		{
 		}
 
-		public ClotheDetail(IEnumerable<ClotheSize> sizes, IEnumerable<ClotheMaterial> materials) : this(sizes,
+		public ClotheDetail(IEnumerable<ClotheSizeType> sizes, IEnumerable<ClotheMaterialType> materials) : this(sizes,
 			materials, default)
 		{
 		}
 
-		public ClotheDetail(IEnumerable<ClotheSize> sizes, IEnumerable<ClotheMaterial> materials, ClotheType type)
+		public ClotheDetail(IEnumerable<ClotheSizeType> sizes, IEnumerable<ClotheMaterialType> materials,
+			ClotheType type)
 		{
 			Sizes = sizes.ToHashSet();
 			Materials = materials.ToHashSet();
 			Type = type;
 		}
 
-		public HashSet<ClotheSize> Sizes { get; set; }
-		public HashSet<ClotheMaterial> Materials { get; set; }
+		public HashSet<ClotheSizeType> Sizes { get; set; }
+
+		public HashSet<ClotheMaterialType> Materials { get; set; }
+
 		public ClotheType Type { get; set; }
 	}
 }

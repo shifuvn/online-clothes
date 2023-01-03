@@ -24,7 +24,7 @@ public class EditInformationCommandHandler : IRequestHandler<EditInformationComm
 		var account = await _accountRepository.GetOneAsync(_userContext.GetNameIdentifier(), cancellationToken);
 
 		var updatedResult = await _accountRepository.UpdateOneAsync(
-			account.Id,
+			account.Id.ToString(),
 			update => update.Set(p => p.FirstName, request.FirstName.Trim())
 				.Set(p => p.LastName, request.LastName.Trim()),
 			cancellationToken: cancellationToken);

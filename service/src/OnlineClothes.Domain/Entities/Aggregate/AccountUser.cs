@@ -1,11 +1,9 @@
-﻿using OnlineClothes.Domain.Attributes;
-using OnlineClothes.Domain.Common;
-using OnlineClothes.Domain.Entities.Common;
+﻿using OnlineClothes.Domain.Common;
+using OnlineClothes.Support.Entity;
 
-namespace OnlineClothes.Domain.Entities;
+namespace OnlineClothes.Domain.Entities.Aggregate;
 
-[BsonCollection("accountUsers")]
-public class AccountUser : RootDocumentBase
+public class AccountUser : EntityBase
 {
 	public AccountUser()
 	{
@@ -27,16 +25,30 @@ public class AccountUser : RootDocumentBase
 	public string LastName { get; set; } = null!;
 	public string HashedPassword { get; set; } = null!;
 	public string Role { get; set; } = null!;
+	public string? PhoneNumber { get; set; }
+	public string? Address { get; set; }
+
 	public string ImageUrl { get; set; } = null!;
 	public bool IsActivated { get; set; }
 	public DateTime LastLogin { get; set; }
 
-	public static AccountUser Create(string email, string rawPassword, FullNameHelper fullNameHelper,
-		AccountRole role)
+	/// <summary>
+	/// Create basic account.
+	/// Default will create Client account
+	/// </summary>
+	/// <param name="email"></param>
+	/// <param name="providePassword"></param>
+	/// <param name="fullname"></param>
+	/// <param name="role"></param>
+	/// <returns></returns>
+	public static AccountUser Create(string email,
+		string providePassword,
+		Fullname fullname,
+		AccountRole role = AccountRole.Client)
 	{
-		var hashedPassword = PasswordHasher.Hash(rawPassword);
+		var hashedPassword = PasswordHasher.Hash(providePassword);
 
-		return new AccountUser(email, hashedPassword, fullNameHelper.FirstName, fullNameHelper.LastName,
+		return new AccountUser(email, hashedPassword, fullname.FirstName, fullname.LastName,
 			role.ToString());
 	}
 

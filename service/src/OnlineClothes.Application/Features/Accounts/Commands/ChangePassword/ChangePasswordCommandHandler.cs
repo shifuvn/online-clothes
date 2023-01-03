@@ -36,7 +36,7 @@ internal sealed class
 
 		var newHashPassword = PasswordHasher.Hash(request.NewPassword);
 
-		var updatedResult = await _accountRepository.UpdateOneAsync(account.Id,
+		var updatedResult = await _accountRepository.UpdateOneAsync(account.Id.ToString(),
 			p => p.Set(acc => acc.HashedPassword, newHashPassword),
 			cancellationToken: cancellationToken);
 

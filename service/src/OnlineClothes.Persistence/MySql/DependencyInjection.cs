@@ -14,7 +14,11 @@ public static class DependencyInjection
 		{
 			var connectionString = configuration.GetConnectionString("AppContext");
 			options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 31)),
-				mySqlOption => mySqlOption.MigrationsAssembly("OnlineClothes.Persistence"));
+				mySqlOption =>
+				{
+					mySqlOption.MigrationsAssembly("OnlineClothes.Persistence");
+					mySqlOption.EnableRetryOnFailure();
+				});
 		});
 
 		return services;

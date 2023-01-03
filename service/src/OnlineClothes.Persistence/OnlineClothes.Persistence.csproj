@@ -17,8 +17,4 @@
     <ProjectReference Include="..\OnlineClothes.Domain\OnlineClothes.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="MySql\Context\" />
-  </ItemGroup>
-
 </Project>

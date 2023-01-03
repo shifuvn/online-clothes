@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using OnlineClothes.Domain.Common;
-using OnlineClothes.Domain.Entities;
+using OnlineClothes.Domain.Entities.Aggregate;
 using OnlineClothes.Infrastructure.Repositories.Abstracts;
 using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
 using OnlineClothes.Persistence.Extensions;

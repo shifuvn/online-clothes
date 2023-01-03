@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using OnlineClothes.Domain.Entities;
+using OnlineClothes.Domain.Entities.Aggregate;
 
 namespace OnlineClothes.Infrastructure.Services.Auth.Abstracts;
 

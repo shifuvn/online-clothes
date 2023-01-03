@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using OnlineClothes.Domain.Entities;
+using OnlineClothes.Domain.Entities.Aggregate;
 using OnlineClothes.Support.Entity;
 
 namespace OnlineClothes.Persistence.MySql.Context;
@@ -54,4 +56,18 @@ public class AppDbContext : DbContext
 
 		return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
 	}
+
+	#region Dbset
+
+	public DbSet<AccountUser> AccountUsers { get; set; } = null!;
+	public DbSet<AccountTokenCode> AccountTokens { get; set; } = null!;
+	public DbSet<AccountCart> AccountCarts { get; set; } = null!;
+	public DbSet<CartItem> CartItems { get; set; } = null!;
+	public DbSet<ClotheMaterialType> ClotheMaterialTypes { get; set; }
+	public DbSet<ProductInMaterial> ProductInMaterials { get; set; }
+	public DbSet<ClotheCategory> ClotheCategories { get; set; }
+	public DbSet<ProductInCategory> ProductInCategories { get; set; }
+	public DbSet<ClotheBrand> ClotheBrands { get; set; }
+
+	#endregion
 }

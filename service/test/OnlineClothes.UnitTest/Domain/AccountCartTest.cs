@@ -1,4 +1,5 @@
 ﻿using OnlineClothes.Domain.Entities;
+using OnlineClothes.Domain.Entities.Aggregate;
 
 namespace OnlineClothes.UnitTest.Domain;
 
@@ -13,7 +14,7 @@ public class AccountCartTest
 		var cart = new AccountCart();
 
 		// act
-		cart.AddItem("0x123", 2);
+		cart.IncreaseItem(1, 2);
 
 		// assert
 		Assert.NotNull(cart);
@@ -27,13 +28,13 @@ public class AccountCartTest
 		// arrange
 		var cart = new AccountCart
 		{
-			AccountId = "0xabc",
-			Items = new List<AccountCart.CartItem> { new("0x123", 2) }
+			AccountId = 1,
+			Items = new List<CartItem> { new(1, 2) }
 		};
 
 		// act
-		cart.AddItem("0x456", 2);
-		cart.AddItem("0x123", 4);
+		cart.IncreaseItem(2, 2);
+		cart.IncreaseItem(1, 4);
 
 		var item1 = cart.Items.First();
 
@@ -50,17 +51,17 @@ public class AccountCartTest
 		// arrange
 		var cart = new AccountCart
 		{
-			AccountId = "0xabc",
-			Items = new List<AccountCart.CartItem>
+			AccountId = 1,
+			Items = new List<CartItem>
 			{
-				new("0x123", 2),
-				new("0x456", 2)
+				new(1, 2),
+				new(2, 2)
 			}
 		};
 
 		// act
-		cart.RemoveItem("0x123", 6);
-		cart.RemoveItem("0x456", 2);
+		cart.DecreaseItem(1, 6);
+		cart.DecreaseItem(2, 2);
 
 		// assert
 		Assert.NotNull(cart);

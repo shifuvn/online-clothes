@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using OnlineClothes.Domain.Entities;
+using OnlineClothes.Domain.Entities.Aggregate;
 using OnlineClothes.Infrastructure.Repositories.Abstracts;
 using OnlineClothes.Infrastructure.Services.Auth.Abstracts;
 using OnlineClothes.Support.Builders.Predicate;

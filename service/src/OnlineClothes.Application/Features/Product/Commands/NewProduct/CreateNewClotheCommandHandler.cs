@@ -1,9 +1,6 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using OnlineClothes.Domain.Entities;
 using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Support.Exceptions.HttpExceptionCodes;
 using OnlineClothes.Support.HttpResponse;
 
 namespace OnlineClothes.Application.Features.Product.Commands.NewProduct;
@@ -24,24 +21,26 @@ public sealed class
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(CreateNewClotheCommand request,
 		CancellationToken cancellationToken)
 	{
-		var newProduct = ProductClothe.Create(
-			request.Name,
-			request.Description,
-			request.Price,
-			request.Stock,
-			request.Categories,
-			request.Tags,
-			new ProductClothe.ClotheDetail(request.Sizes, request.Materials, request.Type));
+		//var newProduct = ProductClothe.Create(
+		//	request.Name,
+		//	request.Description,
+		//	request.Price,
+		//	request.Stock,
+		//	request.Categories,
+		//	request.Tags,
+		//	new ProductClothe.ClotheDetail(request.Sizes, request.Materials, request.Type));
 
-		try
-		{
-			await _productRepository.InsertAsync(newProduct, cancellationToken);
-			return JsonApiResponse<EmptyUnitResponse>.Success(StatusCodes.Status201Created, "Thêm sản phẩm thành công");
-		}
-		catch (Exception e)
-		{
-			_logger.LogCritical(e, "Fail to create new product");
-			throw new InternalServerErrorException(e.Message);
-		}
+		//try
+		//{
+		//	await _productRepository.InsertAsync(newProduct, cancellationToken);
+		//	return JsonApiResponse<EmptyUnitResponse>.Success(StatusCodes.Status201Created, "Thêm sản phẩm thành công");
+		//}
+		//catch (Exception e)
+		//{
+		//	_logger.LogCritical(e, "Fail to create new product");
+		//	throw new InternalServerErrorException(e.Message);
+		//}
+
+		throw new NotImplementedException();
 	}
 }

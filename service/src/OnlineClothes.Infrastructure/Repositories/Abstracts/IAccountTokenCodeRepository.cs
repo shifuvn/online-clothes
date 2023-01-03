@@ -1,8 +1,8 @@
-﻿using OnlineClothes.Domain.Entities;
+﻿using OnlineClothes.Domain.Entities.Aggregate;
 using OnlineClothes.Persistence.Repositories.Abstracts;
 
 namespace OnlineClothes.Infrastructure.Repositories.Abstracts;
 
-public interface IAccountTokenCodeRepository : IRootRepository<AccountTokenCode, string>
+public interface IAccountTokenCodeRepository : IRootRepository<AccountTokenCode, int>
 {
 }

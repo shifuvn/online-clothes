@@ -1,15 +1,13 @@
 ﻿using System.Text;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
 using OnlineClothes.Domain.Entities;
+using OnlineClothes.Domain.Entities.Aggregate;
 using OnlineClothes.Infrastructure.Repositories.Abstracts;
 using OnlineClothes.Infrastructure.Services.Mailing;
 using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
 using OnlineClothes.Infrastructure.Services.Mailing.Models;
 using OnlineClothes.Infrastructure.Services.UserContext.Abstracts;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.Exceptions;
 using OnlineClothes.Support.HttpResponse;
 
 namespace OnlineClothes.Application.Features.Order.Commands.Checkout;
@@ -46,46 +44,48 @@ public class
 	public async Task<JsonApiResponse<CheckoutOrderCommandViewModel>> Handle(CheckoutOrderCommand request,
 		CancellationToken cancellationToken)
 	{
-		var accountCart = await _cartRepository.FindOneAsync(
-			FilterBuilder<AccountCart>.Where(q => q.AccountId == _userContext.GetNameIdentifier()), cancellationToken);
-		NullValueReferenceException.ThrowIfNull(accountCart, nameof(accountCart));
+		//var accountCart = await _cartRepository.FindOneAsync(
+		//	FilterBuilder<AccountCart>.Where(q => q.AccountId == _userContext.GetNameIdentifier()), cancellationToken);
+		//NullValueReferenceException.ThrowIfNull(accountCart, nameof(accountCart));
 
-		if (!accountCart.Items.Any())
-		{
-			return JsonApiResponse<CheckoutOrderCommandViewModel>.Fail("Empty cart");
-		}
+		//if (!accountCart.Items.Any())
+		//{
+		//	return JsonApiResponse<CheckoutOrderCommandViewModel>.Fail("Empty cart");
+		//}
 
-		var itemsInCart = accountCart.Items.Select(q => new KeyValuePair<string, int>(q.ProductId, q.Quantity))
-			.ToArray();
-		var itemInCardIds = itemsInCart.Select(x => x.Key).ToHashSet();
+		//var itemsInCart = accountCart.Items.Select(q => new KeyValuePair<string, int>(q.ProductId, q.Quantity))
+		//	.ToArray();
+		//var itemInCardIds = itemsInCart.Select(x => x.Key).ToHashSet();
 
-		var productsFromCart = (await _productRepository.FindAsync(
-				FilterBuilder<ProductClothe>.Where(q => itemInCardIds.Contains(q.Id)),
-				cancellationToken: cancellationToken))
-			.ToList()
-			.ToDictionary(q => q.Id);
+		//var productsFromCart = (await _productRepository.FindAsync(
+		//		FilterBuilder<ProductClothe>.Where(q => itemInCardIds.Contains(q.Id)),
+		//		cancellationToken: cancellationToken))
+		//	.ToList()
+		//	.ToDictionary(q => q.Id);
 
-		foreach (var (key, value) in itemsInCart)
-		{
-			if (value > productsFromCart[key].Stock)
-			{
-				return JsonApiResponse<CheckoutOrderCommandViewModel>.Fail(data: new CheckoutOrderCommandViewModel(key),
-					message: $"Sản phẩm {productsFromCart[key].Name} không đủ");
-			}
-		}
+		//foreach (var (key, value) in itemsInCart)
+		//{
+		//	if (value > productsFromCart[key].Stock)
+		//	{
+		//		return JsonApiResponse<CheckoutOrderCommandViewModel>.Fail(data: new CheckoutOrderCommandViewModel(key),
+		//			message: $"Sản phẩm {productsFromCart[key].Name} không đủ");
+		//	}
+		//}
 
-		var account = await _accountRepository.GetOneAsync(_userContext.GetNameIdentifier(), cancellationToken);
-		var order = new OrderProduct(account.Id, account.Email, request.Address);
-		foreach (var (key, value) in itemsInCart)
-		{
-			order.Add(new OrderProduct.OrderItem(key, value, productsFromCart[key].Price));
-		}
+		//var account = await _accountRepository.GetOneAsync(_userContext.GetNameIdentifier(), cancellationToken);
+		//var order = new OrderProduct(account.Id.ToString(), account.Email, request.Address);
+		//foreach (var (key, value) in itemsInCart)
+		//{
+		//	order.Add(new OrderProduct.OrderItem(key, value, productsFromCart[key].Price));
+		//}
 
-		await Task.WhenAll(ClearCartAsync(accountCart, cancellationToken),
-			CreateOrderTransactionAsync(order, cancellationToken),
-			SendReceiptMail(itemsInCart, productsFromCart, order));
+		//await Task.WhenAll(ClearCartAsync(accountCart, cancellationToken),
+		//	CreateOrderTransactionAsync(order, cancellationToken),
+		//	SendReceiptMail(itemsInCart, productsFromCart, order));
 
-		return JsonApiResponse<CheckoutOrderCommandViewModel>.Success();
+		//return JsonApiResponse<CheckoutOrderCommandViewModel>.Success();
+
+		throw new NotImplementedException();
 	}
 
 	private async Task CreateOrderTransactionAsync(OrderProduct order, CancellationToken cancellationToken = default)
@@ -96,10 +96,10 @@ public class
 
 	private async Task ClearCartAsync(AccountCart cart, CancellationToken cancellationToken = default)
 	{
-		cart.Items.Clear();
-		await _cartRepository.UpdateOneAsync(
-			cart.Id,
-			update => update.Set(q => q.Items, cart.Items), cancellationToken: cancellationToken);
+		//cart.Items.Clear();
+		//await _cartRepository.UpdateOneAsync(
+		//	cart.Id,
+		//	update => update.Set(q => q.Items, cart.Items), cancellationToken: cancellationToken);
 	}
 
 	private async Task SendReceiptMail(ICollection<KeyValuePair<string, int>> itemsInCart,

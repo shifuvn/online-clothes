@@ -40,7 +40,7 @@ internal sealed class EditAvatarCommandHandler : IRequestHandler<EditAvatarComma
 		account.ImageUrl = cloudObjectUrl;
 
 		var updatedResult = await _accountRepository.UpdateOneAsync(
-			account.Id,
+			account.Id.ToString(),
 			update => update.Set(acc => acc.ImageUrl, account.ImageUrl),
 			cancellationToken: cancellationToken);
 

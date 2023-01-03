@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using OnlineClothes.Domain.Entities;
+using OnlineClothes.Domain.Entities.Aggregate;
 using OnlineClothes.Infrastructure.Repositories.Abstracts;
 using OnlineClothes.Support.Builders.Predicate;
 using OnlineClothes.Support.Exceptions;
@@ -42,7 +42,7 @@ internal sealed class ActivateQueryHandler : IRequestHandler<ActivateQuery, Json
 
 		if (updateResult.IsAcknowledged && updateResult.IsModifiedCountAvailable)
 		{
-			await _accountTokenCodeRepository.DeleteOneAsync(tokenCode.Id, cancellationToken);
+			await _accountTokenCodeRepository.DeleteOneAsync(tokenCode.Id.ToString(), cancellationToken);
 			_logger.LogInformation("Account {Email} is activated", tokenCode.Email);
 		}
 

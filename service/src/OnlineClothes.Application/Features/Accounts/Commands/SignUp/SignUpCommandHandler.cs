@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using OnlineClothes.Application.Helpers;
 using OnlineClothes.Domain.Common;
-using OnlineClothes.Domain.Entities;
-using OnlineClothes.Domain.Entities.Common;
+using OnlineClothes.Domain.Entities.Aggregate;
 using OnlineClothes.Infrastructure.Repositories.Abstracts;
 using OnlineClothes.Support.Builders.Predicate;
 using OnlineClothes.Support.HttpResponse;
@@ -40,7 +39,7 @@ internal sealed class
 		}
 
 		var newAccount = AccountUser.Create(request.Email, request.Password,
-			FullNameHelper.Create(request.FirstName, request.LastName), AccountRole.Client);
+			Fullname.Create(request.FirstName, request.LastName));
 
 		var activateResult = await _accountActivationHelper.StartNewAccount(newAccount, cancellationToken);
 

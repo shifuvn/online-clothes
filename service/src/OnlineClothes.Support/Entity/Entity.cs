@@ -3,17 +3,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineClothes.Support.Entity;
 
-public abstract class EntityBase : EntityDatetimeBase, IEntity
+public abstract class EntityBase : EntityBase<int>
+{
+}
+
+public abstract class EntityBase<TKey> : EntityDatetimeBase, IEntity<TKey>
 {
 	[Key]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	[Required]
-	public int Id { get; } = default;
+	public TKey Id { get; set; } = default!;
 }
 
-public interface IEntity<out TKey> : IEntityDatetimeSupport
+public interface IEntity<TKey> : IEntityDatetimeSupport
 {
-	TKey Id { get; }
+	TKey Id { get; set; }
 }
 
 public interface IEntity : IEntity<int>

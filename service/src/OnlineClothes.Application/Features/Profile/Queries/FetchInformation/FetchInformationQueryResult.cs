@@ -1,5 +1,5 @@
-﻿using OnlineClothes.Domain.Entities;
-using OnlineClothes.Domain.Entities.Common;
+﻿using OnlineClothes.Domain.Common;
+using OnlineClothes.Domain.Entities.Aggregate;
 
 namespace OnlineClothes.Application.Features.Profile.Queries.FetchInformation;
 
@@ -19,7 +19,7 @@ public class FetchInformationQueryResult
 			Email = accountUser.Email,
 			FirstName = accountUser.FirstName,
 			LastName = accountUser.LastName,
-			FullName = FullNameHelper.Create(accountUser.FirstName, accountUser.LastName).FullName,
+			FullName = Fullname.Create(accountUser.FirstName, accountUser.LastName).FullName,
 			ImageUrl = accountUser.ImageUrl,
 			LastLogin = accountUser.LastLogin
 		};

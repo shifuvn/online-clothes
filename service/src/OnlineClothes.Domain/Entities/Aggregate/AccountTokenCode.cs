@@ -1,11 +1,14 @@
-﻿using OnlineClothes.Domain.Attributes;
+﻿using OnlineClothes.Support.Entity;
 
-namespace OnlineClothes.Domain.Entities;
+namespace OnlineClothes.Domain.Entities.Aggregate;
 
-[BsonCollection("accountTokenCodes")]
-public class AccountTokenCode : RootDocumentBase
+public class AccountTokenCode : EntityBase
 {
-	public AccountTokenCode(string email, AccountTokenType type, TimeSpan lifeTimeSpan)
+	public AccountTokenCode()
+	{
+	}
+
+	public AccountTokenCode(string email, AccountTokenType type, TimeSpan lifeTimeSpan) : this()
 	{
 		Email = email;
 		TokenType = type;
@@ -14,8 +17,8 @@ public class AccountTokenCode : RootDocumentBase
 	}
 
 	public AccountTokenType TokenType { get; set; }
-	public string Email { get; set; }
-	public string TokenCode { get; set; }
+	public string Email { get; set; } = null!;
+	public string TokenCode { get; set; } = null!;
 	public ulong ExpiredAtStamp { get; set; }
 
 	public bool IsValid()

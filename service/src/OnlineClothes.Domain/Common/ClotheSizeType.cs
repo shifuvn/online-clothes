@@ -1,6 +1,6 @@
 ﻿namespace OnlineClothes.Domain.Common;
 
-public enum ClotheSize
+public enum ClotheSizeType
 {
 	S,
 	M,

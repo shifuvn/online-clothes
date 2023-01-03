@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using OnlineClothes.Domain.Entities;
+using OnlineClothes.Domain.Entities.Aggregate;
 using OnlineClothes.Infrastructure.Services.Auth.Abstracts;
 using OnlineClothes.Support.Utilities;
 
@@ -76,7 +76,7 @@ internal sealed class AuthService : IAuthService
 
 		return new List<Claim>
 		{
-			new(ClaimTypes.NameIdentifier, account.Id),
+			new(ClaimTypes.NameIdentifier, account.Id.ToString()),
 			new(ClaimTypes.Email, account.Email),
 			new(ClaimTypes.Role, account.Role)
 		};

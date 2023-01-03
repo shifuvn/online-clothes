@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using OnlineClothes.Domain.Entities;
+using OnlineClothes.Domain.Entities.Aggregate;
 using OnlineClothes.Infrastructure.Repositories.Abstracts;
 using OnlineClothes.Infrastructure.Services.Mailing;
 using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
@@ -38,7 +38,7 @@ public class AccountActivationHelper
 
 			// update activated status
 			await _accountRepository.UpdateOneAsync(
-				account.Id,
+				account.Id.ToString(),
 				update => update.Set(acc => acc.IsActivated, account.IsActivated),
 				cancellationToken: cancellationToken);
 
