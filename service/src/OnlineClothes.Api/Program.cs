@@ -1,16 +1,16 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using OnlineClothes.Api.ServiceExtensions;
+using Newtonsoft.Json;
+using OnlineClothes.Api.Extensions;
 using OnlineClothes.Application.Middlewares;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers()
-	.AddJsonOptions(options =>
+	.AddNewtonsoftJson(mvcNewtonsoftJsonOptions =>
 	{
-		options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-		options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+		mvcNewtonsoftJsonOptions.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+		mvcNewtonsoftJsonOptions.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
 	});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -24,14 +24,15 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
-	app.UseSwaggerUI(c =>
+	app.UseSwaggerUI(swaggerUiOptions =>
 	{
-		c.DisplayOperationId();
-		c.DisplayRequestDuration();
+		swaggerUiOptions.DisplayOperationId();
+		swaggerUiOptions.DisplayRequestDuration();
+		swaggerUiOptions.DocExpansion(DocExpansion.None);
 	});
 }
 
-app.UseCors(StartupServiceExtensions.CorsAnyOrigin);
+app.UseCors(StartupExtension.CorsAnyOrigin);
 app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();

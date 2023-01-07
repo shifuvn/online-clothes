@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using OnlineClothes.Infrastructure.Services.UserContext.Abstracts;
+using OnlineClothes.Application.Services.UserContext;
 
 namespace OnlineClothes.Infrastructure.Services.UserContext;
 
@@ -13,9 +13,10 @@ internal sealed class UserContext : IUserContext
 		_claims = httpContextAccessor.HttpContext?.User!;
 	}
 
-	public string GetNameIdentifier()
+	public int GetNameIdentifier()
 	{
-		return _claims.FindFirstValue(ClaimTypes.NameIdentifier);
+		var id = _claims.FindFirstValue(ClaimTypes.NameIdentifier);
+		return int.Parse(id);
 	}
 
 	public string GetAccountEmail()

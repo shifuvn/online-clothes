@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using OnlineClothes.Domain.Entities.Aggregate;
+﻿using OnlineClothes.Domain.Entities.Aggregate;
 
 namespace OnlineClothes.Domain.Entities;
 
@@ -9,28 +8,28 @@ public class CartItem
 	{
 	}
 
-	public CartItem(int productId, int quantity = 1) : this()
+	public CartItem(string productSku, int quantity = 1) : this()
 	{
-		ProductId = productId;
+		ProductSkuId = productSku;
 		Quantity = quantity;
 	}
 
-	public CartItem(int cartId, int productId, int quantity = 1) : this(productId, quantity)
+	public CartItem(int cartId, string productSku, int quantity = 1) : this(productSku, quantity)
 	{
 		CartId = cartId;
 	}
 
-	public CartItem(AccountCart cart, int productId, int quantity = 1) : this(productId, quantity)
+	public CartItem(AccountCart cart, string productSku, int quantity = 1) : this(productSku, quantity)
 	{
 		Cart = cart;
 	}
 
-	[ForeignKey("CartId")] public AccountCart Cart { get; set; } = null!;
 	public int CartId { get; set; }
-
-	// foreign key
-	public int ProductId { get; set; }
+	public string ProductSkuId { get; set; } = null!;
 	public int Quantity { get; set; }
+
+	[ForeignKey("CartId")] public AccountCart Cart { get; set; } = null!;
+	[ForeignKey("ProductSkuId")] public ProductSku ProductSku { get; set; } = null!;
 
 	public void Increase(int number)
 	{
@@ -40,15 +39,5 @@ public class CartItem
 	public void Decrease(int number)
 	{
 		Quantity -= number;
-	}
-
-	public static CartItem Create(AccountCart cart, int productId, int quantity)
-	{
-		return new CartItem(cart, productId, quantity);
-	}
-
-	public static CartItem Create(int cartId, int productId, int quantity)
-	{
-		return new CartItem(cartId, productId, quantity);
 	}
 }

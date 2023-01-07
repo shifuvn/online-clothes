@@ -22,7 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\OnlineClothes.Application\OnlineClothes.Application.csproj" />
     <ProjectReference Include="..\..\src\OnlineClothes.Domain\OnlineClothes.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Regex\" />
   </ItemGroup>
 
 </Project>

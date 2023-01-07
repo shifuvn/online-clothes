@@ -3,6 +3,8 @@
 public enum ClotheType
 {
 	Unknown,
+	Hat,
 	Shirt,
-	Pant
+	Pant,
+	Shoe
 }

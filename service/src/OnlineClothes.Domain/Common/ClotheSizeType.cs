@@ -2,6 +2,7 @@
 
 public enum ClotheSizeType
 {
+	NoSize = 0,
 	S,
 	M,
 	L,

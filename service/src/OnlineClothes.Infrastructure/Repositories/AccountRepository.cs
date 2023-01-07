@@ -1,14 +1,17 @@
-﻿using OnlineClothes.Domain.Entities.Aggregate;
-using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Persistence.Context;
-using OnlineClothes.Persistence.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineClothes.Application.Persistence;
 
 namespace OnlineClothes.Infrastructure.Repositories;
 
-public sealed class AccountRepository : RootRepositoryBase<AccountUser, int>,
-	IAccountRepository
+internal class AccountRepository : EfCoreRepositoryBase<AccountUser, int>, IAccountRepository
 {
-	public AccountRepository(IMongoDbContext dbContext) : base(dbContext)
+	public AccountRepository(AppDbContext dbContext) : base(dbContext)
 	{
+	}
+
+	public async Task<AccountUser?> GetByEmail(string email, CancellationToken cancellationToken = default)
+	{
+		var entry = await DbSet.FirstOrDefaultAsync(q => q.Email.Equals(email), cancellationToken: cancellationToken);
+		return entry;
 	}
 }

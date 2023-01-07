@@ -1,13 +1,10 @@
-﻿using OnlineClothes.Domain.Entities;
-using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Persistence.Context;
-using OnlineClothes.Persistence.Repositories;
+﻿using OnlineClothes.Application.Persistence;
 
 namespace OnlineClothes.Infrastructure.Repositories;
 
-public class OrderRepository : RootRepositoryBase<OrderProduct, string>, IOrderRepository
+public class OrderRepository : EfCoreRepositoryBase<Order, int>, IOrderRepository
 {
-	public OrderRepository(IMongoDbContext dbContext) : base(dbContext)
+	public OrderRepository(AppDbContext dbContext) : base(dbContext)
 	{
 	}
 }

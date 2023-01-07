@@ -14,7 +14,7 @@ public class AccountCartTest
 		var cart = new AccountCart();
 
 		// act
-		cart.IncreaseItem(1, 2);
+		cart.PutItem("1", 2);
 
 		// assert
 		Assert.NotNull(cart);
@@ -29,12 +29,12 @@ public class AccountCartTest
 		var cart = new AccountCart
 		{
 			AccountId = 1,
-			Items = new List<CartItem> { new(1, 2) }
+			Items = new List<CartItem> { new("1", 2) }
 		};
 
 		// act
-		cart.IncreaseItem(2, 2);
-		cart.IncreaseItem(1, 4);
+		cart.PutItem("2", 2);
+		cart.PutItem("1", 4);
 
 		var item1 = cart.Items.First();
 
@@ -54,14 +54,14 @@ public class AccountCartTest
 			AccountId = 1,
 			Items = new List<CartItem>
 			{
-				new(1, 2),
-				new(2, 2)
+				new("1", 2),
+				new("2", 2)
 			}
 		};
 
 		// act
-		cart.DecreaseItem(1, 6);
-		cart.DecreaseItem(2, 2);
+		cart.RemoveItem("1", 6);
+		cart.RemoveItem("2", 2);
 
 		// assert
 		Assert.NotNull(cart);

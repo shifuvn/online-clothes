@@ -1,6 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
 using OnlineClothes.Application.Features.Accounts.Commands.ChangePassword;
 using OnlineClothes.Application.Features.Accounts.Commands.Reset;
 using OnlineClothes.Application.Features.Accounts.Commands.SignIn;
@@ -21,21 +19,21 @@ public class AccountsController : ApiV1ControllerBase
 	[AllowAnonymous]
 	public async Task<IActionResult> Recovery([FromQuery] RecoveryQuery query)
 	{
-		return ApiResponse(await Mediator.Send(query));
+		return HandleApiResponse(await Mediator.Send(query));
 	}
 
 	[HttpGet("activate")]
 	[AllowAnonymous]
 	public async Task<IActionResult> Activate([FromQuery] ActivateQuery query)
 	{
-		return ApiResponse(await Mediator.Send(query));
+		return HandleApiResponse(await Mediator.Send(query));
 	}
 
 	[HttpGet("resend-activate")]
 	[AllowAnonymous]
 	public async Task<IActionResult> ResendActivate([FromQuery] ResendActivationQuery query)
 	{
-		return ApiResponse(await Mediator.Send(query));
+		return HandleApiResponse(await Mediator.Send(query));
 	}
 
 
@@ -43,7 +41,7 @@ public class AccountsController : ApiV1ControllerBase
 	[AllowAnonymous]
 	public async Task<IActionResult> SignUp([FromBody] SignUpCommand command)
 	{
-		return ApiResponse(await Mediator.Send(command));
+		return HandleApiResponse(await Mediator.Send(command));
 	}
 
 	[HttpPost("sign-in")]
@@ -51,14 +49,14 @@ public class AccountsController : ApiV1ControllerBase
 	public async Task<IActionResult> SignIn([FromBody] SignInCommand command,
 		CancellationToken cancellationToken = default)
 	{
-		return ApiResponse(await Mediator.Send(command, cancellationToken));
+		return HandleApiResponse(await Mediator.Send(command, cancellationToken));
 	}
 
 	[HttpPost("change-password")]
 	[AllowAnonymous]
 	public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
 	{
-		return ApiResponse(await Mediator.Send(command));
+		return HandleApiResponse(await Mediator.Send(command));
 	}
 
 
@@ -66,7 +64,7 @@ public class AccountsController : ApiV1ControllerBase
 	[AllowAnonymous]
 	public async Task<IActionResult> Reset([FromBody] ResetCommand command)
 	{
-		return ApiResponse(await Mediator.Send(command));
+		return HandleApiResponse(await Mediator.Send(command));
 	}
 
 	[HttpGet("test-authorize")]

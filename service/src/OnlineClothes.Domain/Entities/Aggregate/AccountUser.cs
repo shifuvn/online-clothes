@@ -1,7 +1,4 @@
-﻿using OnlineClothes.Domain.Common;
-using OnlineClothes.Support.Entity;
-
-namespace OnlineClothes.Domain.Entities.Aggregate;
+﻿namespace OnlineClothes.Domain.Entities.Aggregate;
 
 public class AccountUser : EntityBase
 {
@@ -27,8 +24,7 @@ public class AccountUser : EntityBase
 	public string Role { get; set; } = null!;
 	public string? PhoneNumber { get; set; }
 	public string? Address { get; set; }
-
-	public string ImageUrl { get; set; } = null!;
+	public string? ImageUrl { get; set; } = null!;
 	public bool IsActivated { get; set; }
 	public DateTime LastLogin { get; set; }
 
@@ -61,6 +57,11 @@ public class AccountUser : EntityBase
 			PasswordVerificationResult.Failed => false,
 			_ => throw new ArgumentOutOfRangeException()
 		};
+	}
+
+	public void SetPassword(string providePassword)
+	{
+		HashedPassword = PasswordHasher.Hash(providePassword);
 	}
 
 	public void Activate()

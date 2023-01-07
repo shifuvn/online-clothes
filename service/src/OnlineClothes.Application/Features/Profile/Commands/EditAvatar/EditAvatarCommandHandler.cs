@@ -1,11 +1,7 @@
-﻿using MediatR;
-using Microsoft.Extensions.Logging;
-using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Infrastructure.Services.Storage.Abstracts;
-using OnlineClothes.Infrastructure.Services.Storage.Models;
-using OnlineClothes.Infrastructure.Services.UserContext.Abstracts;
-using OnlineClothes.Persistence.Extensions;
-using OnlineClothes.Support.HttpResponse;
+﻿using OnlineClothes.Application.Persistence;
+using OnlineClothes.Application.Services.ObjectStorage;
+using OnlineClothes.Application.Services.ObjectStorage.Models;
+using OnlineClothes.Application.Services.UserContext;
 
 namespace OnlineClothes.Application.Features.Profile.Commands.EditAvatar;
 
@@ -13,38 +9,37 @@ internal sealed class EditAvatarCommandHandler : IRequestHandler<EditAvatarComma
 {
 	private readonly IAccountRepository _accountRepository;
 	private readonly IObjectFileStorage _objectFileStorage;
+	private readonly IUnitOfWork _unitOfWork;
 	private readonly IUserContext _userContext;
-	private ILogger<EditAvatarCommandHandler> _logger;
 
 
-	public EditAvatarCommandHandler(ILogger<EditAvatarCommandHandler> logger, IAccountRepository accountRepository,
-		IObjectFileStorage objectFileStorage, IUserContext userContext)
+	public EditAvatarCommandHandler(
+		IAccountRepository accountRepository,
+		IObjectFileStorage objectFileStorage,
+		IUserContext userContext, IUnitOfWork unitOfWork)
 	{
-		_logger = logger;
 		_accountRepository = accountRepository;
 		_objectFileStorage = objectFileStorage;
 		_userContext = userContext;
+		_unitOfWork = unitOfWork;
 	}
 
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(EditAvatarCommand request,
 		CancellationToken cancellationToken)
 	{
-		var account = await _accountRepository.GetOneAsync(_userContext.GetNameIdentifier(), cancellationToken);
+		var account = await _accountRepository.GetByIntKey(_userContext.GetNameIdentifier(), cancellationToken);
 
 
 		var prefixDirectory = ObjectFileStorage.CombinePrefixDirectory("avatars");
 		var fileName = $"{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}_{request.Avatar.FileName}";
 		var storageObject = new ObjectFileStorage(request.Avatar, prefixDirectory, fileName);
 
-		var cloudObjectUrl = await _objectFileStorage.UploadAsync(storageObject, cancellationToken);
-		account.ImageUrl = cloudObjectUrl;
+		account.ImageUrl = await _objectFileStorage.UploadAsync(storageObject, cancellationToken);
 
-		var updatedResult = await _accountRepository.UpdateOneAsync(
-			account.Id.ToString(),
-			update => update.Set(acc => acc.ImageUrl, account.ImageUrl),
-			cancellationToken: cancellationToken);
+		_accountRepository.Update(account);
+		var saves = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-		return updatedResult.Any()
+		return saves
 			? JsonApiResponse<EmptyUnitResponse>.Success()
 			: JsonApiResponse<EmptyUnitResponse>.Fail();
 	}

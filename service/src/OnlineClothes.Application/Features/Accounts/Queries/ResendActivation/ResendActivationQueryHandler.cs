@@ -1,10 +1,5 @@
-﻿using MediatR;
-using Microsoft.Extensions.Logging;
-using OnlineClothes.Application.Helpers;
-using OnlineClothes.Domain.Entities.Aggregate;
-using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.HttpResponse;
+﻿using OnlineClothes.Application.Helpers;
+using OnlineClothes.Application.Persistence;
 
 namespace OnlineClothes.Application.Features.Accounts.Queries.ResendActivation;
 
@@ -15,8 +10,10 @@ public sealed class
 	private readonly IAccountRepository _accountRepository;
 	private readonly ILogger<ResendActivationQueryHandler> _logger;
 
-	public ResendActivationQueryHandler(ILogger<ResendActivationQueryHandler> logger,
-		AccountActivationHelper accountActivationHelper, IAccountRepository accountRepository)
+	public ResendActivationQueryHandler(
+		ILogger<ResendActivationQueryHandler> logger,
+		AccountActivationHelper accountActivationHelper,
+		IAccountRepository accountRepository)
 	{
 		_logger = logger;
 		_accountActivationHelper = accountActivationHelper;
@@ -26,8 +23,7 @@ public sealed class
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(ResendActivationQuery request,
 		CancellationToken cancellationToken)
 	{
-		var account = await _accountRepository.FindOneAsync(
-			FilterBuilder<AccountUser>.Where(q => q.Email.Equals(request.Email)), cancellationToken);
+		var account = await _accountRepository.GetByEmail(request.Email, cancellationToken);
 
 		if (account is null)
 		{

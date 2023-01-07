@@ -1,10 +1,17 @@
-﻿using MediatR;
-using OnlineClothes.Support.HttpResponse;
-
-namespace OnlineClothes.Application.Features.Profile.Commands.EditInformation;
+﻿namespace OnlineClothes.Application.Features.Profile.Commands.EditInformation;
 
 public class EditInformationCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 {
-	public string FirstName { get; set; } = null!;
-	public string LastName { get; set; } = null!;
+	public string FirstName { get; init; } = null!;
+	public string LastName { get; init; } = null!;
+	public string? PhoneNumber { get; init; }
+	public string? Address { get; init; }
+
+	public void Map(AccountUser account)
+	{
+		account.FirstName = FirstName;
+		account.LastName = LastName;
+		account.PhoneNumber = PhoneNumber;
+		account.Address = Address;
+	}
 }

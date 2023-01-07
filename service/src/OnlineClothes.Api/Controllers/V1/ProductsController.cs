@@ -1,14 +1,16 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using OnlineClothes.Application.Features.Product.Commands.Delete;
-using OnlineClothes.Application.Features.Product.Commands.ImportProducts;
-using OnlineClothes.Application.Features.Product.Commands.NewProduct;
-using OnlineClothes.Application.Features.Product.Commands.Restore;
-using OnlineClothes.Application.Features.Product.Commands.UpdateInfo;
-using OnlineClothes.Application.Features.Product.Commands.UploadImage;
-using OnlineClothes.Application.Features.Product.Queries.Detail;
-using OnlineClothes.Application.Features.Product.Queries.Listing;
+﻿using Microsoft.AspNetCore.Authorization;
+using OnlineClothes.Application.Features.Products.Commands.CreateNewProductSeri;
+using OnlineClothes.Application.Features.Products.Commands.CreateNewSku;
+using OnlineClothes.Application.Features.Products.Commands.DeleteProduct;
+using OnlineClothes.Application.Features.Products.Commands.DeleteSku;
+using OnlineClothes.Application.Features.Products.Commands.EditProductInfo;
+using OnlineClothes.Application.Features.Products.Commands.EditSkuInfo;
+using OnlineClothes.Application.Features.Products.Commands.ImportSku;
+using OnlineClothes.Application.Features.Products.Commands.RestoreProduct;
+using OnlineClothes.Application.Features.Products.Commands.RestoreSku;
+using OnlineClothes.Application.Features.Products.Commands.UploadImage;
+using OnlineClothes.Application.Features.Products.Queries.Detail;
+using OnlineClothes.Application.Features.Products.Queries.Paging;
 using OnlineClothes.Domain.Common;
 
 namespace OnlineClothes.Api.Controllers.V1;
@@ -22,67 +24,76 @@ public class ProductsController : ApiV1ControllerBase
 
 	[HttpGet]
 	[AllowAnonymous]
-	public async Task<IActionResult> Listing([FromQuery] ListingProductQuery query)
+	public async Task<IActionResult> GetPaging([FromQuery] GetPagingProductQuery query)
 	{
-		return ApiResponse(await Mediator.Send(query));
+		return HandleApiResponse(await Mediator.Send(query));
 	}
 
-	[HttpGet("{productId}")]
+	[HttpGet("{sku}")]
 	[AllowAnonymous]
-	public async Task<IActionResult> Detail(string productId)
+	public async Task<IActionResult> GetDetail(string sku)
 	{
-		return ApiResponse(await Mediator.Send(new ProductDetailQuery { ProductId = productId }));
+		return HandleApiResponse(await Mediator.Send(new GetSkuDetailQuery(sku)));
 	}
 
-	[HttpPost("create-new")]
-	[Authorize(Roles = nameof(AccountRole.Admin))]
-	public async Task<IActionResult> CreateNew([FromBody] CreateNewClotheCommand command,
-		CancellationToken cancellationToken = default)
+	[HttpPost("product")]
+	public async Task<IActionResult> CreateProduct([FromForm] CreateNewProductCommand request)
 	{
-		return ApiResponse(await Mediator.Send(command, cancellationToken));
+		return HandleApiResponse(await Mediator.Send(request));
 	}
 
-	[HttpPut("edit/{productId}")]
-	[Authorize(Roles = nameof(AccountRole.Admin))]
-	public async Task<IActionResult> Update(string productId,
-		[FromBody] UpdateProductCommand.UpdateProductCommandJsonBody command)
+	[HttpPost("sku")]
+	public async Task<IActionResult> CreateSku([FromForm] CreateSkuCommand request)
 	{
-		return ApiResponse(await Mediator.Send(new UpdateProductCommand
-		{
-			ProductId = productId,
-			Body = command
-		}));
+		return HandleApiResponse(await Mediator.Send(request));
 	}
 
-	[HttpPut("import-stock/{productId}/{quantity}")]
-	[Authorize(Roles = nameof(AccountRole.Admin))]
-	public async Task<IActionResult> ImportStock(string productId, int quantity)
+	[HttpPut("product/edit")]
+	public async Task<IActionResult> EditProduct([FromBody] EditProductCommand request)
 	{
-		return ApiResponse(await Mediator.Send(new ImportProductStockCommand
-		{
-			ProductId = productId,
-			Quantity = quantity
-		}));
+		return HandleApiResponse(await Mediator.Send(request));
 	}
 
-	[HttpPut("{productId}/upload-image")]
-	[Authorize(Roles = nameof(AccountRole.Admin))]
-	public async Task<IActionResult> UploadImage(string productId, [FromForm] IFormFile file)
+	[HttpPut("sku/edit")]
+	public async Task<IActionResult> EditSku([FromForm] EditSkuInfoCommand request)
 	{
-		return ApiResponse(await Mediator.Send(new UploadProductImageCommand(productId, file)));
+		return HandleApiResponse(await Mediator.Send(request));
 	}
 
-	[HttpPut("{productId}/restore")]
-	[Authorize(Roles = nameof(AccountRole.Admin))]
-	public async Task<IActionResult> Restore(string productId)
+	[HttpPut("sku/import")]
+	public async Task<IActionResult> ImportStock([FromBody] ImportSkuStockCommand request)
 	{
-		return ApiResponse(await Mediator.Send(new RestoreProductCommand(productId)));
+		return HandleApiResponse(await Mediator.Send(request));
 	}
 
-	[HttpDelete("{productId}")]
+	[HttpPut("{id}/upload-image")]
 	[Authorize(Roles = nameof(AccountRole.Admin))]
-	public async Task<IActionResult> Delete(string productId)
+	public async Task<IActionResult> UploadImage(string id, [FromForm] IFormFile file)
 	{
-		return ApiResponse(await Mediator.Send(new DeleteProductCommand(productId)));
+		return HandleApiResponse(await Mediator.Send(new UploadProductImageCommand(id, file)));
+	}
+
+	[HttpPut("product/{id:int}/restore")]
+	public async Task<IActionResult> RestoreProduct(int id)
+	{
+		return HandleApiResponse(await Mediator.Send(new RestoreProductCommand(id)));
+	}
+
+	[HttpPut("sku/{sku}/restore")]
+	public async Task<IActionResult> RestoreSku(string sku)
+	{
+		return HandleApiResponse(await Mediator.Send(new RestoreSkuCommand(sku)));
+	}
+
+	[HttpDelete("product/{id:int}")]
+	public async Task<IActionResult> DeleteProduct(int id)
+	{
+		return HandleApiResponse(await Mediator.Send(new DeleteProductCommand(id)));
+	}
+
+	[HttpDelete("sku/{sku}")]
+	public async Task<IActionResult> DeleteSku(string sku)
+	{
+		return HandleApiResponse(await Mediator.Send(new DisableSkuCommand(sku)));
 	}
 }

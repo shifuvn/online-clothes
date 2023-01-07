@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http;
 
 namespace OnlineClothes.Support.HttpResponse;
 
@@ -30,6 +31,11 @@ public class JsonApiResponse<TResponse> where TResponse : class
 	public static JsonApiResponse<TResponse> Success(int? code = null, string? message = null, TResponse? data = null)
 	{
 		return new JsonApiResponse<TResponse>(code ?? 200, message, data);
+	}
+
+	public static JsonApiResponse<TResponse> Created(string? message = null, TResponse? data = null)
+	{
+		return new JsonApiResponse<TResponse>(StatusCodes.Status201Created, message, data);
 	}
 
 	public static JsonApiResponse<TResponse> Fail(string? message = null, TResponse? data = null)

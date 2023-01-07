@@ -1,29 +1,45 @@
 version: '3.8'
 
 services:
-  # mongodb
-  mongo-database:
-    image: bitnami/mongodb:6.0-debian-11
-    hostname: mongo-database
-    container_name: oop-mongo-database
+  # database
+  postgresql-db:
+    image: postgres:alpine
     networks:
       - oop-infra
     volumes:
-      - mongo-data:/bitnami/mongodb
+      - app-data:/var/lib/postgresql/data
     ports:
-      - 27018:27017
+      - "5432:5432"
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+      - POSTGRES_PASSWORD=postgres@123
+      - POSTGRES_DATABASE=OnlineClothe
 
-  mail-server-smtp:
-    image: jijiechen/papercut
-    hostname: mail-server-smtp
-    container_name: oop-mail-server
+  pgbouncer:
+    image: bitnami/pgbouncer
     networks:
       - oop-infra
     ports:
-      - 25:25
-      - 37408:37408
+      - "6432:6432"
+    environment:
+      - POSTGRESQL_HOST=postgresql-db
+      - POSTGRESQL_PORT=5432
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=postgres@123
+      - POSTGRESQL_DATABASE=OnlineClothe
+      - PGBOUNCER_PORT=6432
+      - PGBOUNCER_BIND_ADDRESS=0.0.0.0
+      - PGBOUNCER_EXTRA_FLAGS=--verbose
+      - PGBOUNCER_DATABASE=OnlineClothe
+      - PGBOUNCER_DEFAULT_POOL_SIZE=50
+
+  mail-server-smtp:
+    image: marcopas/docker-mailslurper
+    networks:
+      - oop-infra
+    ports:
+      - "2500:2500"
+      - "8080:8080"
+      - "8085:8085"
 
 networks:
   oop-infra:
@@ -31,4 +47,4 @@ networks:
 
 
 volumes:
-  mongo-data:
+  app-data:
