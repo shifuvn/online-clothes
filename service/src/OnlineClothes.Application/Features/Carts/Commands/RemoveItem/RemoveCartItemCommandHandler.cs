@@ -21,7 +21,7 @@ public class RemoveCartItemCommandHandler : IRequestHandler<RemoveCartItemComman
 		var cart = await _cartRepository.GetCurrentCart();
 
 		_cartRepository.Update(cart);
-		cart.RemoveItem(request.ProductSku, request.Quantity);
+		cart.UpdateItemQuantity(request.ProductSku, request.Quantity);
 
 		return await _unitOfWork.SaveChangesAsync(cancellationToken)
 			? JsonApiResponse<EmptyUnitResponse>.Success()

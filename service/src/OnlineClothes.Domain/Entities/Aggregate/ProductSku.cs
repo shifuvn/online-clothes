@@ -27,7 +27,7 @@ public class ProductSku : SupportDomainEvent, IEntity<string>
 
 	public bool IsAvailable()
 	{
-		return InStock > 0 && !IsDeleted;
+		return InStock > 0 && !IsDeleted && Product.IsAvailable();
 	}
 
 	public void Disable()

@@ -14,7 +14,7 @@ public class AccountCartTest
 		var cart = new AccountCart();
 
 		// act
-		cart.PutItem("1", 2);
+		cart.UpdateItemQuantity("1", 2);
 
 		// assert
 		Assert.NotNull(cart);
@@ -33,8 +33,8 @@ public class AccountCartTest
 		};
 
 		// act
-		cart.PutItem("2", 2);
-		cart.PutItem("1", 4);
+		cart.UpdateItemQuantity("2", 2);
+		cart.UpdateItemQuantity("1", 4);
 
 		var item1 = cart.Items.First();
 
@@ -60,8 +60,8 @@ public class AccountCartTest
 		};
 
 		// act
-		cart.RemoveItem("1", 6);
-		cart.RemoveItem("2", 2);
+		cart.UpdateItemQuantity("1", 6);
+		cart.UpdateItemQuantity("2", 2);
 
 		// assert
 		Assert.NotNull(cart);

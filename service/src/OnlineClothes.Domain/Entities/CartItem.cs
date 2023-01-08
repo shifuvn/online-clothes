@@ -31,13 +31,13 @@ public class CartItem
 	[ForeignKey("CartId")] public AccountCart Cart { get; set; } = null!;
 	[ForeignKey("ProductSkuId")] public ProductSku ProductSku { get; set; } = null!;
 
-	public void Increase(int number)
+	public void UpdateNumber(int number)
 	{
-		Quantity += number;
+		Quantity = number;
 	}
 
-	public void Decrease(int number)
+	public decimal IntoMoney()
 	{
-		Quantity -= number;
+		return ProductSku.GetPrice() * Quantity;
 	}
 }

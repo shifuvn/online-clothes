@@ -25,11 +25,4 @@
     <ProjectReference Include="..\OnlineClothes.Support\OnlineClothes.Support.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Products\Commands\CreateNewProductSeri\" />
-    <Folder Include="Features\Products\Commands\EditSkuInfo\" />
-    <Folder Include="Features\Products\Commands\DeleteProduct\" />
-    <Folder Include="Features\Products\Commands\RestoreSku\" />
-    <Folder Include="Mapping\ViewModels\" />
-  </ItemGroup>
 </Project>

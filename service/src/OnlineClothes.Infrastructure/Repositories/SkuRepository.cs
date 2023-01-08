@@ -1,16 +1,13 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OnlineClothes.Application.Persistence;
+using OnlineClothes.Support.Builders.Predicate;
 
 namespace OnlineClothes.Infrastructure.Repositories;
 
 public class ProductSkuRepository : EfCoreRepositoryBase<ProductSku, string>, ISkuRepository
 {
-	private readonly IMapper _mapper;
-
-	public ProductSkuRepository(AppDbContext dbContext, IMapper mapper) : base(dbContext)
+	public ProductSkuRepository(AppDbContext dbContext) : base(dbContext)
 	{
-		_mapper = mapper;
 	}
 
 	public async Task<ProductSku> GetSkuDetailBySkuAsync(string sku, CancellationToken cancellationToken = default)
@@ -20,5 +17,30 @@ public class ProductSkuRepository : EfCoreRepositoryBase<ProductSku, string>, IS
 			.FirstAsync(item => item.Sku == sku, cancellationToken);
 
 		return entry;
+	}
+
+	public override async Task<List<ProductSku>> FindAsync(FilterBuilder<ProductSku> filterBuilder,
+		int offset = 0,
+		int limit = 0,
+		Func<IQueryable<ProductSku>, IOrderedQueryable<ProductSku>>? orderFunc = null,
+		CancellationToken cancellationToken = default)
+	{
+		var queryable = AsQueryable()
+			.Include(sku => sku.Product)
+			.Where(filterBuilder.Statement);
+
+		if (orderFunc is not null)
+		{
+			queryable = orderFunc(queryable);
+		}
+
+		queryable = queryable.Skip(offset);
+
+		if (limit != 0)
+		{
+			queryable = queryable.Take(limit);
+		}
+
+		return await queryable.ToListAsync(cancellationToken);
 	}
 }
