@@ -1,61 +1,44 @@
-﻿namespace OnlineClothes.Application.Features.Orders.Commands.Delivery;
+﻿using Newtonsoft.Json;
+using OnlineClothes.Application.Persistence;
+
+namespace OnlineClothes.Application.Features.Orders.Commands.Delivery;
 
 public class DeliveryOrderCommandHandler : IRequestHandler<DeliveryOrderCommand, JsonApiResponse<EmptyUnitResponse>>
 {
-	//private readonly IOrderRepository _orderRepository;
-	//private readonly IProductRepository _productRepository;
+	private readonly ILogger<DeliveryOrderCommandHandler> _logger;
+	private readonly IOrderRepository _orderRepository;
+	private readonly IUnitOfWork _unitOfWork;
 
-	//public DeliveryOrderCommandHandler(IOrderRepository orderRepository,
-	//	IProductRepository productRepository)
-	//{
-	//	_orderRepository = orderRepository;
-	//	_productRepository = productRepository;
-	//}
+	public DeliveryOrderCommandHandler(
+		IUnitOfWork unitOfWork,
+		IOrderRepository orderRepository,
+		ILogger<DeliveryOrderCommandHandler> logger)
+	{
+		_unitOfWork = unitOfWork;
+		_orderRepository = orderRepository;
+		_logger = logger;
+	}
 
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(DeliveryOrderCommand request,
 		CancellationToken cancellationToken)
 	{
-		//var order = await _orderRepository.FindOneAsync(new FilterBuilder<OrderProduct>(q => q.Id == request.OrderId),
-		//	cancellationToken);
-		//if (order is null)
-		//{
-		//	return JsonApiResponse<EmptyUnitResponse>.Fail();
-		//}
+		var order = await _orderRepository.GetOneByUserContext(request.OrderId, cancellationToken);
 
-		//order.UpdateState(OrderState.Delivering);
-		//var updateResult = await _orderRepository.UpdateOneAsync(
-		//	order.Id,
-		//	update => update.Set(q => q.State, order.State),
-		//	cancellationToken: cancellationToken);
+		_orderRepository.Update(order);
+		if (!order.UpdateState(OrderState.Delivering))
+		{
+			return JsonApiResponse<EmptyUnitResponse>.Fail("Không thể giao đơn hàng");
+		}
 
-		//if (!updateResult.Any())
-		//{
-		//	return JsonApiResponse<EmptyUnitResponse>.Fail();
-		//}
+		var save = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-		//await PostActionDeliveryOrder(order);
-		//return JsonApiResponse<EmptyUnitResponse>.Success();
+		if (!save)
+		{
+			return JsonApiResponse<EmptyUnitResponse>.Fail();
+		}
 
-		throw new NotImplementedException();
+		_logger.LogInformation("Delivering order: {object}", JsonConvert.SerializeObject(order));
+
+		return JsonApiResponse<EmptyUnitResponse>.Success();
 	}
-
-
-	//private async Task PostActionDeliveryOrder(OrderProduct order)
-	//{
-	//	//var tasks = new List<Task>();
-	//	//var orderIdQuantity = order.Items.ToDictionary(q => q.ProductId, q => q.Quantity);
-	//	//var orderItemIds = orderIdQuantity.Select(q => q.Key).ToList();
-	//	//var products = (await _productRepository.FindAsync(
-	//	//		FilterBuilder<ProductClothe>.Where(q => orderItemIds.Contains(q.Id))))
-	//	//	.ToList();
-
-	//	//foreach (var productClothe in products)
-	//	//{
-	//	//	productClothe.Stock -= orderIdQuantity[productClothe.Id];
-	//	//	tasks.Add(_productRepository.UpdateOneAsync(productClothe.Id,
-	//	//		update => update.Set(q => q.Stock, productClothe.Stock)));
-	//	//}
-
-	//	//await Task.WhenAll(tasks);
-	//}
 }

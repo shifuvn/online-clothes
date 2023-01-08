@@ -1,11 +1,11 @@
 ﻿namespace OnlineClothes.Application.Features.Orders.Queries.Detail;
 
-public class OrderDetailQuery : IRequest<JsonApiResponse<object>>
+public class OrderDetailQuery : IRequest<JsonApiResponse<OrderDto>>
 {
-	public OrderDetailQuery(string orderId)
+	public OrderDetailQuery(int orderId)
 	{
 		OrderId = orderId;
 	}
 
-	public string OrderId { get; set; }
+	public int OrderId { get; set; }
 }

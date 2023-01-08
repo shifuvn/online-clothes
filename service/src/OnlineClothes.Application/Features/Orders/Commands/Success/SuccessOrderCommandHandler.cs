@@ -1,28 +1,42 @@
-﻿namespace OnlineClothes.Application.Features.Orders.Commands.Success;
+﻿using Newtonsoft.Json;
+using OnlineClothes.Application.Persistence;
+
+namespace OnlineClothes.Application.Features.Orders.Commands.Success;
 
 public class SuccessOrderCommandHandler : IRequestHandler<SuccessOrderCommand, JsonApiResponse<EmptyUnitResponse>>
 {
-	//private readonly IOrderRepository _orderRepository;
+	private readonly ILogger<SuccessOrderCommandHandler> _logger;
+	private readonly IOrderRepository _orderRepository;
+	private readonly IUnitOfWork _unitOfWork;
 
-	//public SuccessOrderCommandHandler(IOrderRepository orderRepository)
-	//{
-	//	_orderRepository = orderRepository;
-	//}
+	public SuccessOrderCommandHandler(IOrderRepository orderRepository, IUnitOfWork unitOfWork,
+		ILogger<SuccessOrderCommandHandler> logger)
+	{
+		_orderRepository = orderRepository;
+		_unitOfWork = unitOfWork;
+		_logger = logger;
+	}
 
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(SuccessOrderCommand request,
 		CancellationToken cancellationToken)
 	{
-		//var order = await _orderRepository.GetOneAsync(request.OrderId, cancellationToken);
-		//order.UpdateState(OrderState.Success);
+		var order = await _orderRepository.GetByIntKey(request.OrderId, cancellationToken);
 
-		//var updateResult = await _orderRepository.UpdateOneAsync(
-		//	order.Id,
-		//	update => update.Set(q => q.State, order.State), cancellationToken: cancellationToken);
+		_orderRepository.Update(order);
+		if (!order.UpdateState(OrderState.Success))
+		{
+			return JsonApiResponse<EmptyUnitResponse>.Fail("Không thể hoàn thành đơn hàng");
+		}
 
-		//return updateResult.Any()
-		//	? JsonApiResponse<EmptyUnitResponse>.Success()
-		//	: JsonApiResponse<EmptyUnitResponse>.Fail();
+		var save = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-		throw new NotImplementedException();
+		if (!save)
+		{
+			return JsonApiResponse<EmptyUnitResponse>.Fail();
+		}
+
+		_logger.LogInformation("Success order: {object}", JsonConvert.SerializeObject(order));
+
+		return JsonApiResponse<EmptyUnitResponse>.Success();
 	}
 }

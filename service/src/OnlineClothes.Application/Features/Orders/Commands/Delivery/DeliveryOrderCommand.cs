@@ -2,10 +2,10 @@
 
 public class DeliveryOrderCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 {
-	public DeliveryOrderCommand(string orderId)
+	public DeliveryOrderCommand(int orderId)
 	{
 		OrderId = orderId;
 	}
 
-	public string OrderId { get; set; }
+	public int OrderId { get; set; }
 }

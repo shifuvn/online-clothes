@@ -41,4 +41,37 @@ public class Order : EntityBase
 	[ForeignKey("AccountId")] public AccountUser Account { get; set; } = null!;
 
 	[JsonIgnore] public virtual ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
+
+	public bool UpdateState(OrderState newState)
+	{
+		switch (newState)
+		{
+			case OrderState.Canceled:
+				if (State == OrderState.Success)
+				{
+					return false;
+				}
+
+				break;
+			case OrderState.Success:
+				if (State != OrderState.Delivering)
+				{
+					return false;
+				}
+
+				IsPaid = true;
+
+				break;
+			case OrderState.Delivering:
+				if (State != OrderState.Pending)
+				{
+					return false;
+				}
+
+				break;
+		}
+
+		State = newState;
+		return true;
+	}
 }

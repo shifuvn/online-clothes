@@ -2,10 +2,10 @@
 
 public class CancelOrderCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 {
-	public CancelOrderCommand(string orderId)
+	public CancelOrderCommand(int orderId)
 	{
 		OrderId = orderId;
 	}
 
-	public string OrderId { get; set; }
+	public int OrderId { get; set; }
 }

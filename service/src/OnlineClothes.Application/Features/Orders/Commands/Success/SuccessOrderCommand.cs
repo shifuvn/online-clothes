@@ -2,10 +2,10 @@
 
 public class SuccessOrderCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 {
-	public SuccessOrderCommand(string orderId)
+	public SuccessOrderCommand(int orderId)
 	{
 		OrderId = orderId;
 	}
 
-	public string OrderId { get; set; }
+	public int OrderId { get; set; }
 }
