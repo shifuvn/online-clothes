@@ -26,6 +26,7 @@ public class GetPagingBrandQueryHandler : IRequestHandler<GetPagingBrandQuery,
 			new PagingRequest(request),
 			SelectorFunc(),
 			DefaultOrderByFunc(),
+			null,
 			cancellationToken);
 
 		return JsonApiResponse<PagingModel<BrandViewModel>>.Success(data: pagingModel);

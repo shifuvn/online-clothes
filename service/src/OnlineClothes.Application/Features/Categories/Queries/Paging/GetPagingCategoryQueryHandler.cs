@@ -26,6 +26,7 @@ public class GetPagingCategoryQueryHandler : IRequestHandler<GetPagingCategoryQu
 			new PagingRequest(request.PageIndex, request.PageSize),
 			SelectorFunc(),
 			DefaultOrderByFunc(),
+			null,
 			cancellationToken);
 
 		return JsonApiResponse<PagingModel<CategoryViewModel>>.Success(data: paging);

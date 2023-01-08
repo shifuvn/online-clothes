@@ -25,6 +25,7 @@ public class
 			new PagingRequest(request.PageIndex, request.PageSize),
 			ProjectToTypeSelector(),
 			PreOrderQueryable(request),
+			new[] { "ProductSkus" },
 			cancellationToken);
 
 		return JsonApiResponse<PagingModel<ProductBasicDto>>.Success(data: viewModel);
