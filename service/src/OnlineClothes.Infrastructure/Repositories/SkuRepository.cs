@@ -14,6 +14,7 @@ public class ProductSkuRepository : EfCoreRepositoryBase<ProductSku, string>, IS
 	{
 		var entry = await AsQueryable()
 			.Include(item => item.Product)
+			.Include(item => item.Image)
 			.FirstAsync(item => item.Sku == sku, cancellationToken);
 
 		return entry;
@@ -26,7 +27,8 @@ public class ProductSkuRepository : EfCoreRepositoryBase<ProductSku, string>, IS
 		CancellationToken cancellationToken = default)
 	{
 		var queryable = AsQueryable()
-			.Include(sku => sku.Product)
+			.Include(item => item.Product)
+			.Include(item => item.Image)
 			.Where(filterBuilder.Statement);
 
 		if (orderFunc is not null)

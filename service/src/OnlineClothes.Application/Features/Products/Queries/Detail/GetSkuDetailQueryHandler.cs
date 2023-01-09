@@ -16,12 +16,13 @@ public class GetSkuDetailQueryHandler : IRequestHandler<GetSkuDetailQuery, JsonA
 		CancellationToken cancellationToken)
 	{
 		var product = await _skuRepository.AsQueryable()
-			.Include(q => q.Product)
-			.ThenInclude(q => q.Brand)
-			.Include(q => q.Product)
-			.ThenInclude(q => q.ProductCategories)
-			.ThenInclude(q => q.Category)
-			.FirstOrDefaultAsync(q => q.Sku.Equals(request.Sku), cancellationToken);
+			.Include(sku => sku.Product)
+			.ThenInclude(sku => sku.Brand)
+			.Include(sku => sku.Product)
+			.ThenInclude(sku => sku.ProductCategories)
+			.ThenInclude(sku => sku.Category)
+			.Include(sku => sku.Image)
+			.FirstOrDefaultAsync(sku => sku.Sku.Equals(request.Sku), cancellationToken);
 
 		if (product is null)
 		{

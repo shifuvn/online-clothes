@@ -16,8 +16,9 @@ public class ProductSkuDto : ProductSkuBasicDto
 	public List<CategoryDto> Categories { get; set; } = new();
 	public DateTime CreatedAt { get; set; }
 	public DateTime ModifiedAt { get; set; }
+	public string? ImageUrl { get; set; }
 
-	public static ProductSkuDto ToModel(ProductSku entity)
+	public new static ProductSkuDto ToModel(ProductSku entity)
 	{
 		return new ProductSkuDto(entity.ProductId, entity.Sku, entity.Product.Name, entity.GetPrice(), entity.InStock)
 		{
@@ -28,7 +29,8 @@ public class ProductSkuDto : ProductSkuBasicDto
 			Categories =
 				entity.Product.ProductCategories.SelectList(category => CategoryDto.ToModel(category.Category)),
 			CreatedAt = entity.CreatedAt,
-			ModifiedAt = entity.ModifiedAt
+			ModifiedAt = entity.ModifiedAt,
+			ImageUrl = entity.Image?.Url
 		};
 	}
 }
