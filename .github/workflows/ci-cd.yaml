@@ -40,7 +40,18 @@ jobs:
     steps:
       - name: Setup checkout@v3
         uses: actions/checkout@v3
-
+        
+      - name: Docker Setup Buildx
+        uses: docker/setup-buildx-action@v2.2.1
+        
+      - name: Cache
+        uses: actions/cache@v3.2.2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+        
       - name: Build infra services
         working-directory: ${{ secrets.WORKING_DIR }}
         run: |
