@@ -32,6 +32,8 @@ if (app.Environment.IsDevelopment())
 	});
 }
 
+app.MigrateDatabase();
+
 app.UseCors(StartupExtension.CorsAnyOrigin);
 app.UseHttpsRedirection();
 

@@ -13,13 +13,17 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres@123
       - POSTGRES_DATABASE=OnlineClothe
+      
 
   pgbouncer:
     image: bitnami/pgbouncer
     networks:
       - oop-infra
+      - oop-app
     ports:
       - "6432:6432"
+    depends_on:
+      - postgresql-db
     environment:
       - POSTGRESQL_HOST=postgresql-db
       - POSTGRESQL_PORT=5432
@@ -32,6 +36,7 @@ services:
       - PGBOUNCER_DATABASE=OnlineClothe
       - PGBOUNCER_DEFAULT_POOL_SIZE=50
 
+
   mail-server-smtp:
     image: marcopas/docker-mailslurper
     networks:
@@ -40,6 +45,28 @@ services:
       - "2500:2500"
       - "8080:8080"
       - "8085:8085"
+
+  app:
+    image: online-clothes-api
+    build:
+      context: .
+      dockerfile: OnlineClothes.Api/Dockerfile
+    networks:
+      - oop-app
+    ports:
+      - "9080:80"
+      - "9443:443"
+    depends_on:
+      - pgbouncer
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/.https/localhost.pfx
+    env_file:
+      - ./docker/.env
+    volumes:
+      - ./docker/certs:/.https:ro
+    
 
 networks:
   oop-infra:

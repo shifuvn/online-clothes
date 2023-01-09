@@ -1,7 +1,10 @@
 SHELL := /bin/bash
-SLN_NAME = OnlineClothes
-CONTEXT_EXECUTE_MIGRATE = -p ./$(SLN_NAME).Persistence/ -s ./$(SLN_NAME).Api/
 
+SLN_NAME := OnlineClothes
+MIGRATE_EXECUTED_CONTEXT := -p ./$(SLN_NAME).Persistence/ -s ./$(SLN_NAME).Api/
+COMPOSE_CONTEXT := docker-compose.dev.yaml
+
+.PHONY: docker
 
 test:
 	ifeq (foo, $(filter foo,$(MAKECMDGOALS)))
@@ -9,19 +12,19 @@ test:
 	endif
 
 migrate:
-	dotnet ef migrations add $(name) $(CONTEXT_EXECUTE_MIGRATE)
+	dotnet ef migrations add $(name) $(MIGRATE_EXECUTED_CONTEXT)
 
 migrate-list:
-	dotnet ef migrations list $(CONTEXT_EXECUTE_MIGRATE)
+	dotnet ef migrations list $(MIGRATE_EXECUTED_CONTEXT)
 
 migrate-apply:
-	dotnet ef database update $(CONTEXT_EXECUTE_MIGRATE)
+	dotnet ef database update $(MIGRATE_EXECUTED_CONTEXT)
 
 migrate-remove:
-	dotnet ef migrations remove $(CONTEXT_EXECUTE_MIGRATE)
+	dotnet ef migrations remove $(MIGRATE_EXECUTED_CONTEXT)
 
-compose-up:
-	docker-compose -f docker-compose.dev.yaml -p oop_src up -d --remove-orphans
-
-compose-down:
-	docker-compose -f docker-compose.dev.yaml -p oop_src down
+build:
+	docker-compose -f $(COMPOSE_CONTEXT) build
+	
+docker:
+	cd ./scripts && bash compose-dev.sh $(compose)
