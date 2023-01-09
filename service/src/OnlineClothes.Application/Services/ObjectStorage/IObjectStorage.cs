@@ -1,10 +1,8 @@
-﻿using OnlineClothes.Application.Services.ObjectStorage.Models;
+﻿namespace OnlineClothes.Application.Services.ObjectStorage;
 
-namespace OnlineClothes.Application.Services.ObjectStorage;
-
-public interface IObjectFileStorage
+public interface IObjectStorage
 {
-	Task<string> UploadAsync(ObjectFileStorage @object, CancellationToken cancellationToken = default);
+	Task<string> UploadAsync(Models.ObjectStorage @object, CancellationToken cancellationToken = default);
 
 	Task<Stream?> DownloadAsync(string objectIdentifier, CancellationToken cancellationToken = default);
 

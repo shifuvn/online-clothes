@@ -9,6 +9,7 @@ public class FetchInformationQueryResult
 	public string? Address { get; set; }
 	public string? PhoneNumber { get; set; }
 	public string? ImageUrl { get; set; }
+	public string? ImageUrlAltName { get; set; }
 	public DateTime LastLogin { get; set; }
 
 	public static FetchInformationQueryResult ToModel(AccountUser accountUser)
@@ -18,7 +19,8 @@ public class FetchInformationQueryResult
 			Email = accountUser.Email,
 			FirstName = accountUser.FirstName,
 			LastName = accountUser.LastName,
-			ImageUrl = accountUser.ImageUrl,
+			ImageUrl = accountUser.AvatarImage?.Url,
+			ImageUrlAltName = accountUser.AvatarImage?.AltName,
 			LastLogin = accountUser.LastLogin,
 			PhoneNumber = accountUser.PhoneNumber,
 			Address = accountUser.Address

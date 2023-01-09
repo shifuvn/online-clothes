@@ -4,10 +4,10 @@ public sealed class
 	UploadProductImageCommandHandler : IRequestHandler<UploadProductImageCommand, JsonApiResponse<EmptyUnitResponse>>
 {
 	//private readonly ILogger<UploadProductImageCommandHandler> _logger;
-	//private readonly IObjectFileStorage _objectFileStorage;
+	//private readonly IObjectStorage _objectFileStorage;
 	//private readonly IProductRepository _productRepository;
 
-	//public UploadProductImageCommandHandler(IObjectFileStorage objectFileStorage, IProductRepository productRepository,
+	//public UploadProductImageCommandHandler(IObjectStorage objectFileStorage, IProductRepository productRepository,
 	//	ILogger<UploadProductImageCommandHandler> logger)
 	//{
 	//	_objectFileStorage = objectFileStorage;

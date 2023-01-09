@@ -19,7 +19,7 @@ public abstract class EntityBase<TKey> : SupportDomainEvent, IEntity<TKey>
 	public DateTime ModifiedAt { get; set; }
 }
 
-public interface IEntity<TKey> : IEntityDatetimeSupport, ISupportDomainEvent
+public interface IEntity<TKey>
 {
 }
 

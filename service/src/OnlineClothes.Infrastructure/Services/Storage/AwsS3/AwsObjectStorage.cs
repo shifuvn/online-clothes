@@ -13,7 +13,7 @@ using Polly.Retry;
 
 namespace OnlineClothes.Infrastructure.Services.Storage.AwsS3;
 
-public class AwsObjectStorage : IObjectFileStorage
+public class AwsObjectStorage : IObjectStorage
 {
 	private readonly IAmazonS3 _amazonS3;
 	private readonly AsyncRetryPolicy _asyncRetryPolicy;
@@ -38,7 +38,7 @@ public class AwsObjectStorage : IObjectFileStorage
 	}
 
 
-	public async Task<string> UploadAsync(ObjectFileStorage @object, CancellationToken cancellationToken = default)
+	public async Task<string> UploadAsync(ObjectStorage @object, CancellationToken cancellationToken = default)
 	{
 		var putObject = new PutObjectRequest
 		{
