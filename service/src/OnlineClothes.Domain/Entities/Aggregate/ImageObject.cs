@@ -9,7 +9,7 @@ public class ImageObject : IEntity<int>, IEntitySupportCreatedAt
 	{
 	}
 
-	public ImageObject(string url, string? altName)
+	public ImageObject(string url, string? altName = null)
 	{
 		Url = url;
 		AltName = altName;
