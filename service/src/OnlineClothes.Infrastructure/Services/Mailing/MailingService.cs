@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
-using OnlineClothes.Infrastructure.Services.Mailing.Engine;
-using OnlineClothes.Infrastructure.Services.Mailing.Models;
+using OnlineClothes.Application.Services.Mailing;
+using OnlineClothes.Application.Services.Mailing.Engine;
+using OnlineClothes.Application.Services.Mailing.Models;
 
 namespace OnlineClothes.Infrastructure.Services.Mailing;
 

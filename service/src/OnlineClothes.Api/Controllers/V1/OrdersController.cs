@@ -1,13 +1,10 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using OnlineClothes.Application.Features.Order.Commands.Cancel;
-using OnlineClothes.Application.Features.Order.Commands.Checkout;
-using OnlineClothes.Application.Features.Order.Commands.Delivery;
-using OnlineClothes.Application.Features.Order.Commands.Success;
-using OnlineClothes.Application.Features.Order.Queries.Detail;
-using OnlineClothes.Application.Features.Order.Queries.Listing;
-using OnlineClothes.Domain.Common;
+﻿using Microsoft.AspNetCore.Authorization;
+using OnlineClothes.Application.Features.Orders.Commands.Cancel;
+using OnlineClothes.Application.Features.Orders.Commands.Checkout;
+using OnlineClothes.Application.Features.Orders.Commands.Delivery;
+using OnlineClothes.Application.Features.Orders.Commands.Success;
+using OnlineClothes.Application.Features.Orders.Queries.Detail;
+using OnlineClothes.Application.Features.Orders.Queries.Paging;
 
 namespace OnlineClothes.Api.Controllers.V1;
 
@@ -17,44 +14,44 @@ public class OrdersController : ApiV1ControllerBase
 	{
 	}
 
-	[HttpGet]
+	[HttpGet("{id}")]
 	[Authorize]
-	public async Task<IActionResult> Listing(CancellationToken cancellationToken = default)
+	public async Task<IActionResult> Detail(int id)
 	{
-		return ApiResponse(await Mediator.Send(new OrderListingQuery(), cancellationToken));
+		return HandleApiResponse(await Mediator.Send(new OrderDetailQuery(id)));
 	}
 
-	[HttpGet("{orderId}")]
+	[HttpGet]
 	[Authorize]
-	public async Task<IActionResult> Detail(string orderId, CancellationToken cancellationToken = default)
+	public async Task<IActionResult> Paging([FromQuery] OrderListingQuery request)
 	{
-		return ApiResponse(await Mediator.Send(new OrderDetailQuery(orderId), cancellationToken));
+		return HandleApiResponse(await Mediator.Send(request));
 	}
 
 	[HttpPost("checkout")]
 	[Authorize]
 	public async Task<IActionResult> Checkout([FromBody] CheckoutOrderCommand command)
 	{
-		return ApiResponse(await Mediator.Send(command));
+		return HandleApiResponse(await Mediator.Send(command));
 	}
 
 	[HttpPut("{orderId}/delivery")]
-	[Authorize(Roles = nameof(AccountRole.Admin))]
-	public async Task<IActionResult> Delivery(string orderId)
+	//[Authorize(Roles = nameof(AccountRole.Admin))]
+	public async Task<IActionResult> Delivery(int orderId)
 	{
-		return ApiResponse(await Mediator.Send(new DeliveryOrderCommand(orderId)));
+		return HandleApiResponse(await Mediator.Send(new DeliveryOrderCommand(orderId)));
 	}
 
 	[HttpPut("{orderId}/success")]
-	[Authorize(Roles = nameof(AccountRole.Admin))]
-	public async Task<IActionResult> Success(string orderId)
+	//[Authorize(Roles = nameof(AccountRole.Admin))]
+	public async Task<IActionResult> Success(int orderId)
 	{
-		return ApiResponse(await Mediator.Send(new SuccessOrderCommand(orderId)));
+		return HandleApiResponse(await Mediator.Send(new SuccessOrderCommand(orderId)));
 	}
 
 	[HttpPut("{orderId}/cancel")]
-	public async Task<IActionResult> Cancel(string orderId)
+	public async Task<IActionResult> Cancel(int orderId)
 	{
-		return ApiResponse(await Mediator.Send(new CancelOrderCommand(orderId)));
+		return HandleApiResponse(await Mediator.Send(new CancelOrderCommand(orderId)));
 	}
 }

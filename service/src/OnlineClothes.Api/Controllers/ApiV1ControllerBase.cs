@@ -1,6 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using OnlineClothes.Support.HttpResponse;
+﻿using OnlineClothes.Support.HttpResponse;
 
 namespace OnlineClothes.Api.Controllers;
 
@@ -14,7 +12,7 @@ public abstract class ApiV1ControllerBase : ControllerBase
 		Mediator = mediator;
 	}
 
-	protected ActionResult ApiResponse<T>(JsonApiResponse<T> responseApi, string? redirect = null) where T : class
+	protected ActionResult HandleApiResponse<T>(JsonApiResponse<T> responseApi, string? redirect = null) where T : class
 	{
 		if (!responseApi.IsError)
 		{

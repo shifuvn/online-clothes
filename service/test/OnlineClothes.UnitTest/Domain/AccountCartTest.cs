@@ -1,4 +1,5 @@
 ﻿using OnlineClothes.Domain.Entities;
+using OnlineClothes.Domain.Entities.Aggregate;
 
 namespace OnlineClothes.UnitTest.Domain;
 
@@ -13,7 +14,7 @@ public class AccountCartTest
 		var cart = new AccountCart();
 
 		// act
-		cart.AddItem("0x123", 2);
+		cart.UpdateItemQuantity("1", 2);
 
 		// assert
 		Assert.NotNull(cart);
@@ -27,20 +28,20 @@ public class AccountCartTest
 		// arrange
 		var cart = new AccountCart
 		{
-			AccountId = "0xabc",
-			Items = new List<AccountCart.CartItem> { new("0x123", 2) }
+			AccountId = 1,
+			Items = new List<CartItem> { new("1", 2) }
 		};
 
 		// act
-		cart.AddItem("0x456", 2);
-		cart.AddItem("0x123", 4);
+		cart.UpdateItemQuantity("2", 2);
+		cart.UpdateItemQuantity("1", 4);
 
 		var item1 = cart.Items.First();
 
 		// assert
 		Assert.NotNull(cart);
 		Assert.Equal(2, cart.Items.Count);
-		Assert.Equal(6, item1.Quantity);
+		Assert.Equal(4, item1.Quantity);
 	}
 
 	[Fact]
@@ -50,20 +51,20 @@ public class AccountCartTest
 		// arrange
 		var cart = new AccountCart
 		{
-			AccountId = "0xabc",
-			Items = new List<AccountCart.CartItem>
+			AccountId = 1,
+			Items = new List<CartItem>
 			{
-				new("0x123", 2),
-				new("0x456", 2)
+				new("1", 2),
+				new("2", 2)
 			}
 		};
 
 		// act
-		cart.RemoveItem("0x123", 6);
-		cart.RemoveItem("0x456", 2);
+		cart.UpdateItemQuantity("1", 0);
+		cart.UpdateItemQuantity("2", 0);
 
 		// assert
 		Assert.NotNull(cart);
-		Assert.Empty(cart.Items);
+		Assert.True(cart.IsEmpty());
 	}
 }

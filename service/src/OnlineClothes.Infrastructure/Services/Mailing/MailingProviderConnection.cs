@@ -3,7 +3,8 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
+using OnlineClothes.Application.Services.Mailing;
+using OnlineClothes.Application.Services.Mailing.Models;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
 
@@ -27,24 +28,6 @@ public class MailingProviderConnection : IMailingProviderConnection
 
 	public bool IsConnected => CheckConnection();
 
-	public ISmtpClient SmtpClient()
-	{
-		if (!IsConnected)
-		{
-			_logger.LogWarning("SmtpClient is null, trying to reconnect");
-
-			if (RetryConnect())
-			{
-				return _smtpClient!;
-			}
-
-			_logger.LogCritical("Can't connect to smtp server");
-			throw new Exception();
-		}
-
-		return _smtpClient!;
-	}
-
 	public bool RetryConnect()
 	{
 		_logger.LogWarning("Attempt to connect to smtp server");
@@ -62,6 +45,24 @@ public class MailingProviderConnection : IMailingProviderConnection
 		_logger.LogInformation("Re-connect to mail service success");
 
 		return true;
+	}
+
+	public ISmtpClient SmtpClient()
+	{
+		if (!IsConnected)
+		{
+			_logger.LogWarning("SmtpClient is null, trying to reconnect");
+
+			if (RetryConnect())
+			{
+				return _smtpClient!;
+			}
+
+			_logger.LogCritical("Can't connect to smtp server");
+			throw new Exception();
+		}
+
+		return _smtpClient!;
 	}
 
 	private void InitiateSmtpConnection()

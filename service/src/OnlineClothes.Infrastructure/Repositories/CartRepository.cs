@@ -1,53 +1,26 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
-using OnlineClothes.Domain.Attributes;
-using OnlineClothes.Domain.Entities;
-using OnlineClothes.Infrastructure.AggregateModels;
-using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Infrastructure.Services.UserContext.Abstracts;
-using OnlineClothes.Persistence.Context;
-using OnlineClothes.Persistence.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineClothes.Application.Persistence;
+using OnlineClothes.Application.Services.UserContext;
 
 namespace OnlineClothes.Infrastructure.Repositories;
 
-public class CartRepository : RootRepositoryBase<AccountCart, string>, ICartRepository
+public class CartRepository : EfCoreRepositoryBase<AccountCart, int>, ICartRepository
 {
 	private readonly IUserContext _userContext;
 
-	public CartRepository(IMongoDbContext dbContext, IUserContext userContext) : base(dbContext)
+	public CartRepository(AppDbContext dbContext, IUserContext userContext) : base(dbContext)
 	{
 		_userContext = userContext;
 	}
 
-	public async Task<AggregateCartInfoModel?> GetItems(CancellationToken cancellationToken = default)
+	public async Task<AccountCart> GetCurrentCart()
 	{
-		var lookupStage = new BsonDocument(
-			"$lookup",
-			new BsonDocument("from", BsonCollectionAttribute.GetName<ProductClothe>())
-				.Add("localField", "items.productId")
-				.Add("foreignField", "_id")
-				.Add("as", "items.details"));
+		var cart = await AsQueryable()
+			.Include(cart => cart.Items)
+			.ThenInclude(cartItem => cartItem.ProductSku)
+			.ThenInclude(productSku => productSku.Product)
+			.FirstAsync(cart => cart.AccountId.Equals(_userContext.GetNameIdentifier()));
 
-		// after unwind and lookup: item List -> object
-
-		var data = await Collection.Aggregate()
-			.Match(q => q.AccountId == _userContext.GetNameIdentifier())
-			.Unwind(q => q.Items)
-			.AppendStage<AggregateLookupCart>(lookupStage)
-			.ToListAsync(cancellationToken);
-
-		if (!data.Any())
-		{
-			return null;
-		}
-
-		var result = data?
-			.GroupBy(q => q.Id)
-			.Select(q => new AggregateCartInfoModel(
-				q.Key,
-				q.Select(AggregateCartInfoModel.Item.Create).ToList()))
-			.First();
-
-		return result;
+		return cart;
 	}
 }
