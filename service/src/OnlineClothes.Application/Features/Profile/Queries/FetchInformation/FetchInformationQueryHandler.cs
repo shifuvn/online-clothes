@@ -1,7 +1,5 @@
-﻿using MediatR;
-using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Infrastructure.Services.UserContext.Abstracts;
-using OnlineClothes.Support.HttpResponse;
+﻿using OnlineClothes.Application.Persistence;
+using OnlineClothes.Application.Services.UserContext;
 
 namespace OnlineClothes.Application.Features.Profile.Queries.FetchInformation;
 
@@ -20,10 +18,8 @@ internal sealed class
 	public async Task<JsonApiResponse<FetchInformationQueryResult>> Handle(FetchInformationQuery request,
 		CancellationToken cancellationToken)
 	{
-		var account = await _accountRepository.GetOneAsync(_userContext.GetNameIdentifier(), cancellationToken);
+		var account = await _accountRepository.GetByIntKey(_userContext.GetNameIdentifier(), cancellationToken);
 
-		var responseModel = FetchInformationQueryResult.Create(account);
-
-		return JsonApiResponse<FetchInformationQueryResult>.Success(data: responseModel);
+		return JsonApiResponse<FetchInformationQueryResult>.Success(data: FetchInformationQueryResult.ToModel(account));
 	}
 }

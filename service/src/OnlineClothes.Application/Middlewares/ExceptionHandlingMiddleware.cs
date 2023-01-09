@@ -1,9 +1,7 @@
 ﻿using System.Text.Json;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using OnlineClothes.Support.Exceptions.HttpExceptionCodes;
-using OnlineClothes.Support.HttpResponse;
 using JsonSerializerOptions = OnlineClothes.Support.JsonSerializer.JsonSerializerOptions;
 
 namespace OnlineClothes.Application.Middlewares;

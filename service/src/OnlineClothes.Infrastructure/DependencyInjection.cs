@@ -2,18 +2,20 @@
 using Amazon.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OnlineClothes.Application.Persistence;
+using OnlineClothes.Application.Services.Auth;
+using OnlineClothes.Application.Services.Mailing;
+using OnlineClothes.Application.Services.Mailing.Engine;
+using OnlineClothes.Application.Services.Mailing.Models;
+using OnlineClothes.Application.Services.ObjectStorage;
+using OnlineClothes.Application.Services.ObjectStorage.Models;
+using OnlineClothes.Application.Services.UserContext;
+using OnlineClothes.Application.StandaloneConfigurations;
 using OnlineClothes.Infrastructure.Repositories;
-using OnlineClothes.Infrastructure.Repositories.Abstracts;
 using OnlineClothes.Infrastructure.Services.Auth;
-using OnlineClothes.Infrastructure.Services.Auth.Abstracts;
 using OnlineClothes.Infrastructure.Services.Mailing;
-using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
-using OnlineClothes.Infrastructure.Services.Mailing.Engine;
-using OnlineClothes.Infrastructure.Services.Storage.Abstracts;
 using OnlineClothes.Infrastructure.Services.Storage.AwsS3;
 using OnlineClothes.Infrastructure.Services.UserContext;
-using OnlineClothes.Infrastructure.Services.UserContext.Abstracts;
-using OnlineClothes.Infrastructure.StandaloneConfigurations;
 
 namespace OnlineClothes.Infrastructure;
 
@@ -31,17 +33,20 @@ public static class DependencyInjection
 
 	public static void RegisterRepositories(this IServiceCollection services)
 	{
-		services.AddTransient<IAccountRepository, AccountRepository>();
-		services.AddTransient<IAccountTokenCodeRepository, AccountTokenCodeRepository>();
-		services.AddTransient<IProductRepository, ProductRepository>();
-		services.AddTransient<ICartRepository, CartRepository>();
-		services.AddTransient<IOrderRepository, OrderRepository>();
+		services.AddTransient<IAccountRepository, AccountRepository>()
+			.AddTransient<ITokenRepository, TokenRepository>()
+			.AddTransient<ICategoryRepository, CategoryRepository>()
+			.AddTransient<IBrandRepository, BrandRepository>()
+			.AddTransient<ICartRepository, CartRepository>()
+			.AddTransient<IOrderRepository, OrderRepository>()
+			.AddTransient<IProductRepository, ProductRepository>()
+			.AddTransient<ISkuRepository, ProductSkuRepository>();
 	}
 
 	public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
 	{
 		// auth
-		services.AddTransient<IAuthService, AuthService>();
+		services.AddTransient<IAuthorizeService, AuthorizeService>();
 
 		// mailing
 		services.AddSingleton<IMailingProviderConnection, MailingProviderConnection>();
@@ -63,7 +68,7 @@ public static class DependencyInjection
 	}
 
 	/// <summary>
-	///     Cache raw html email template to memory
+	/// Cache raw html email template to memory
 	/// </summary>
 	/// <param name="services"></param>
 	private static void CacheEmailTemplateInMemory(this IServiceCollection services)
@@ -72,4 +77,9 @@ public static class DependencyInjection
 		var renderer = scope.ServiceProvider.GetRequiredService<RazorEngineRenderer>();
 		renderer.LoadTemplateToMemory();
 	}
+}
+
+public static class InfrastructureAssembly
+{
+	public static Assembly ExecutingAssembly => Assembly.GetExecutingAssembly();
 }

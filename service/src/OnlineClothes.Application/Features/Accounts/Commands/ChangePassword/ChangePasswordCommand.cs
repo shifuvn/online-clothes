@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using MediatR;
-using OnlineClothes.Support.HttpResponse;
 
 namespace OnlineClothes.Application.Features.Accounts.Commands.ChangePassword;
 

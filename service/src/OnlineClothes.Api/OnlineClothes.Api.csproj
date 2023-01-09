@@ -4,6 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>0dff6189-0743-4f47-8032-030bd420dc65</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,19 +15,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\MailTemplates\CheckoutOrderReceiptMail.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\MailTemplates\CheckoutOrderReceiptMail.html" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OnlineClothes.Application\OnlineClothes.Application.csproj" />
+    <ProjectReference Include="..\OnlineClothes.Infrastructure\OnlineClothes.Infrastructure.csproj" />
+    <ProjectReference Include="..\OnlineClothes.Persistence\OnlineClothes.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

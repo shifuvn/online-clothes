@@ -1,6 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
-using OnlineClothes.Support.HttpResponse;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace OnlineClothes.Application.Features.Profile.Commands.EditAvatar;
 

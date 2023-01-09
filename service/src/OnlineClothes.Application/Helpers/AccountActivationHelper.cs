@@ -1,32 +1,31 @@
 ﻿using Microsoft.Extensions.Options;
-using OnlineClothes.Domain.Entities;
-using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Infrastructure.Services.Mailing;
-using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
-using OnlineClothes.Infrastructure.Services.Mailing.Models;
-using OnlineClothes.Infrastructure.StandaloneConfigurations;
+using OnlineClothes.Application.Persistence;
+using OnlineClothes.Application.Services.Mailing;
+using OnlineClothes.Application.Services.Mailing.Models;
+using OnlineClothes.Application.StandaloneConfigurations;
 
 namespace OnlineClothes.Application.Helpers;
 
 public class AccountActivationHelper
 {
 	private readonly AccountActivationConfiguration _accountActivationConfiguration;
-	private readonly IAccountRepository _accountRepository;
-	private readonly IAccountTokenCodeRepository _accountTokenCodeRepository;
 	private readonly AppDomainConfiguration _domainConfiguration;
 	private readonly IMailingService _mailingService;
+	private readonly ITokenRepository _tokenRepository;
+	private readonly IUnitOfWork _unitOfWork;
 
-	public AccountActivationHelper(IOptions<AppDomainConfiguration> domainConfigurationOption,
+	public AccountActivationHelper(
+		IOptions<AppDomainConfiguration> domainConfigurationOption,
 		IOptions<AccountActivationConfiguration> accountActivationConfigurationOption,
-		IAccountTokenCodeRepository accountTokenCodeRepository,
 		IMailingService mailingService,
-		IAccountRepository accountRepository)
+		IUnitOfWork unitOfWork,
+		ITokenRepository tokenRepository)
 	{
 		_accountActivationConfiguration = accountActivationConfigurationOption.Value;
 		_domainConfiguration = domainConfigurationOption.Value;
-		_accountTokenCodeRepository = accountTokenCodeRepository;
 		_mailingService = mailingService;
-		_accountRepository = accountRepository;
+		_unitOfWork = unitOfWork;
+		_tokenRepository = tokenRepository;
 	}
 
 	public async Task<AccountActivationResult> StartNewAccount(AccountUser account,
@@ -35,18 +34,13 @@ public class AccountActivationHelper
 		if (!_accountActivationConfiguration.ByEmail)
 		{
 			account.Activate();
-
-			// update activated status
-			await _accountRepository.UpdateOneAsync(
-				account.Id,
-				update => update.Set(acc => acc.IsActivated, account.IsActivated),
-				cancellationToken: cancellationToken);
-
 			return AccountActivationResult.Activated;
 		}
 
-		var newTokenCode = await CreateVerificationTokenCode(account, cancellationToken);
-		await SendActivationMail(account, cancellationToken, newTokenCode);
+		await SendActivationMail(
+			account,
+			await CreateVerificationTokenCode(account, cancellationToken),
+			cancellationToken);
 
 		return AccountActivationResult.WaitConfirm;
 	}
@@ -55,12 +49,15 @@ public class AccountActivationHelper
 		CancellationToken cancellationToken)
 	{
 		var newTokenCode = new AccountTokenCode(account.Email, AccountTokenType.Verification, TimeSpan.FromMinutes(15));
-		await _accountTokenCodeRepository.InsertAsync(newTokenCode, cancellationToken);
+		await _tokenRepository.AddAsync(newTokenCode, cancellationToken: cancellationToken);
+		await _unitOfWork.SaveChangesAsync(cancellationToken);
+
 		return newTokenCode;
 	}
 
-	private async Task SendActivationMail(AccountUser account, CancellationToken cancellationToken,
-		AccountTokenCode newTokenCode)
+	private async Task SendActivationMail(AccountUser account,
+		AccountTokenCode newTokenCode,
+		CancellationToken cancellationToken = default)
 	{
 		var mail = new MailingTemplate(account.Email, "Verify Account", EmailTemplateNames.VerifyAccount,
 			new
