@@ -41,7 +41,7 @@ public class AccountCartTest
 		// assert
 		Assert.NotNull(cart);
 		Assert.Equal(2, cart.Items.Count);
-		Assert.Equal(6, item1.Quantity);
+		Assert.Equal(4, item1.Quantity);
 	}
 
 	[Fact]
@@ -60,11 +60,11 @@ public class AccountCartTest
 		};
 
 		// act
-		cart.UpdateItemQuantity("1", 6);
-		cart.UpdateItemQuantity("2", 2);
+		cart.UpdateItemQuantity("1", 0);
+		cart.UpdateItemQuantity("2", 0);
 
 		// assert
 		Assert.NotNull(cart);
-		Assert.Empty(cart.Items);
+		Assert.True(cart.IsEmpty());
 	}
 }
