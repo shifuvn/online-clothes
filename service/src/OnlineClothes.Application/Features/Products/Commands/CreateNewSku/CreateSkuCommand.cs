@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Text.RegularExpressions;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using OnlineClothes.Application.Commons;
 
 namespace OnlineClothes.Application.Features.Products.Commands.CreateNewSku;
@@ -12,8 +13,7 @@ public class CreateSkuCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 	[DefaultValue(0)] public decimal AddOnPrice { get; set; }
 	[DefaultValue(0)] public int InStock { get; set; }
 	[DefaultValue(ClotheSizeType.NoSize)] public ClotheSizeType Size { get; set; }
-
-	// TODO: image
+	public IFormFile? ImageFile { get; set; }
 }
 
 public class CreateSkuCommandValidation : AbstractValidator<CreateSkuCommand>

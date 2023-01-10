@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using OnlineClothes.Application.Features.Image.Commands.UploadProfile;
 using OnlineClothes.Application.Features.Profile.Commands.EditInformation;
 using OnlineClothes.Application.Features.Profile.Queries.FetchInformation;
 
@@ -22,5 +23,12 @@ public class ProfilesController : ApiV1ControllerBase
 		CancellationToken cancellationToken = default)
 	{
 		return HandleApiResponse(await Mediator.Send(command, cancellationToken));
+	}
+
+
+	[HttpPost("profile/avatar")]
+	public async Task<IActionResult> UploadAccountAvatar([FromForm] UploadAccountImageCommand request)
+	{
+		return HandleApiResponse(await Mediator.Send(request));
 	}
 }

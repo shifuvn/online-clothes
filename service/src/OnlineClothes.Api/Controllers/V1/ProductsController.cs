@@ -8,10 +8,8 @@ using OnlineClothes.Application.Features.Products.Commands.EditSkuInfo;
 using OnlineClothes.Application.Features.Products.Commands.ImportSku;
 using OnlineClothes.Application.Features.Products.Commands.RestoreProduct;
 using OnlineClothes.Application.Features.Products.Commands.RestoreSku;
-using OnlineClothes.Application.Features.Products.Commands.UploadImage;
 using OnlineClothes.Application.Features.Products.Queries.Detail;
 using OnlineClothes.Application.Features.Products.Queries.Paging;
-using OnlineClothes.Domain.Common;
 
 namespace OnlineClothes.Api.Controllers.V1;
 
@@ -64,13 +62,6 @@ public class ProductsController : ApiV1ControllerBase
 	public async Task<IActionResult> ImportStock([FromBody] ImportSkuStockCommand request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));
-	}
-
-	[HttpPut("{id}/upload-image")]
-	[Authorize(Roles = nameof(AccountRole.Admin))]
-	public async Task<IActionResult> UploadImage(string id, [FromForm] IFormFile file)
-	{
-		return HandleApiResponse(await Mediator.Send(new UploadProductImageCommand(id, file)));
 	}
 
 	[HttpPut("product/{id:int}/restore")]

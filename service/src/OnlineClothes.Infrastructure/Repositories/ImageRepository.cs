@@ -24,7 +24,7 @@ public class ImageRepository : EfCoreRepositoryBase<ImageObject, int>, IImageRep
 		_objectStorage = objectStorage;
 	}
 
-	public async Task UploadAccountAvatar(IFormFile file)
+	public async Task AddAccountAvatarFileAsync(IFormFile file)
 	{
 		var account = await _accountRepository.GetByIntKey(_userContext.GetNameIdentifier());
 
@@ -37,8 +37,14 @@ public class ImageRepository : EfCoreRepositoryBase<ImageObject, int>, IImageRep
 		account.AvatarImage = imageObject;
 	}
 
-	public async Task<ImageObject> UploadProductFile(IFormFile file, CancellationToken cancellationToken = default)
+	public async Task<ImageObject?> AddProductImageFileAsync(IFormFile? file,
+		CancellationToken cancellationToken = default)
 	{
+		if (file is null)
+		{
+			return null;
+		}
+
 		var uploadedUrl = await UploadProductImageToStorage(file);
 
 		// create new record

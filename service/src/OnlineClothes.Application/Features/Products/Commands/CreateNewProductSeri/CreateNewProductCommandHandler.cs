@@ -7,6 +7,7 @@ namespace OnlineClothes.Application.Features.Products.Commands.CreateNewProductS
 public class
 	CreateNewProductCommandHandler : IRequestHandler<CreateNewProductCommand, JsonApiResponse<EmptyUnitResponse>>
 {
+	private readonly IImageRepository _imageRepository;
 	private readonly ILogger<CreateNewProductCommandHandler> _logger;
 	private readonly IMapper _mapper;
 	private readonly IProductRepository _productRepository;
@@ -18,13 +19,15 @@ public class
 		IProductRepository productRepository,
 		IUnitOfWork unitOfWork,
 		IMapper mapper,
-		ISkuRepository skuRepository)
+		ISkuRepository skuRepository,
+		IImageRepository imageRepository)
 	{
 		_logger = logger;
 		_productRepository = productRepository;
 		_unitOfWork = unitOfWork;
 		_mapper = mapper;
 		_skuRepository = skuRepository;
+		_imageRepository = imageRepository;
 	}
 
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(CreateNewProductCommand request,
@@ -35,18 +38,26 @@ public class
 			return JsonApiResponse<EmptyUnitResponse>.Fail("Sku đã tồn tại");
 		}
 
+		// begin tx
+		await _unitOfWork.BeginTransactionAsync(cancellationToken);
+
 		var product = _mapper.Map<CreateNewProductCommand, Product>(request);
+
+		product.ThumbnailImage = await _imageRepository.AddProductImageFileAsync(request.ImageFile, cancellationToken);
 
 		await _productRepository.AddAsync(product, cancellationToken: cancellationToken);
 
 		var save = await _unitOfWork.SaveChangesAsync(cancellationToken);
-
 		if (!save)
 		{
 			return JsonApiResponse<EmptyUnitResponse>.Fail();
 		}
 
+		// commit tx
+		await _unitOfWork.CommitAsync(cancellationToken);
+
 		_logger.LogInformation("Create new product seri: {object}", JsonConvert.SerializeObject(product));
+
 		return JsonApiResponse<EmptyUnitResponse>.Created("Tạo dòng sản phẩm thành công");
 	}
 

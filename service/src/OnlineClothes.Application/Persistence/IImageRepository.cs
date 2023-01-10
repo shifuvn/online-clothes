@@ -4,7 +4,7 @@ namespace OnlineClothes.Application.Persistence;
 
 public interface IImageRepository : IEfCoreRepository<ImageObject, int>
 {
-	Task UploadAccountAvatar(IFormFile file);
+	Task AddAccountAvatarFileAsync(IFormFile file);
 
-	Task<ImageObject> UploadProductFile(IFormFile file, CancellationToken cancellationToken = default);
+	Task<ImageObject?> AddProductImageFileAsync(IFormFile? file, CancellationToken cancellationToken = default);
 }

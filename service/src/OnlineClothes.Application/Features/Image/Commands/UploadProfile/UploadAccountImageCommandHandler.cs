@@ -20,7 +20,7 @@ public class
 		// begin tx
 		await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
-		await _imageRepository.UploadAccountAvatar(request.File);
+		await _imageRepository.AddAccountAvatarFileAsync(request.File);
 
 		var save = await _unitOfWork.SaveChangesAsync(cancellationToken);
 

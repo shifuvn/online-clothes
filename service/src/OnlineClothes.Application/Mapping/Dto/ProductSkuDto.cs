@@ -16,7 +16,6 @@ public class ProductSkuDto : ProductSkuBasicDto
 	public List<CategoryDto> Categories { get; set; } = new();
 	public DateTime CreatedAt { get; set; }
 	public DateTime ModifiedAt { get; set; }
-	public string? ImageUrl { get; set; }
 
 	public new static ProductSkuDto ToModel(ProductSku entity)
 	{
