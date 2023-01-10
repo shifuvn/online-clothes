@@ -6,10 +6,12 @@ using OnlineClothes.Application.Features.Products.Commands.DeleteSku;
 using OnlineClothes.Application.Features.Products.Commands.EditProductInfo;
 using OnlineClothes.Application.Features.Products.Commands.EditSkuInfo;
 using OnlineClothes.Application.Features.Products.Commands.ImportSku;
+using OnlineClothes.Application.Features.Products.Commands.PromoteThumbnail;
 using OnlineClothes.Application.Features.Products.Commands.RestoreProduct;
 using OnlineClothes.Application.Features.Products.Commands.RestoreSku;
 using OnlineClothes.Application.Features.Products.Queries.Detail;
 using OnlineClothes.Application.Features.Products.Queries.Paging;
+using OnlineClothes.Application.Features.Products.Queries.ProductImages;
 
 namespace OnlineClothes.Api.Controllers.V1;
 
@@ -34,7 +36,13 @@ public class ProductsController : ApiV1ControllerBase
 		return HandleApiResponse(await Mediator.Send(new GetSkuDetailQuery(sku)));
 	}
 
-	[HttpPost("product")]
+	[HttpGet("{productId:int}/images")]
+	public async Task<IActionResult> GetProductImage([FromRoute] int productId)
+	{
+		return HandleApiResponse(await Mediator.Send(new GetProductImageQuery { Id = productId }));
+	}
+
+	[HttpPost]
 	public async Task<IActionResult> CreateProduct([FromForm] CreateNewProductCommand request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));
@@ -46,8 +54,8 @@ public class ProductsController : ApiV1ControllerBase
 		return HandleApiResponse(await Mediator.Send(request));
 	}
 
-	[HttpPut("product/edit")]
-	public async Task<IActionResult> EditProduct([FromBody] EditProductCommand request)
+	[HttpPut("edit")]
+	public async Task<IActionResult> EditProduct([FromForm] EditProductCommand request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));
 	}
@@ -64,7 +72,7 @@ public class ProductsController : ApiV1ControllerBase
 		return HandleApiResponse(await Mediator.Send(request));
 	}
 
-	[HttpPut("product/{id:int}/restore")]
+	[HttpPut("{id:int}/restore")]
 	public async Task<IActionResult> RestoreProduct(int id)
 	{
 		return HandleApiResponse(await Mediator.Send(new RestoreProductCommand(id)));
@@ -76,7 +84,13 @@ public class ProductsController : ApiV1ControllerBase
 		return HandleApiResponse(await Mediator.Send(new RestoreSkuCommand(sku)));
 	}
 
-	[HttpDelete("product/{id:int}")]
+	[HttpPut("thumbnail/promote")]
+	public async Task<IActionResult> PromoteThumbnailImage([FromBody] PromoteProductThumbnailCommand request)
+	{
+		return HandleApiResponse(await Mediator.Send(request));
+	}
+
+	[HttpDelete("{id:int}")]
 	public async Task<IActionResult> DeleteProduct(int id)
 	{
 		return HandleApiResponse(await Mediator.Send(new DeleteProductCommand(id)));

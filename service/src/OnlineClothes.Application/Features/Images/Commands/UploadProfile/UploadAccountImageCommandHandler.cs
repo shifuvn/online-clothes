@@ -1,6 +1,6 @@
 ﻿using OnlineClothes.Application.Persistence;
 
-namespace OnlineClothes.Application.Features.Image.Commands.UploadProfile;
+namespace OnlineClothes.Application.Features.Images.Commands.UploadProfile;
 
 public class
 	UploadAccountImageCommandHandler : IRequestHandler<UploadAccountImageCommand, JsonApiResponse<EmptyUnitResponse>>

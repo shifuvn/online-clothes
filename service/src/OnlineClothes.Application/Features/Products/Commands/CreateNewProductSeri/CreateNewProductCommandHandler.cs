@@ -43,7 +43,11 @@ public class
 
 		var product = _mapper.Map<CreateNewProductCommand, Product>(request);
 
-		product.ThumbnailImage = await _imageRepository.AddProductImageFileAsync(request.ImageFile, cancellationToken);
+		product.ThumbnailImage =
+			await _imageRepository.AddProductImageFileAsync(request.ImageFile, request.Sku, cancellationToken);
+
+		// MAGIC code (used to assign image to first sku created)
+		product.ProductSkus.First().Image = product.ThumbnailImage;
 
 		await _productRepository.AddAsync(product, cancellationToken: cancellationToken);
 

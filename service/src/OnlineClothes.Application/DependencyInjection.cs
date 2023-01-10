@@ -21,6 +21,7 @@ public static class DependencyInjection
 		services.AddTransient<ExceptionHandlingMiddleware>();
 
 		services.AddTransient<AccountActivationHelper>();
+		services.AddTransient<SkuImageFileHelper>();
 	}
 }
 

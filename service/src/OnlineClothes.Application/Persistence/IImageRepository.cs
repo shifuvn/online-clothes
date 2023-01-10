@@ -6,5 +6,8 @@ public interface IImageRepository : IEfCoreRepository<ImageObject, int>
 {
 	Task AddAccountAvatarFileAsync(IFormFile file);
 
-	Task<ImageObject?> AddProductImageFileAsync(IFormFile? file, CancellationToken cancellationToken = default);
+	Task<ImageObject?> AddProductImageFileAsync(
+		IFormFile? file,
+		string sku,
+		CancellationToken cancellationToken = default);
 }

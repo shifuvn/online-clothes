@@ -40,7 +40,8 @@ public sealed class
 		await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
 		var productSku = _mapper.Map<CreateSkuCommand, ProductSku>(request);
-		productSku.Image = await _imageRepository.AddProductImageFileAsync(request.ImageFile, cancellationToken);
+		productSku.Image =
+			await _imageRepository.AddProductImageFileAsync(request.ImageFile, request.Sku, cancellationToken);
 
 		await _skuRepository.AddAsync(productSku, cancellationToken: cancellationToken);
 

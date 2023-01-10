@@ -37,7 +37,9 @@ public class ImageRepository : EfCoreRepositoryBase<ImageObject, int>, IImageRep
 		account.AvatarImage = imageObject;
 	}
 
-	public async Task<ImageObject?> AddProductImageFileAsync(IFormFile? file,
+	public async Task<ImageObject?> AddProductImageFileAsync(
+		IFormFile? file,
+		string sku,
 		CancellationToken cancellationToken = default)
 	{
 		if (file is null)
@@ -45,7 +47,7 @@ public class ImageRepository : EfCoreRepositoryBase<ImageObject, int>, IImageRep
 			return null;
 		}
 
-		var uploadedUrl = await UploadProductImageToStorage(file);
+		var uploadedUrl = await UploadProductImageToStorage(file, sku);
 
 		// create new record
 		var image = new ImageObject(uploadedUrl);
@@ -54,9 +56,11 @@ public class ImageRepository : EfCoreRepositoryBase<ImageObject, int>, IImageRep
 		return image;
 	}
 
-	private async Task<string> UploadProductImageToStorage(IFormFile file)
+	private async Task<string> UploadProductImageToStorage(IFormFile? file, string sku)
 	{
-		var productImageName = $"product-{DateTimeOffset.Now.ToUnixTimeMilliseconds()}-{file.GetHashCode()}";
+		ArgumentNullException.ThrowIfNull(sku);
+
+		var productImageName = sku;
 		var objectStorage = new ObjectStorage(
 			file,
 			ObjectStorage.CombinePrefixDirectory("product"),

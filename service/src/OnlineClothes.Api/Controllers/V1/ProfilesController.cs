@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using OnlineClothes.Application.Features.Image.Commands.UploadProfile;
+using OnlineClothes.Application.Features.Images.Commands.UploadProfile;
 using OnlineClothes.Application.Features.Profile.Commands.EditInformation;
 using OnlineClothes.Application.Features.Profile.Queries.FetchInformation;
 

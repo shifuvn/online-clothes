@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace OnlineClothes.Application.Features.Image.Commands.UploadProfile;
+namespace OnlineClothes.Application.Features.Images.Commands.UploadProfile;
 
 public class UploadAccountImageCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 {

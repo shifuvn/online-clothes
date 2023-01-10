@@ -25,4 +25,9 @@
     <ProjectReference Include="..\OnlineClothes.Support\OnlineClothes.Support.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Products\Commands\PromoteThumbnail\" />
+    <Folder Include="Features\Products\Queries\ProductImages\" />
+  </ItemGroup>
+
 </Project>
