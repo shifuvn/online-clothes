@@ -47,7 +47,7 @@ services:
       - "8085:8085"
 
   app:
-    image: online-clothes-api
+    image: solcr/online-clothes-api:dev
     build:
       context: .
       dockerfile: OnlineClothes.Api/Dockerfile

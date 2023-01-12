@@ -25,11 +25,4 @@
     <ProjectReference Include="..\OnlineClothes.Support\OnlineClothes.Support.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Images\Commands\DeleteSkuImage\" />
-    <Folder Include="Features\Images\Commands\ReplaceSkuImage\" />
-    <Folder Include="Features\Products\Commands\PromoteThumbnail\" />
-    <Folder Include="Features\Products\Queries\ProductImages\" />
-  </ItemGroup>
-
 </Project>
