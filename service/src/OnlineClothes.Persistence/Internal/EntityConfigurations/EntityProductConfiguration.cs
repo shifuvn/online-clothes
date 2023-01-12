@@ -4,11 +4,11 @@ using OnlineClothes.Domain.Entities.Aggregate;
 
 namespace OnlineClothes.Persistence.Internal.EntityConfigurations;
 
-public class EntityProductSkuConfigure : IEntityTypeConfiguration<ProductSku>
+public class EntityProductConfiguration : IEntityTypeConfiguration<Product>
 {
-	public void Configure(EntityTypeBuilder<ProductSku> builder)
+	public void Configure(EntityTypeBuilder<Product> builder)
 	{
-		builder.HasOne(q => q.Image)
+		builder.HasOne(q => q.ThumbnailImage)
 			.WithOne()
 			.OnDelete(DeleteBehavior.SetNull);
 	}

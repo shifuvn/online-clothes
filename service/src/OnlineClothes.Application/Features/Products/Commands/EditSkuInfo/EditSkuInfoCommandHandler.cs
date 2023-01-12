@@ -9,8 +9,8 @@ public class EditSkuInfoCommandHandler : IRequestHandler<EditSkuInfoCommand, Jso
 {
 	private readonly IImageRepository _imageRepository;
 	private readonly IMapper _mapper;
-	private readonly SkuImageFileHelper _skuImageFileHelper;
 	private readonly ISkuRepository _skuRepository;
+	private readonly StorageImageFileHelper _storageImageFileHelper;
 	private readonly IUnitOfWork _unitOfWork;
 
 	public EditSkuInfoCommandHandler(
@@ -18,13 +18,13 @@ public class EditSkuInfoCommandHandler : IRequestHandler<EditSkuInfoCommand, Jso
 		IUnitOfWork unitOfWork,
 		IMapper mapper,
 		IImageRepository imageRepository,
-		SkuImageFileHelper skuImageFileHelper)
+		StorageImageFileHelper storageImageFileHelper)
 	{
 		_skuRepository = skuRepository;
 		_unitOfWork = unitOfWork;
 		_mapper = mapper;
 		_imageRepository = imageRepository;
-		_skuImageFileHelper = skuImageFileHelper;
+		_storageImageFileHelper = storageImageFileHelper;
 	}
 
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(EditSkuInfoCommand request,
@@ -43,7 +43,7 @@ public class EditSkuInfoCommandHandler : IRequestHandler<EditSkuInfoCommand, Jso
 		_skuRepository.Update(sku);
 		_mapper.Map(request, sku);
 
-		await _skuImageFileHelper.ReplaceImageFile(sku, request.ImageFile);
+		//await _storageImageFileHelper.ReplaceImageFile(sku, request.ImageFile);
 
 		var save = await _unitOfWork.SaveChangesAsync(cancellationToken);
 		if (!save)

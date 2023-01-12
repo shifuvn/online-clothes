@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
+using OnlineClothes.Application.Helpers;
 using OnlineClothes.Application.Persistence;
 
 namespace OnlineClothes.Application.Features.Products.Commands.CreateNewProductSeri;
@@ -7,11 +8,11 @@ namespace OnlineClothes.Application.Features.Products.Commands.CreateNewProductS
 public class
 	CreateNewProductCommandHandler : IRequestHandler<CreateNewProductCommand, JsonApiResponse<EmptyUnitResponse>>
 {
-	private readonly IImageRepository _imageRepository;
 	private readonly ILogger<CreateNewProductCommandHandler> _logger;
 	private readonly IMapper _mapper;
 	private readonly IProductRepository _productRepository;
 	private readonly ISkuRepository _skuRepository;
+	private readonly StorageImageFileHelper _storageImageFileHelper;
 	private readonly IUnitOfWork _unitOfWork;
 
 	public CreateNewProductCommandHandler(
@@ -20,14 +21,14 @@ public class
 		IUnitOfWork unitOfWork,
 		IMapper mapper,
 		ISkuRepository skuRepository,
-		IImageRepository imageRepository)
+		StorageImageFileHelper storageImageFileHelper)
 	{
 		_logger = logger;
 		_productRepository = productRepository;
 		_unitOfWork = unitOfWork;
 		_mapper = mapper;
 		_skuRepository = skuRepository;
-		_imageRepository = imageRepository;
+		_storageImageFileHelper = storageImageFileHelper;
 	}
 
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(CreateNewProductCommand request,
@@ -43,11 +44,14 @@ public class
 
 		var product = _mapper.Map<CreateNewProductCommand, Product>(request);
 
-		product.ThumbnailImage =
-			await _imageRepository.AddProductImageFileAsync(request.ImageFile, request.Sku, cancellationToken);
+		if (request.ImageFile is not null)
+		{
+			await _storageImageFileHelper.AddOrUpdateSkuImageAsync(product.ProductSkus.First(), request.ImageFile,
+				cancellationToken);
+		}
 
 		// MAGIC code (used to assign image to first sku created)
-		product.ProductSkus.First().Image = product.ThumbnailImage;
+		product.ThumbnailImage = product.ProductSkus.First().Image;
 
 		await _productRepository.AddAsync(product, cancellationToken: cancellationToken);
 

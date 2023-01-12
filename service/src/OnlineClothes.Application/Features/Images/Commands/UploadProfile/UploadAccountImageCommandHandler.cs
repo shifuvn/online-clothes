@@ -1,17 +1,28 @@
-﻿using OnlineClothes.Application.Persistence;
+﻿using OnlineClothes.Application.Helpers;
+using OnlineClothes.Application.Persistence;
+using OnlineClothes.Application.Services.UserContext;
 
 namespace OnlineClothes.Application.Features.Images.Commands.UploadProfile;
 
 public class
 	UploadAccountImageCommandHandler : IRequestHandler<UploadAccountImageCommand, JsonApiResponse<EmptyUnitResponse>>
 {
-	private readonly IImageRepository _imageRepository;
+	private readonly IAccountRepository _accountRepository;
+	private readonly StorageImageFileHelper _storageImageFileHelper;
 	private readonly IUnitOfWork _unitOfWork;
+	private readonly IUserContext _userContext;
 
-	public UploadAccountImageCommandHandler(IImageRepository imageRepository, IUnitOfWork unitOfWork)
+
+	public UploadAccountImageCommandHandler(
+		IUnitOfWork unitOfWork,
+		IAccountRepository accountRepository,
+		IUserContext userContext,
+		StorageImageFileHelper storageImageFileHelper)
 	{
-		_imageRepository = imageRepository;
 		_unitOfWork = unitOfWork;
+		_accountRepository = accountRepository;
+		_userContext = userContext;
+		_storageImageFileHelper = storageImageFileHelper;
 	}
 
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(UploadAccountImageCommand request,
@@ -20,7 +31,11 @@ public class
 		// begin tx
 		await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
-		await _imageRepository.AddAccountAvatarFileAsync(request.File);
+		var account = await _accountRepository.GetByIntKey(_userContext.GetNameIdentifier(), cancellationToken);
+
+		_accountRepository.Update(account);
+
+		await _storageImageFileHelper.AddOrUpdateAccountProfileAvatarAsync(account, request.File, cancellationToken);
 
 		var save = await _unitOfWork.SaveChangesAsync(cancellationToken);
 

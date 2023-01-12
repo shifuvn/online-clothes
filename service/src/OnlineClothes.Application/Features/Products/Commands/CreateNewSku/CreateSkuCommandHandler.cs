@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
+using OnlineClothes.Application.Helpers;
 using OnlineClothes.Application.Persistence;
 using OnlineClothes.Support.Builders.Predicate;
 
@@ -8,10 +9,10 @@ namespace OnlineClothes.Application.Features.Products.Commands.CreateNewSku;
 public sealed class
 	CreateSkuCommandHandler : IRequestHandler<CreateSkuCommand, JsonApiResponse<EmptyUnitResponse>>
 {
-	private readonly IImageRepository _imageRepository;
 	private readonly ILogger<CreateSkuCommandHandler> _logger;
 	private readonly IMapper _mapper;
 	private readonly ISkuRepository _skuRepository;
+	private readonly StorageImageFileHelper _storageImageFileHelper;
 	private readonly IUnitOfWork _unitOfWork;
 
 	public CreateSkuCommandHandler(
@@ -19,13 +20,13 @@ public sealed class
 		IUnitOfWork unitOfWork,
 		IMapper mapper,
 		ISkuRepository skuRepository,
-		IImageRepository imageRepository)
+		StorageImageFileHelper storageImageFileHelper)
 	{
 		_logger = logger;
 		_unitOfWork = unitOfWork;
 		_mapper = mapper;
 		_skuRepository = skuRepository;
-		_imageRepository = imageRepository;
+		_storageImageFileHelper = storageImageFileHelper;
 	}
 
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(CreateSkuCommand request,
@@ -40,8 +41,11 @@ public sealed class
 		await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
 		var productSku = _mapper.Map<CreateSkuCommand, ProductSku>(request);
-		productSku.Image =
-			await _imageRepository.AddProductImageFileAsync(request.ImageFile, request.Sku, cancellationToken);
+
+		if (request.ImageFile is not null)
+		{
+			await _storageImageFileHelper.AddOrUpdateSkuImageAsync(productSku, request.ImageFile, cancellationToken);
+		}
 
 		await _skuRepository.AddAsync(productSku, cancellationToken: cancellationToken);
 

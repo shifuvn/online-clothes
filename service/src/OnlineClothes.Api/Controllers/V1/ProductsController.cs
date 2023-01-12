@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using OnlineClothes.Application.Features.Images.Commands.DeleteSkuImage;
+using OnlineClothes.Application.Features.Images.Commands.ReplaceSkuImage;
 using OnlineClothes.Application.Features.Products.Commands.CreateNewProductSeri;
 using OnlineClothes.Application.Features.Products.Commands.CreateNewSku;
 using OnlineClothes.Application.Features.Products.Commands.DeleteProduct;
@@ -55,13 +57,13 @@ public class ProductsController : ApiV1ControllerBase
 	}
 
 	[HttpPut("edit")]
-	public async Task<IActionResult> EditProduct([FromForm] EditProductCommand request)
+	public async Task<IActionResult> EditProduct([FromBody] EditProductCommand request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));
 	}
 
 	[HttpPut("sku/edit")]
-	public async Task<IActionResult> EditSku([FromForm] EditSkuInfoCommand request)
+	public async Task<IActionResult> EditSku([FromBody] EditSkuInfoCommand request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));
 	}
@@ -90,6 +92,12 @@ public class ProductsController : ApiV1ControllerBase
 		return HandleApiResponse(await Mediator.Send(request));
 	}
 
+	[HttpPut("sku/replace-image")]
+	public async Task<IActionResult> ReplaceSkuImage([FromForm] ReplaceSkuImageCommand request)
+	{
+		return HandleApiResponse(await Mediator.Send(request));
+	}
+
 	[HttpDelete("{id:int}")]
 	public async Task<IActionResult> DeleteProduct(int id)
 	{
@@ -100,5 +108,11 @@ public class ProductsController : ApiV1ControllerBase
 	public async Task<IActionResult> DeleteSku(string sku)
 	{
 		return HandleApiResponse(await Mediator.Send(new DisableSkuCommand(sku)));
+	}
+
+	[HttpDelete("sku/{sku}/image")]
+	public async Task<IActionResult> DeleteSkuImage(string sku)
+	{
+		return HandleApiResponse(await Mediator.Send(new DeleteSkuImageCommand { Sku = sku }));
 	}
 }

@@ -43,4 +43,20 @@ public class ObjectStorage
 	{
 		return string.Join('/', partition);
 	}
+
+	/// <summary>
+	/// Get identifier key from url.
+	/// </summary>
+	/// <param name="url"></param>
+	/// <param name="separator"></param>
+	/// <param name="skipping"></param>
+	/// <returns></returns>
+	public static string GetIdentifierKey(string url,
+		char separator = '/',
+		int skipping = ObjectStorageConstant.AwsS3SkipSeparatorFromUrl)
+	{
+		var urlSplit = url.Split(separator);
+		var key = string.Join('/', urlSplit.Skip(skipping));
+		return key;
+	}
 }

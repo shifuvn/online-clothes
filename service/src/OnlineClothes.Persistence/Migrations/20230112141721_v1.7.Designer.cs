@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OnlineClothes.Persistence.Context;
@@ -11,9 +12,10 @@ using OnlineClothes.Persistence.Context;
 namespace OnlineClothes.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230112141721_v1.7")]
+    partial class v17
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -297,8 +299,7 @@ namespace OnlineClothes.Persistence.Migrations
 
                     b.HasIndex("BrandId");
 
-                    b.HasIndex("ThumbnailImageId")
-                        .IsUnique();
+                    b.HasIndex("ThumbnailImageId");
 
                     b.ToTable("Products");
                 });
@@ -434,9 +435,8 @@ namespace OnlineClothes.Persistence.Migrations
                         .HasForeignKey("BrandId");
 
                     b.HasOne("OnlineClothes.Domain.Entities.Aggregate.ImageObject", "ThumbnailImage")
-                        .WithOne()
-                        .HasForeignKey("OnlineClothes.Domain.Entities.Aggregate.Product", "ThumbnailImageId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .WithMany()
+                        .HasForeignKey("ThumbnailImageId");
 
                     b.Navigation("Brand");
 
@@ -448,7 +448,7 @@ namespace OnlineClothes.Persistence.Migrations
                     b.HasOne("OnlineClothes.Domain.Entities.Aggregate.ImageObject", "Image")
                         .WithOne()
                         .HasForeignKey("OnlineClothes.Domain.Entities.Aggregate.ProductSku", "ImageId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("OnlineClothes.Domain.Entities.Aggregate.Product", "Product")
                         .WithMany("ProductSkus")

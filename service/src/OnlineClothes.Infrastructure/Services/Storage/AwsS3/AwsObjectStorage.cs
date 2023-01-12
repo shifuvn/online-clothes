@@ -111,4 +111,29 @@ public class AwsObjectStorage : IObjectStorage
 			return httpResponse.HttpStatusCode == HttpStatusCode.NoContent;
 		});
 	}
+
+	public async Task ReplaceAsync(Stream stream, string identifierKey, string? contentType = null,
+		CancellationToken cancellationToken = default)
+	{
+		var putObject = new PutObjectRequest
+		{
+			InputStream = stream,
+			BucketName = _awsS3Configuration.BucketName,
+			Key = identifierKey,
+			ContentType = contentType
+		};
+
+		await _asyncRetryPolicy.ExecuteAsync(async () =>
+		{
+			var httpResponse = await _amazonS3.PutObjectAsync(putObject, cancellationToken);
+			if (httpResponse.HttpStatusCode == HttpStatusCode.OK)
+			{
+				_logger.LogInformation("Uploaded [{Key}] to S3", putObject.Key);
+				return _awsS3Configuration.Endpoint + putObject.Key;
+			}
+
+			_logger.LogError("Fail to upload file to bucket with key: {Key}", putObject.Key);
+			throw new UnavailableServiceException("Storage service is unavailable");
+		});
+	}
 }
