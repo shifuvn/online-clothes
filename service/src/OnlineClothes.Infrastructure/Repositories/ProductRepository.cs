@@ -46,11 +46,6 @@ public class ProductRepository : EfCoreRepositoryBase<Product, int>, IProductRep
 			return; // skip if no category change
 		}
 
-		//var navigationCategories = await _categoryRepository
-		//	.FindAsync(
-		//	FilterBuilder<Category>.Where(q => newIncomeCategoryIds.Contains(q.Id)),
-		//	cancellationToken: cancellationToken);
-
 		var navigationCategories =
 			newIncomeCategoryIds.SelectList(x => new ProductCategory { ProductId = product.Id, CategoryId = x });
 

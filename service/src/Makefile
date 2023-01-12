@@ -25,6 +25,9 @@ migrate-remove:
 
 build:
 	docker-compose -f $(COMPOSE_CONTEXT) build
-	
-docker:
-	cd ./scripts && bash compose-dev.sh $(compose)
+
+compose-up:
+	cd ./scripts && bash compose-dev.sh up
+
+compose-down:
+	cd ./scripts && bash compose-dev.sh down

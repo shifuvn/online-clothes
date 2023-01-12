@@ -13,7 +13,7 @@ using Polly.Retry;
 
 namespace OnlineClothes.Infrastructure.Services.Storage.AwsS3;
 
-public class AwsObjectStorage : IObjectFileStorage
+public class AwsObjectStorage : IObjectStorage
 {
 	private readonly IAmazonS3 _amazonS3;
 	private readonly AsyncRetryPolicy _asyncRetryPolicy;
@@ -38,7 +38,7 @@ public class AwsObjectStorage : IObjectFileStorage
 	}
 
 
-	public async Task<string> UploadAsync(ObjectFileStorage @object, CancellationToken cancellationToken = default)
+	public async Task<string> UploadAsync(ObjectStorage @object, CancellationToken cancellationToken = default)
 	{
 		var putObject = new PutObjectRequest
 		{
@@ -109,6 +109,31 @@ public class AwsObjectStorage : IObjectFileStorage
 		{
 			var httpResponse = await _amazonS3.DeleteObjectsAsync(deleteObjects, cancellationToken);
 			return httpResponse.HttpStatusCode == HttpStatusCode.NoContent;
+		});
+	}
+
+	public async Task ReplaceAsync(Stream stream, string identifierKey, string? contentType = null,
+		CancellationToken cancellationToken = default)
+	{
+		var putObject = new PutObjectRequest
+		{
+			InputStream = stream,
+			BucketName = _awsS3Configuration.BucketName,
+			Key = identifierKey,
+			ContentType = contentType
+		};
+
+		await _asyncRetryPolicy.ExecuteAsync(async () =>
+		{
+			var httpResponse = await _amazonS3.PutObjectAsync(putObject, cancellationToken);
+			if (httpResponse.HttpStatusCode == HttpStatusCode.OK)
+			{
+				_logger.LogInformation("Uploaded [{Key}] to S3", putObject.Key);
+				return _awsS3Configuration.Endpoint + putObject.Key;
+			}
+
+			_logger.LogError("Fail to upload file to bucket with key: {Key}", putObject.Key);
+			throw new UnavailableServiceException("Storage service is unavailable");
 		});
 	}
 }

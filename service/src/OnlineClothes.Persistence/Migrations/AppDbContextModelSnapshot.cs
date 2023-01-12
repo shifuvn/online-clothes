@@ -90,6 +90,9 @@ namespace OnlineClothes.Persistence.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("text");
 
+                    b.Property<int?>("AvatarImageId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -103,9 +106,6 @@ namespace OnlineClothes.Persistence.Migrations
 
                     b.Property<string>("HashedPassword")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ImageUrl")
                         .HasColumnType("text");
 
                     b.Property<bool>("IsActivated")
@@ -133,6 +133,8 @@ namespace OnlineClothes.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AvatarImageId");
 
                     b.ToTable("AccountUsers");
                 });
@@ -190,6 +192,29 @@ namespace OnlineClothes.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("OnlineClothes.Domain.Entities.Aggregate.ImageObject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AltName")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("OnlineClothes.Domain.Entities.Aggregate.Order", b =>
@@ -262,12 +287,18 @@ namespace OnlineClothes.Persistence.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
+                    b.Property<int?>("ThumbnailImageId")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("Type")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("ThumbnailImageId")
+                        .IsUnique();
 
                     b.ToTable("Products");
                 });
@@ -282,6 +313,9 @@ namespace OnlineClothes.Persistence.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("InStock")
                         .HasColumnType("integer");
@@ -299,6 +333,9 @@ namespace OnlineClothes.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Sku");
+
+                    b.HasIndex("ImageId")
+                        .IsUnique();
 
                     b.HasIndex("ProductId");
 
@@ -370,6 +407,15 @@ namespace OnlineClothes.Persistence.Migrations
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("OnlineClothes.Domain.Entities.Aggregate.AccountUser", b =>
+                {
+                    b.HasOne("OnlineClothes.Domain.Entities.Aggregate.ImageObject", "AvatarImage")
+                        .WithMany()
+                        .HasForeignKey("AvatarImageId");
+
+                    b.Navigation("AvatarImage");
+                });
+
             modelBuilder.Entity("OnlineClothes.Domain.Entities.Aggregate.Order", b =>
                 {
                     b.HasOne("OnlineClothes.Domain.Entities.Aggregate.AccountUser", "Account")
@@ -387,16 +433,30 @@ namespace OnlineClothes.Persistence.Migrations
                         .WithMany("Products")
                         .HasForeignKey("BrandId");
 
+                    b.HasOne("OnlineClothes.Domain.Entities.Aggregate.ImageObject", "ThumbnailImage")
+                        .WithOne()
+                        .HasForeignKey("OnlineClothes.Domain.Entities.Aggregate.Product", "ThumbnailImageId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Brand");
+
+                    b.Navigation("ThumbnailImage");
                 });
 
             modelBuilder.Entity("OnlineClothes.Domain.Entities.Aggregate.ProductSku", b =>
                 {
+                    b.HasOne("OnlineClothes.Domain.Entities.Aggregate.ImageObject", "Image")
+                        .WithOne()
+                        .HasForeignKey("OnlineClothes.Domain.Entities.Aggregate.ProductSku", "ImageId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("OnlineClothes.Domain.Entities.Aggregate.Product", "Product")
                         .WithMany("ProductSkus")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Image");
 
                     b.Navigation("Product");
                 });

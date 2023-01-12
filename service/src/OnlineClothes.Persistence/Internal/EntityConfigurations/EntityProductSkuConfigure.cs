@@ -8,5 +8,8 @@ public class EntityProductSkuConfigure : IEntityTypeConfiguration<ProductSku>
 {
 	public void Configure(EntityTypeBuilder<ProductSku> builder)
 	{
+		builder.HasOne(q => q.Image)
+			.WithOne()
+			.OnDelete(DeleteBehavior.SetNull);
 	}
 }

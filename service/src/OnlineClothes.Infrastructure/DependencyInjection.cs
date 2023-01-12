@@ -40,7 +40,8 @@ public static class DependencyInjection
 			.AddTransient<ICartRepository, CartRepository>()
 			.AddTransient<IOrderRepository, OrderRepository>()
 			.AddTransient<IProductRepository, ProductRepository>()
-			.AddTransient<ISkuRepository, ProductSkuRepository>();
+			.AddTransient<ISkuRepository, ProductSkuRepository>()
+			.AddTransient<IImageRepository, ImageRepository>();
 	}
 
 	public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
@@ -63,7 +64,7 @@ public static class DependencyInjection
 
 		// amazon s3
 		services.AddAWSService<IAmazonS3>();
-		services.AddTransient<IObjectFileStorage, AwsObjectStorage>();
+		services.AddTransient<IObjectStorage, AwsObjectStorage>();
 		services.Configure<AwsS3Configuration>(configuration.GetSection("AwsS3"));
 	}
 

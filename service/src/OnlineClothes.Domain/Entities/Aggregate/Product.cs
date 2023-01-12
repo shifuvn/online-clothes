@@ -36,7 +36,9 @@ public class Product : EntityBase
 	[DefaultValue(null)] public int? BrandId { get; set; }
 	public ClotheType? Type { get; set; }
 	[DefaultValue(true)] public bool IsPublish { get; set; }
+	public int? ThumbnailImageId { get; set; }
 
+	[ForeignKey("ThumbnailImageId")] public ImageObject? ThumbnailImage { get; set; }
 	[ForeignKey("BrandId")] public Brand? Brand { get; set; }
 
 	[JsonIgnore] public virtual ICollection<ProductSku> ProductSkus { get; set; } = new Collection<ProductSku>();

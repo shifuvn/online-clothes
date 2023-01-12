@@ -3,9 +3,9 @@ using OnlineClothes.Support.Utilities;
 
 namespace OnlineClothes.Application.Services.ObjectStorage.Models;
 
-public class ObjectFileStorage
+public class ObjectStorage
 {
-	public ObjectFileStorage(Stream stream, string name, string prefixDirectory, string? contentType = null)
+	public ObjectStorage(Stream stream, string name, string prefixDirectory, string? contentType = null)
 	{
 		Stream = stream;
 		Name = name;
@@ -15,7 +15,10 @@ public class ObjectFileStorage
 		ContentType = contentType;
 	}
 
-	public ObjectFileStorage(IFormFile file, string prefixDirectory, string? fileName = null,
+	public ObjectStorage(
+		IFormFile file,
+		string prefixDirectory,
+		string? fileName = null,
 		string? contentType = null)
 	{
 		Stream = file.OpenReadStream();
@@ -39,5 +42,21 @@ public class ObjectFileStorage
 	public static string CombinePrefixDirectory(params string[] partition)
 	{
 		return string.Join('/', partition);
+	}
+
+	/// <summary>
+	/// Get identifier key from url.
+	/// </summary>
+	/// <param name="url"></param>
+	/// <param name="separator"></param>
+	/// <param name="skipping"></param>
+	/// <returns></returns>
+	public static string GetIdentifierKey(string url,
+		char separator = '/',
+		int skipping = ObjectStorageConstant.AwsS3SkipSeparatorFromUrl)
+	{
+		var urlSplit = url.Split(separator);
+		var key = string.Join('/', urlSplit.Skip(skipping));
+		return key;
 	}
 }

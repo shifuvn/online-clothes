@@ -24,9 +24,11 @@ public class AccountUser : EntityBase
 	public string Role { get; set; } = null!;
 	public string? PhoneNumber { get; set; }
 	public string? Address { get; set; }
-	public string? ImageUrl { get; set; } = null!;
 	public bool IsActivated { get; set; }
 	public DateTime LastLogin { get; set; }
+	public int? AvatarImageId { get; set; }
+
+	[ForeignKey("AvatarImageId")] public ImageObject? AvatarImage { get; set; }
 
 	/// <summary>
 	/// Create basic account.

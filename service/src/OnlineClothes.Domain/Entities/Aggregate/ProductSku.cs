@@ -16,8 +16,11 @@ public class ProductSku : SupportDomainEvent, IEntity<string>
 	public decimal AddOnPrice { get; set; }
 	public ClotheSizeType Size { get; set; }
 	public bool IsDeleted { get; set; }
+	public int? ImageId { get; set; }
+
 
 	[ForeignKey("ProductId")] public Product Product { get; set; } = null!;
+	[ForeignKey("ImageId")] public ImageObject? Image { get; set; }
 
 	[JsonIgnore] public virtual ICollection<OrderItem> OrderItems { get; set; } = new Collection<OrderItem>();
 	[JsonIgnore] public virtual ICollection<CartItem> CartItems { get; set; } = new Collection<CartItem>();

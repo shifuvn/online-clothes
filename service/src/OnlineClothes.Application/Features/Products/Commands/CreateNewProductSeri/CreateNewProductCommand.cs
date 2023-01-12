@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Text.RegularExpressions;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using OnlineClothes.Application.Commons;
 using OnlineClothes.Application.Persistence.Schemas.Products;
 
@@ -13,6 +14,7 @@ public class CreateNewProductCommand : PutProductInRepoObject, IRequest<JsonApiR
 	[DefaultValue(0)] public int SkuInStock { get; set; }
 	[DefaultValue(0)] public decimal SkuAddOnPrice { get; set; }
 	public ClotheSizeType SkuSize { get; set; }
+	public IFormFile? ImageFile { get; set; }
 }
 
 public class CreateNewProductCommandValidation : AbstractValidator<CreateNewProductCommand>

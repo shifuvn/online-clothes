@@ -8,8 +8,7 @@ public class ProductBasicDto
 	public string Name { get; set; } = null!;
 	public decimal Price { get; set; }
 	public List<string> Skus { get; set; } = new();
-
-	// todo: Image
+	public string? ThumbnailUrl { get; set; }
 
 	public static ProductBasicDto ToModel(Product entity)
 	{
@@ -18,7 +17,8 @@ public class ProductBasicDto
 			Id = entity.Id,
 			Name = entity.Name,
 			Price = entity.Price,
-			Skus = entity.ProductSkus.SelectList(q => q.Sku)
+			Skus = entity.ProductSkus.SelectList(q => q.Sku),
+			ThumbnailUrl = entity.ThumbnailImage?.Url
 		};
 	}
 }

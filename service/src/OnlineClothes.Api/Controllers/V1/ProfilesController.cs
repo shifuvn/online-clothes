@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using OnlineClothes.Application.Features.Profile.Commands.EditAvatar;
+using OnlineClothes.Application.Features.Images.Commands.UploadProfile;
 using OnlineClothes.Application.Features.Profile.Commands.EditInformation;
 using OnlineClothes.Application.Features.Profile.Queries.FetchInformation;
 
@@ -25,9 +25,10 @@ public class ProfilesController : ApiV1ControllerBase
 		return HandleApiResponse(await Mediator.Send(command, cancellationToken));
 	}
 
-	[HttpPost("upload-avatar")]
-	public async Task<IActionResult> EditAvatar([FromForm] EditAvatarCommand command)
+
+	[HttpPost("profile/avatar")]
+	public async Task<IActionResult> UploadAccountAvatar([FromForm] UploadAccountImageCommand request)
 	{
-		return HandleApiResponse(await Mediator.Send(command));
+		return HandleApiResponse(await Mediator.Send(request));
 	}
 }
