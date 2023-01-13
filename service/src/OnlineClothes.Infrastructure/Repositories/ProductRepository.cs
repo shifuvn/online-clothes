@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineClothes.Application.Persistence;
 using OnlineClothes.Application.Persistence.Schemas.Products;
+using OnlineClothes.BuildIn.Utilities.Extensions;
 using OnlineClothes.Domain.Entities;
-using OnlineClothes.Support.Utilities.Extensions;
 
 namespace OnlineClothes.Infrastructure.Repositories;
 
@@ -19,11 +19,6 @@ public class ProductRepository : EfCoreRepositoryBase<Product, int>, IProductRep
 	{
 		_categoryRepository = categoryRepository;
 		_mapper = mapper;
-	}
-
-	public async Task<Product> GetBySkuAsync(string sku, CancellationToken cancellationToken = default)
-	{
-		throw new NotImplementedException();
 	}
 
 	public async Task EditOneAsync(

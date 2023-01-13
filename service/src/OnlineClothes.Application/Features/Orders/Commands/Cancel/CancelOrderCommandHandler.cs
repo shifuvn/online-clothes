@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using OnlineClothes.Application.Persistence;
 using OnlineClothes.Application.Services.UserContext;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.Exceptions.HttpExceptionCodes;
 
 namespace OnlineClothes.Application.Features.Orders.Commands.Cancel;
 

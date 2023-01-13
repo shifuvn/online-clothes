@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OnlineClothes.Application.Services.ObjectStorage;
 using OnlineClothes.Application.Services.ObjectStorage.Models;
-using OnlineClothes.Support.Exceptions.HttpExceptionCodes;
+using OnlineClothes.BuildIn.Exceptions.HttpExceptionCodes;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
 using Polly.Retry;

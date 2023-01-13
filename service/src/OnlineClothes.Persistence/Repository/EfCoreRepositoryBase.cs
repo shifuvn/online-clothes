@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using OnlineClothes.Application.Persistence.Abstracts;
+using OnlineClothes.BuildIn.Builders.Predicate;
+using OnlineClothes.BuildIn.Entity;
 using OnlineClothes.Persistence.Context;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.Entity;
 
 namespace OnlineClothes.Persistence.Repository;
 
@@ -13,20 +13,6 @@ public abstract class EfCoreRepositoryBase<TEntity, TKey> : EfCorePagingReposito
 {
 	protected EfCoreRepositoryBase(AppDbContext dbContext) : base(dbContext)
 	{
-	}
-
-	public virtual async Task<TEntity?> FindAndDelete(FilterBuilder<TEntity> filterBuilder,
-		bool notify = true,
-		CancellationToken cancellationToken = default)
-	{
-		var entry = await FindOneAsync(filterBuilder, cancellationToken);
-		if (entry is null)
-		{
-			return null;
-		}
-
-		Delete(entry, notify);
-		return entry;
 	}
 
 	public virtual async Task<TEntity?> AddAsync(TEntity entity,
@@ -100,6 +86,20 @@ public abstract class EfCoreRepositoryBase<TEntity, TKey> : EfCorePagingReposito
 		{
 			//await _mediator.Publish(DomainEvent<TEntity>.Create(DomainEventAction.Deleted, entity), cancellationToken);
 		}
+	}
+
+	public virtual async Task<TEntity?> FindAndDelete(FilterBuilder<TEntity> filterBuilder,
+		bool notify = true,
+		CancellationToken cancellationToken = default)
+	{
+		var entry = await FindOneAsync(filterBuilder, cancellationToken);
+		if (entry is null)
+		{
+			return null;
+		}
+
+		Delete(entry, notify);
+		return entry;
 	}
 
 	public virtual void DeleteBatch(FilterBuilder<TEntity> filterBuilder,

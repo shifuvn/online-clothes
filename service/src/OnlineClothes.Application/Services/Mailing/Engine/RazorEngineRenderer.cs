@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using OnlineClothes.Support.Exceptions;
 using RazorEngineCore;
 
 namespace OnlineClothes.Application.Services.Mailing.Engine;

@@ -3,8 +3,6 @@ using OnlineClothes.Application.Persistence;
 using OnlineClothes.Application.Services.Mailing;
 using OnlineClothes.Application.Services.Mailing.Models;
 using OnlineClothes.Application.StandaloneConfigurations;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.Exceptions;
 
 namespace OnlineClothes.Application.Features.Accounts.Commands.Reset;
 

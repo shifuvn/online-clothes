@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
-using OnlineClothes.Support.Entity.Event;
 
 namespace OnlineClothes.Domain.Entities.Aggregate;
 

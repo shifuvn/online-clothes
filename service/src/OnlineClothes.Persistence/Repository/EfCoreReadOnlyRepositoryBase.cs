@@ -1,11 +1,11 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using OnlineClothes.Application.Persistence.Abstracts;
+using OnlineClothes.BuildIn.Builders.Predicate;
+using OnlineClothes.BuildIn.Entity;
+using OnlineClothes.BuildIn.Exceptions;
+using OnlineClothes.BuildIn.Utilities.Extensions;
 using OnlineClothes.Persistence.Context;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.Entity;
-using OnlineClothes.Support.Exceptions;
-using OnlineClothes.Support.Utilities.Extensions;
 
 namespace OnlineClothes.Persistence.Repository;
 

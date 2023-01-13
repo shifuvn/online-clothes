@@ -1,7 +1,5 @@
 ﻿using OnlineClothes.Application.Persistence;
 using OnlineClothes.Application.Services.Mailing;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.Exceptions;
 
 namespace OnlineClothes.Application.Features.Accounts.Queries.Recovery;
 

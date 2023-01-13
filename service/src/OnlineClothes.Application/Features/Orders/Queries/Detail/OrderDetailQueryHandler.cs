@@ -1,6 +1,5 @@
 ﻿using OnlineClothes.Application.Persistence;
 using OnlineClothes.Application.Services.UserContext;
-using OnlineClothes.Support.Builders.Predicate;
 
 namespace OnlineClothes.Application.Features.Orders.Queries.Detail;
 

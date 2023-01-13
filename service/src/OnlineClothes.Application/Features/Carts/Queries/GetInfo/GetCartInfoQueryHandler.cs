@@ -1,5 +1,4 @@
 ﻿using OnlineClothes.Application.Persistence;
-using OnlineClothes.Support.Utilities.Extensions;
 
 namespace OnlineClothes.Application.Features.Carts.Queries.GetInfo;
 

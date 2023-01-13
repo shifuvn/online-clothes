@@ -2,7 +2,6 @@
 using OnlineClothes.Application.Commons;
 using OnlineClothes.Application.Persistence;
 using OnlineClothes.Domain.Paging;
-using OnlineClothes.Support.Builders.Predicate;
 
 namespace OnlineClothes.Application.Features.Products.Queries.Paging;
 

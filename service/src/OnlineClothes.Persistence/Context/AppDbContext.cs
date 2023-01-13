@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using OnlineClothes.BuildIn.Entity;
 using OnlineClothes.Domain.Entities;
 using OnlineClothes.Domain.Entities.Aggregate;
-using OnlineClothes.Support.Entity;
 
 namespace OnlineClothes.Persistence.Context;
 

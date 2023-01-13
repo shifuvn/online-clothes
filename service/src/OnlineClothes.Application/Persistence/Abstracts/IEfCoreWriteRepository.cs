@@ -1,6 +1,4 @@
 ﻿using System.Linq.Expressions;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.Entity;
 
 namespace OnlineClothes.Application.Persistence.Abstracts;
 

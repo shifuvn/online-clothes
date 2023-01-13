@@ -1,6 +1,4 @@
-﻿using OnlineClothes.Support.Utilities.Extensions;
-
-namespace OnlineClothes.Application.Mapping.Dto;
+﻿namespace OnlineClothes.Application.Mapping.Dto;
 
 public class ProductSkuDto : ProductSkuBasicDto
 {

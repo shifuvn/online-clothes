@@ -3,7 +3,6 @@ using OnlineClothes.Application.Persistence;
 using OnlineClothes.Application.Services.Mailing;
 using OnlineClothes.Application.Services.UserContext;
 using OnlineClothes.Domain.Entities;
-using OnlineClothes.Support.Utilities.Extensions;
 
 namespace OnlineClothes.Application.Features.Orders.Commands.Checkout;
 

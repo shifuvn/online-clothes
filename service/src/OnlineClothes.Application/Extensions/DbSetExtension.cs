@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineClothes.Support.Utilities.Extensions;
 
 namespace OnlineClothes.Application.Extensions;
 

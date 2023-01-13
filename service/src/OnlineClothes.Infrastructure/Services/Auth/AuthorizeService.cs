@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OnlineClothes.Application.Services.Auth;
 using OnlineClothes.Application.Services.Auth.Models;
-using OnlineClothes.Support.Utilities;
+using OnlineClothes.BuildIn.Utilities;
 
 namespace OnlineClothes.Infrastructure.Services.Auth;
 

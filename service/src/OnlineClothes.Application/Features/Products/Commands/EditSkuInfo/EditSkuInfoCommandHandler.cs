@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using OnlineClothes.Application.Helpers;
 using OnlineClothes.Application.Persistence;
-using OnlineClothes.Support.Builders.Predicate;
 
 namespace OnlineClothes.Application.Features.Products.Commands.EditSkuInfo;
 

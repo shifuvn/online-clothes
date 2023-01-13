@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineClothes.Application.Persistence.Abstracts;
+using OnlineClothes.BuildIn.Builders.Predicate;
+using OnlineClothes.BuildIn.Entity;
 using OnlineClothes.Domain.Paging;
 using OnlineClothes.Persistence.Context;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.Entity;
 
 namespace OnlineClothes.Persistence.Repository;
 

@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OnlineClothes.Domain\OnlineClothes.Domain.csproj" />
-    <ProjectReference Include="..\OnlineClothes.Support\OnlineClothes.Support.csproj" />
   </ItemGroup>
 
 </Project>

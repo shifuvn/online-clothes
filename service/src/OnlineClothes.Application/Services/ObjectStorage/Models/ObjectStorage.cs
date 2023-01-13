@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using OnlineClothes.Support.Utilities;
+using OnlineClothes.BuildIn.Utilities;
 
 namespace OnlineClothes.Application.Services.ObjectStorage.Models;
 

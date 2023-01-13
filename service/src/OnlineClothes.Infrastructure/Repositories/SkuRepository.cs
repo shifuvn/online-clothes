@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineClothes.Application.Persistence;
-using OnlineClothes.Support.Builders.Predicate;
+using OnlineClothes.BuildIn.Builders.Predicate;
 
 namespace OnlineClothes.Infrastructure.Repositories;
 

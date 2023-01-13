@@ -1,6 +1,4 @@
 ﻿using OnlineClothes.Domain.Paging;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.Entity;
 
 namespace OnlineClothes.Application.Persistence.Abstracts;
 

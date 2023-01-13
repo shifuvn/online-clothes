@@ -1,6 +1,4 @@
-﻿using OnlineClothes.Support.Entity;
-
-namespace OnlineClothes.Application.Persistence.Abstracts;
+﻿namespace OnlineClothes.Application.Persistence.Abstracts;
 
 /// <summary>
 /// Wrap all implement of repository

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineClothes.Application.Persistence;
 using OnlineClothes.Application.Services.UserContext;
+using OnlineClothes.BuildIn.Builders.Predicate;
+using OnlineClothes.BuildIn.Exceptions.HttpExceptionCodes;
 using OnlineClothes.Domain.Common;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.Exceptions.HttpExceptionCodes;
 
 namespace OnlineClothes.Infrastructure.Repositories;
 

@@ -1,6 +1,4 @@
 ﻿using OnlineClothes.Application.Persistence;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.Exceptions;
 
 namespace OnlineClothes.Application.Features.Accounts.Queries.Activate;
 
