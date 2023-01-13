@@ -10,7 +10,7 @@ WORKDIR /src
 COPY ["OnlineClothes.Api/OnlineClothes.Api.csproj", "OnlineClothes.Api/"]
 COPY ["OnlineClothes.Application/OnlineClothes.Application.csproj", "OnlineClothes.Application/"]
 COPY ["OnlineClothes.Domain/OnlineClothes.Domain.csproj", "OnlineClothes.Domain/"]
-COPY ["OnlineClothes.Support/OnlineClothes.Support.csproj", "OnlineClothes.Support/"]
+COPY ["OnlineClothes.BuildIn/OnlineClothes.BuildIn.csproj", "OnlineClothes.BuildIn/"]
 COPY ["OnlineClothes.Infrastructure/OnlineClothes.Infrastructure.csproj", "OnlineClothes.Infrastructure/"]
 COPY ["OnlineClothes.Persistence/OnlineClothes.Persistence.csproj", "OnlineClothes.Persistence/"]
 RUN dotnet restore "OnlineClothes.Api/OnlineClothes.Api.csproj"
