@@ -1,4 +1,6 @@
-﻿namespace OnlineClothes.Domain.Paging;
+﻿using Newtonsoft.Json;
+
+namespace OnlineClothes.Domain.Paging;
 
 public class PagingModel<T>
 {
@@ -29,7 +31,7 @@ public class PagingModel<T>
 		}
 	}
 
-	public int PageIndex { get; set; }
+	[JsonProperty("currentPage")] public int PageIndex { get; set; }
 
 	public static PagingModel<T> ToPages(long total, ICollection<T> items, int pageIndex)
 	{

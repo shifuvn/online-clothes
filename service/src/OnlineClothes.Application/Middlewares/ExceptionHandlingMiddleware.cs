@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using JsonSerializerOptions = OnlineClothes.BuildIn.JsonSerializer.JsonSerializerOptions;
+using Newtonsoft.Json;
+using OnlineClothes.BuildIn.JsonSerializer;
 
 namespace OnlineClothes.Application.Middlewares;
 
@@ -37,7 +37,7 @@ public class ExceptionHandlingMiddleware : IMiddleware
 		httpContext.Response.ContentType = "application/json";
 		httpContext.Response.StatusCode = statusCode;
 
-		var json = JsonSerializer.Serialize(responseEx, JsonSerializerOptions.Default);
+		var json = JsonConvert.SerializeObject(responseEx, BuildInJsonConvertOptions.Default);
 
 		await httpContext.Response.WriteAsync(json);
 	}

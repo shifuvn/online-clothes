@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Internal\Extensions\" />
     <Folder Include="Uow\" />
   </ItemGroup>
 

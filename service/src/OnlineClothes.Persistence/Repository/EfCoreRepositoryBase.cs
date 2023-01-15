@@ -25,7 +25,7 @@ public abstract class EfCoreRepositoryBase<TEntity, TKey> : EfCorePagingReposito
 
 		if (notify)
 		{
-			//await _mediator.Publish(DomainEvent<TEntity>.Create(DomainEventAction.Created, entity), cancellationToken);
+			entity.AddEventPayload();
 		}
 
 		return entity;

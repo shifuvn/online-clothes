@@ -1,9 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace OnlineClothes.Domain.Entities.Aggregate;
+﻿namespace OnlineClothes.Domain.Entities.Aggregate;
 
 [Table("Image")]
-public class ImageObject : IEntity<int>, IEntitySupportCreatedAt
+public class ImageObject : EntityNonDateTimeBase<int>, IEntitySupportCreatedAt
 {
 	public ImageObject()
 	{
@@ -14,10 +12,6 @@ public class ImageObject : IEntity<int>, IEntitySupportCreatedAt
 		Url = url;
 		AltName = altName;
 	}
-
-	[Key]
-	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-	public int Id { get; set; }
 
 	public string Url { get; set; } = null!;
 	public string? AltName { get; set; }

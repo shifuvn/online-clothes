@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using OnlineClothes.Application.Persistence;
+﻿using OnlineClothes.Application.Persistence;
 
 namespace OnlineClothes.Application.Features.Categories.Commands.Create;
 
@@ -25,12 +24,7 @@ public sealed class
 		await _categoryRepository.AddAsync(category, cancellationToken: cancellationToken);
 
 		var save = await _unitOfWork.SaveChangesAsync(cancellationToken);
-		if (!save)
-		{
-			return JsonApiResponse<EmptyUnitResponse>.Fail();
-		}
 
-		_logger.LogInformation("Create category: {object}", JsonSerializer.Serialize(category));
-		return JsonApiResponse<EmptyUnitResponse>.Success();
+		return !save ? JsonApiResponse<EmptyUnitResponse>.Fail() : JsonApiResponse<EmptyUnitResponse>.Success();
 	}
 }
