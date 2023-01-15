@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using OnlineClothes.Application.Persistence;
+﻿using OnlineClothes.Application.Persistence;
 using OnlineClothes.Application.Services.Mailing;
 using OnlineClothes.Application.Services.UserContext;
 using OnlineClothes.Domain.Entities;

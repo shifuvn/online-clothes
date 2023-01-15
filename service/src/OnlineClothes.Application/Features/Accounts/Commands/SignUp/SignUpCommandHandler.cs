@@ -13,17 +13,18 @@ internal sealed class
 	private readonly ILogger<SignUpCommandHandler> _logger;
 	private readonly IUnitOfWork _unitOfWork;
 
-	public SignUpCommandHandler(ILogger<SignUpCommandHandler> logger,
+	public SignUpCommandHandler(
 		AccountActivationHelper accountActivationHelper,
 		IUnitOfWork unitOfWork,
 		IAccountRepository accountRepository,
-		ICartRepository cartRepository)
+		ICartRepository cartRepository,
+		ILogger<SignUpCommandHandler> logger)
 	{
-		_logger = logger;
 		_accountActivationHelper = accountActivationHelper;
 		_unitOfWork = unitOfWork;
 		_accountRepository = accountRepository;
 		_cartRepository = cartRepository;
+		_logger = logger;
 	}
 
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(SignUpCommand request,
@@ -35,15 +36,11 @@ internal sealed class
 			return JsonApiResponse<EmptyUnitResponse>.Fail("Tài khoản đã tồn tại");
 		}
 
-		var signUpAccount = AccountUser.Create(
-			request.Email,
-			request.Password,
-			Fullname.Create(request.FirstName, request.LastName));
 
 		// begin tx
 		await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
-		var activateResult = await CreateAccount(signUpAccount, cancellationToken);
+		var activateResult = await InitiateAccount(request, cancellationToken);
 
 		var save = await _unitOfWork.SaveChangesAsync(cancellationToken);
 		if (!save)
@@ -54,22 +51,28 @@ internal sealed class
 		// commit tx
 		await _unitOfWork.CommitAsync(cancellationToken);
 
-		_logger.LogInformation("Create new account {Email}", signUpAccount.Email);
-
-		return activateResult == AccountActivationResult.Activated
-			? JsonApiResponse<EmptyUnitResponse>.Success(StatusCodes.Status201Created)
+		return activateResult == AccountActivationResultType.Activated
+			? JsonApiResponse<EmptyUnitResponse>.Success(StatusCodes.Status201Created, "Đăng ký tài khoản thành công")
 			: JsonApiResponse<EmptyUnitResponse>.Success(StatusCodes.Status201Created, "Kiểm tra email của bạn");
 	}
 
-	private async Task<AccountActivationResult> CreateAccount(
-		AccountUser account,
+	private async Task<AccountActivationResultType> InitiateAccount(
+		SignUpCommand request,
 		CancellationToken cancellationToken = default)
 	{
-		var activateResult = await _accountActivationHelper.StartNewAccount(account, cancellationToken);
+		var account = AccountUser.Create(
+			request.Email,
+			request.Password,
+			Fullname.Create(request.FirstName, request.LastName));
 
-		var cart = new AccountCart { Account = account };
+		await _accountRepository.AddAsync(account, cancellationToken: cancellationToken);
+
+		await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+		var cart = new AccountCart { AccountId = account.Id };
+
 		await _cartRepository.AddAsync(cart, cancellationToken: cancellationToken);
 
-		return activateResult;
+		return _accountActivationHelper.ActivateNewAccount(account);
 	}
 }

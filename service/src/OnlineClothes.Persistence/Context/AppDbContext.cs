@@ -1,12 +1,9 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using OnlineClothes.BuildIn.Entity;
-using OnlineClothes.BuildIn.Entity.Event;
 using OnlineClothes.Domain.Entities;
 using OnlineClothes.Domain.Entities.Aggregate;
-using OnlineClothes.Persistence.Internal.Extensions;
 
 namespace OnlineClothes.Persistence.Context;
 
@@ -27,8 +24,6 @@ public class AppDbContext : DbContext
 	{
 	}
 
-	public IList<object> DomainEvents { get; } = new List<object>();
-
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
 		base.OnConfiguring(optionsBuilder);
@@ -48,45 +43,9 @@ public class AppDbContext : DbContext
 		CancellationToken cancellationToken = new())
 	{
 		TrackEntitySupportDateTime();
-		TrackEntityDomainEvents();
-
 		return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
 	}
 
-	/// <summary>
-	/// Solve entity domain events
-	/// </summary>
-	private void TrackEntityDomainEvents()
-	{
-		foreach (var entityEntry in ChangeTracker.Entries<ISupportDomainEvent>())
-		{
-			var eventPayloads = entityEntry.Entity.EventPayloads;
-			AppendDomainEventFromPayload(eventPayloads, entityEntry);
-		}
-	}
-
-	/// <summary>
-	/// Add entity payload to domain event
-	/// </summary>
-	/// <param name="eventPayloads"></param>
-	/// <param name="entityEntry"></param>
-	private void AppendDomainEventFromPayload(
-		IEnumerable<DomainEventPayload> eventPayloads,
-		EntityEntry<ISupportDomainEvent> entityEntry)
-	{
-		foreach (var domainEventPayload in eventPayloads)
-		{
-			var openType = typeof(DomainEvent<>);
-			Type[] tArgs = { entityEntry.Entity.GetType() };
-			var target = openType.MakeGenericType(tArgs);
-
-			var domainEvent = Activator.CreateInstance(target,
-				domainEventPayload.Key,
-				entityEntry.State.GetDomainEventAction(),
-				domainEventPayload.Value);
-			DomainEvents.Add(domainEvent!);
-		}
-	}
 
 	/// <summary>
 	/// Solve entity dataTime tracker

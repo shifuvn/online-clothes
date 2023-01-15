@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineClothes.Persistence.Context;
 
-namespace OnlineClothes.Api.Extensions;
+namespace OnlineClothes.Api.ConfigurationServices;
 
 public static class AppRunExtension
 {

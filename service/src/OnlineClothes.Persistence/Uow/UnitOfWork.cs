@@ -1,25 +1,36 @@
-﻿using MediatR;
+﻿using System.Collections.Concurrent;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OnlineClothes.Application.Persistence.Abstracts;
+using OnlineClothes.BuildIn.Entity.Event;
 using OnlineClothes.Persistence.Context;
+using OnlineClothes.Persistence.Internal.Extensions;
 
 namespace OnlineClothes.Persistence.Uow;
 
 public class UnitOfWork : IUnitOfWork
 {
 	private readonly AppDbContext _dbContext;
+	private readonly ConcurrentQueue<object> _delayQueue = new();
 	private readonly ILogger<UnitOfWork> _logger;
-	private readonly IMediator _mediator;
+	private readonly IServiceScopeFactory _serviceScopeFactory;
 
 	private bool _disposed;
+
 	private IDbContextTransaction? _transaction;
 
-	public UnitOfWork(ILogger<UnitOfWork> logger, AppDbContext dbContext, IMediator mediator)
+	public UnitOfWork(
+		ILogger<UnitOfWork> logger,
+		AppDbContext dbContext,
+		IServiceScopeFactory serviceScopeFactory)
 	{
 		_logger = logger;
 		_dbContext = dbContext;
-		_mediator = mediator;
+		_serviceScopeFactory = serviceScopeFactory;
 	}
 
 	public void Dispose()
@@ -44,10 +55,9 @@ public class UnitOfWork : IUnitOfWork
 		try
 		{
 			_dbContext.ChangeTracker.AutoDetectChangesEnabled = true;
+			PushDomainEventsToQueueOnSave();
+
 			var saveChanges = _dbContext.SaveChanges() > 0;
-
-			PublishNotifyEventOnSave();
-
 			return saveChanges;
 		}
 		catch (Exception ex)
@@ -63,10 +73,9 @@ public class UnitOfWork : IUnitOfWork
 		try
 		{
 			_dbContext.ChangeTracker.AutoDetectChangesEnabled = true;
+			PushDomainEventsToQueueOnSave();
+
 			var saveChanges = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
-
-			await PublishNotifyEventOnSaveAsync();
-
 			return saveChanges;
 		}
 		catch (Exception ex)
@@ -80,13 +89,13 @@ public class UnitOfWork : IUnitOfWork
 	public void Commit()
 	{
 		_transaction?.Commit();
-		PublishNotifyEvent();
+		PushDomainEventsBackgroundQueue();
 	}
 
 	public async Task CommitAsync(CancellationToken cancellationToken = default)
 	{
 		await _transaction?.CommitAsync(cancellationToken)!;
-		await PublishNotifyEventAsync();
+		PushDomainEventsBackgroundQueue();
 	}
 
 	public void Rollback()
@@ -101,46 +110,78 @@ public class UnitOfWork : IUnitOfWork
 		await _transaction.DisposeAsync();
 	}
 
-	private void PublishNotifyEventOnSave()
+	private void PushDomainEventsToQueueOnSave()
 	{
 		if (_transaction is not null)
 		{
+			// push to delay queue, wait for commit success
+			PushToDelayDomainEventQueue();
 			return;
 		}
 
-		PublishNotifyEvent();
+		PushDomainEventsBackgroundQueue();
 	}
 
-	private async Task PublishNotifyEventOnSaveAsync()
+	private void PushToDelayDomainEventQueue()
 	{
-		if (_transaction is not null)
-		{
-			return;
-		}
+		var entityEntries = _dbContext.ChangeTracker.Entries<ISupportDomainEvent>();
 
-		await PublishNotifyEventAsync();
+		foreach (var entityEntry in entityEntries)
+		{
+			var eventPayloads = entityEntry.Entity.EventPayloads;
+			CreateDomainEventsFromPayload(eventPayloads, entityEntry);
+		}
 	}
 
-	private void PublishNotifyEvent()
+	/// <summary>
+	/// Add entity payload to domain event
+	/// </summary>
+	/// <param name="eventPayloads"></param>
+	/// <param name="entityEntry"></param>
+	private void CreateDomainEventsFromPayload(
+		IEnumerable<DomainEventPayload> eventPayloads,
+		EntityEntry<ISupportDomainEvent> entityEntry)
 	{
-		foreach (var domainEvent in _dbContext.DomainEvents)
+		if (entityEntry.State == EntityState.Unchanged)
 		{
-			Task.Run(async () => await _mediator.Publish(domainEvent));
+			return; // skip
 		}
 
-		// Remove all notify events
-		_dbContext.DomainEvents.Clear();
+		foreach (var domainEventPayload in eventPayloads)
+		{
+			var openType = typeof(DomainEvent<>);
+			Type[] tArgs = { entityEntry.Entity.GetType() };
+			var target = openType.MakeGenericType(tArgs);
+
+			var domainEvent = Activator.CreateInstance(target,
+				domainEventPayload.Key,
+				entityEntry.State.GetDomainEventAction(),
+				domainEventPayload.Value);
+			_delayQueue.Enqueue(domainEvent!);
+		}
 	}
 
-	private async Task PublishNotifyEventAsync()
+	private void PushDomainEventsBackgroundQueue()
 	{
-		foreach (var domainEvent in _dbContext.DomainEvents)
+		while (!_delayQueue.IsEmpty && _delayQueue.TryDequeue(out var @event))
 		{
-			await _mediator.Publish(domainEvent);
+			Task.Run(async () => await PublishNotifyEvent((IDomainEvent)@event))
+				.Wait();
 		}
+	}
 
-		// Remove all notify events
-		_dbContext.DomainEvents.Clear();
+	private async Task PublishNotifyEvent(IDomainEvent @event)
+	{
+		using var scope = _serviceScopeFactory.CreateScope();
+		var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+		await mediator.Publish(@event);
+
+		var detailEvent =
+			$"{{eventId: {@event.Id}, eventName: {@event.EventName}, eventAction: {@event.EventActionType}, createdAt: {@event.CreatedAt}}}";
+		_logger.LogInformation("[EVENTS] Process event -- at {now}, detail: {detail}",
+			DateTime.UtcNow.ToString("R"),
+			detailEvent);
 	}
 
 	protected virtual void Dispose(bool disposing)

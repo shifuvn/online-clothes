@@ -4,7 +4,7 @@ using MediatR;
 namespace OnlineClothes.BuildIn.Entity.Event;
 
 [DataContract(IsReference = true)]
-public class DomainEvent<TEntity> : AuditDomainEventBase, IDomainEvent where TEntity : class, ISupportDomainEvent
+public class DomainEvent<TEntity> : IDomainEvent where TEntity : class, ISupportDomainEvent
 {
 	private DomainEvent()
 	{
@@ -19,13 +19,15 @@ public class DomainEvent<TEntity> : AuditDomainEventBase, IDomainEvent where TEn
 		EventPayloadData = eventData;
 	}
 
-
-	public string EventName { get; set; } = null!;
-	public DomainEventActionType EventActionType { get; set; }
+	// Audit
+	[DataMember] public Guid Id { get; init; }
+	[DataMember] public DateTime CreatedAt { get; init; }
+	[DataMember] public string EventName { get; set; } = null!;
+	[DataMember] public DomainEventActionType EventActionType { get; set; }
 	public object? EventPayloadData { get; set; }
 }
 
-public interface IDomainEvent : INotification
+public interface IDomainEvent : INotification, IAuditDomainEvent
 {
 	string EventName { get; set; }
 	DomainEventActionType EventActionType { get; set; }

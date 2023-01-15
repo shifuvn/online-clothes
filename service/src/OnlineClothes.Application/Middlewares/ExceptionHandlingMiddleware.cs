@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using OnlineClothes.BuildIn.JsonSerializer;
 
 namespace OnlineClothes.Application.Middlewares;

@@ -71,8 +71,9 @@ internal sealed class AuthorizeService : IAuthorizeService
 
 	private IEnumerable<Claim> CreateClaims(AccountUser account)
 	{
-		var logRequestInfo = "{" + $"{account.Id} {account.Email} {account.Role}" + "}";
-		_logger.LogInformation("Request for access token -- {Info}", logRequestInfo);
+		//var logRequestInfo = "{" + $"{account.Id} {account.Email} {account.Role}" + "}";
+		var claimInfo = $"{{accountId: {account.Id}, email: {account.Email}, role: {account.Role}}}";
+		_logger.LogInformation("[AUTHORIZE] Request for access token -- {Info}", claimInfo);
 
 		return new List<Claim>
 		{

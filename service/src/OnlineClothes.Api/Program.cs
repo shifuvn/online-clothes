@@ -1,5 +1,5 @@
 using Newtonsoft.Json;
-using OnlineClothes.Api.Extensions;
+using OnlineClothes.Api.ConfigurationServices;
 using OnlineClothes.Application.Middlewares;
 using Swashbuckle.AspNetCore.SwaggerUI;
 

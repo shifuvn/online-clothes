@@ -8,14 +8,11 @@ public sealed class
 {
 	private readonly AccountActivationHelper _accountActivationHelper;
 	private readonly IAccountRepository _accountRepository;
-	private readonly ILogger<ResendActivationQueryHandler> _logger;
 
 	public ResendActivationQueryHandler(
-		ILogger<ResendActivationQueryHandler> logger,
 		AccountActivationHelper accountActivationHelper,
 		IAccountRepository accountRepository)
 	{
-		_logger = logger;
 		_accountActivationHelper = accountActivationHelper;
 		_accountRepository = accountRepository;
 	}
@@ -30,12 +27,8 @@ public sealed class
 			return JsonApiResponse<EmptyUnitResponse>.Fail();
 		}
 
-		var activateResult = await _accountActivationHelper.StartNewAccount(account, cancellationToken);
+		await _accountActivationHelper.ProcessActivateAccountAsync(account, cancellationToken);
 
-		_logger.LogInformation("Resend activate account {Email}", account.Email);
-
-		return activateResult == AccountActivationResult.Activated
-			? JsonApiResponse<EmptyUnitResponse>.Success()
-			: JsonApiResponse<EmptyUnitResponse>.Success(message: "Kiểm tra email của bạn");
+		return JsonApiResponse<EmptyUnitResponse>.Success(message: "Kiểm tra email của bạn");
 	}
 }
