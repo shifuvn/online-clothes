@@ -14,7 +14,7 @@ public static class StartupExtension
 {
 	public const string CorsAnyOrigin = "AnyOrigin";
 
-	public static void ConfigStartup(this IServiceCollection services, IConfiguration configuration)
+	public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
 	{
 		services.ConfigSwagger();
 		services.ConfigAuth(configuration);

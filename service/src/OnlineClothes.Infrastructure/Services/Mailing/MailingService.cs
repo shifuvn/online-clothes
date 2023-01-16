@@ -70,7 +70,7 @@ internal sealed class MailingService : IMailingService
 		try
 		{
 			await _mailingProvider.SmtpClient().SendAsync(email, cancellationToken);
-			_logger.LogInformation("Send email {subject} to {to}", subject, to);
+			LoggerSendingMail(to, subject);
 		}
 		catch (Exception e)
 		{
@@ -93,5 +93,11 @@ internal sealed class MailingService : IMailingService
 			mailing.From,
 			mailing.AttachmentsFile,
 			cancellationToken);
+	}
+
+	private void LoggerSendingMail(string to, string subject)
+	{
+		var logMailInfo = $"{{subject: {subject}, to: {to}}}";
+		_logger.LogInformation("Send email {mail}", logMailInfo);
 	}
 }
