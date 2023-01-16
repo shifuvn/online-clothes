@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
-using OnlineClothes.Infrastructure.Services.Mailing.Engine;
-using OnlineClothes.Infrastructure.Services.Mailing.Models;
+using OnlineClothes.Application.Services.Mailing;
+using OnlineClothes.Application.Services.Mailing.Engine;
+using OnlineClothes.Application.Services.Mailing.Models;
 
 namespace OnlineClothes.Infrastructure.Services.Mailing;
 
@@ -25,7 +25,11 @@ internal sealed class MailingService : IMailingService
 		_razorEngineRenderer = razorEngineRenderer;
 	}
 
-	public async Task SendEmailAsync(string to, string subject, string content, string? from = null,
+	public async Task SendEmailAsync(
+		string to,
+		string subject,
+		string content,
+		string? from = null,
 		IList<IFormFile>? attachments = null,
 		CancellationToken cancellationToken = default)
 	{
@@ -66,6 +70,7 @@ internal sealed class MailingService : IMailingService
 		try
 		{
 			await _mailingProvider.SmtpClient().SendAsync(email, cancellationToken);
+			LoggerSendingMail(to, subject);
 		}
 		catch (Exception e)
 		{
@@ -88,5 +93,11 @@ internal sealed class MailingService : IMailingService
 			mailing.From,
 			mailing.AttachmentsFile,
 			cancellationToken);
+	}
+
+	private void LoggerSendingMail(string to, string subject)
+	{
+		var logMailInfo = $"{{subject: {subject}, to: {to}}}";
+		_logger.LogInformation("Send email {mail}", logMailInfo);
 	}
 }

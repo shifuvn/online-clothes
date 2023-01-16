@@ -1,27 +1,29 @@
-﻿using OnlineClothes.Domain.Entities;
-using OnlineClothes.Domain.Entities.Common;
-
-namespace OnlineClothes.Application.Features.Profile.Queries.FetchInformation;
+﻿namespace OnlineClothes.Application.Features.Profile.Queries.FetchInformation;
 
 public class FetchInformationQueryResult
 {
 	public string Email { get; set; } = null!;
 	public string FirstName { get; set; } = null!;
 	public string LastName { get; set; } = null!;
-	public string FullName { get; set; } = null!;
-	public string ImageUrl { get; set; } = null!;
+	public string FullName => Fullname.Create(FirstName, LastName).FullName;
+	public string? Address { get; set; }
+	public string? PhoneNumber { get; set; }
+	public string? ImageUrl { get; set; }
+	public string? ImageUrlAltName { get; set; }
 	public DateTime LastLogin { get; set; }
 
-	public static FetchInformationQueryResult Create(AccountUser accountUser)
+	public static FetchInformationQueryResult ToModel(AccountUser accountUser)
 	{
 		return new FetchInformationQueryResult
 		{
 			Email = accountUser.Email,
 			FirstName = accountUser.FirstName,
 			LastName = accountUser.LastName,
-			FullName = FullNameHelper.Create(accountUser.FirstName, accountUser.LastName).FullName,
-			ImageUrl = accountUser.ImageUrl,
-			LastLogin = accountUser.LastLogin
+			ImageUrl = accountUser.AvatarImage?.Url,
+			ImageUrlAltName = accountUser.AvatarImage?.AltName,
+			LastLogin = accountUser.LastLogin,
+			PhoneNumber = accountUser.PhoneNumber,
+			Address = accountUser.Address
 		};
 	}
 }

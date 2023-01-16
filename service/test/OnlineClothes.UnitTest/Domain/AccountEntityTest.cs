@@ -1,6 +1,5 @@
 ﻿using OnlineClothes.Domain.Common;
-using OnlineClothes.Domain.Entities;
-using OnlineClothes.Domain.Entities.Common;
+using OnlineClothes.Domain.Entities.Aggregate;
 
 namespace OnlineClothes.UnitTest.Domain;
 
@@ -94,10 +93,10 @@ public class AccountEntityTest : IClassFixture<AccountEntityTestFixture>
 public class AccountEntityTestFixture : IDisposable
 {
 	public string Email = "test@mail.com";
-	public FullNameHelper FullNameHelper = FullNameHelper.Create("test acc");
+	public Fullname FullNameHelper = Fullname.Create("test acc");
 	public string Password = "hello123";
 
-	public AccountUser TestClient => AccountUser.Create(Email, Password, FullNameHelper, AccountRole.Client);
+	public AccountUser TestClient => AccountUser.Create(Email, Password, FullNameHelper);
 	public AccountUser TestAdmin => AccountUser.Create(Email, Password, FullNameHelper, AccountRole.Admin);
 
 

@@ -1,9 +1,5 @@
-﻿using MediatR;
-using OnlineClothes.Domain.Entities;
-using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Infrastructure.Services.Auth.Abstracts;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.HttpResponse;
+﻿using OnlineClothes.Application.Persistence;
+using OnlineClothes.Application.Services.Auth;
 
 namespace OnlineClothes.Application.Features.Accounts.Commands.SignIn;
 
@@ -14,20 +10,20 @@ internal sealed class
 	private const string ErrorAccountNotActivateMessage = "Tài khoảng chưa được kích hoạt";
 	private readonly IAccountRepository _accountRepository;
 
-	private readonly IAuthService _authService;
+	private readonly IAuthorizeService _authorizeService;
 
-	public SignInCommandHandler(IAccountRepository accountRepository, IAuthService authService)
+	public SignInCommandHandler(
+		IAuthorizeService authorizeService,
+		IAccountRepository accountRepository)
 	{
 		_accountRepository = accountRepository;
-		_authService = authService;
+		_authorizeService = authorizeService;
 	}
 
 	public async Task<JsonApiResponse<SignInCommandResult>> Handle(SignInCommand request,
 		CancellationToken cancellationToken)
 	{
-		var account =
-			await _accountRepository.FindOneAsync(
-				FilterBuilder<AccountUser>.Where(acc => acc.Email.Equals(request.Email)), cancellationToken);
+		var account = await _accountRepository.GetByEmail(request.Email, cancellationToken);
 
 		if (account is null || !account.VerifyPassword(request.Password))
 		{
@@ -39,7 +35,7 @@ internal sealed class
 			return JsonApiResponse<SignInCommandResult>.Fail(ErrorAccountNotActivateMessage);
 		}
 
-		var responseModel = new SignInCommandResult(_authService.CreateJwtAccessToken(account));
+		var responseModel = new SignInCommandResult(_authorizeService.CreateJwtAccessToken(account));
 
 		return JsonApiResponse<SignInCommandResult>.Success(data: responseModel);
 	}

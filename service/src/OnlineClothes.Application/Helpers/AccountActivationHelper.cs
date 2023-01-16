@@ -1,80 +1,79 @@
 ﻿using Microsoft.Extensions.Options;
-using OnlineClothes.Domain.Entities;
-using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Infrastructure.Services.Mailing;
-using OnlineClothes.Infrastructure.Services.Mailing.Abstracts;
-using OnlineClothes.Infrastructure.Services.Mailing.Models;
-using OnlineClothes.Infrastructure.StandaloneConfigurations;
+using OnlineClothes.Application.Persistence;
+using OnlineClothes.Application.Services.Mailing;
+using OnlineClothes.Application.Services.Mailing.Models;
+using OnlineClothes.Application.StandaloneConfigurations;
 
 namespace OnlineClothes.Application.Helpers;
 
 public class AccountActivationHelper
 {
 	private readonly AccountActivationConfiguration _accountActivationConfiguration;
-	private readonly IAccountRepository _accountRepository;
-	private readonly IAccountTokenCodeRepository _accountTokenCodeRepository;
 	private readonly AppDomainConfiguration _domainConfiguration;
+	private readonly ILogger<AccountActivationHelper> _logger;
 	private readonly IMailingService _mailingService;
+	private readonly ITokenRepository _tokenRepository;
+	private readonly IUnitOfWork _unitOfWork;
 
-	public AccountActivationHelper(IOptions<AppDomainConfiguration> domainConfigurationOption,
+	public AccountActivationHelper(
+		IOptions<AppDomainConfiguration> domainConfigurationOption,
 		IOptions<AccountActivationConfiguration> accountActivationConfigurationOption,
-		IAccountTokenCodeRepository accountTokenCodeRepository,
 		IMailingService mailingService,
-		IAccountRepository accountRepository)
+		IUnitOfWork unitOfWork,
+		ITokenRepository tokenRepository, ILogger<AccountActivationHelper> logger)
 	{
 		_accountActivationConfiguration = accountActivationConfigurationOption.Value;
 		_domainConfiguration = domainConfigurationOption.Value;
-		_accountTokenCodeRepository = accountTokenCodeRepository;
 		_mailingService = mailingService;
-		_accountRepository = accountRepository;
+		_unitOfWork = unitOfWork;
+		_tokenRepository = tokenRepository;
+		_logger = logger;
 	}
 
-	public async Task<AccountActivationResult> StartNewAccount(AccountUser account,
-		CancellationToken cancellationToken = default)
+	public AccountActivationResultType ActivateNewAccount(AccountUser account)
 	{
-		if (!_accountActivationConfiguration.ByEmail)
+		if (_accountActivationConfiguration.ByEmail)
 		{
-			account.Activate();
-
-			// update activated status
-			await _accountRepository.UpdateOneAsync(
-				account.Id,
-				update => update.Set(acc => acc.IsActivated, account.IsActivated),
-				cancellationToken: cancellationToken);
-
-			return AccountActivationResult.Activated;
+			return AccountActivationResultType.WaitConfirm;
 		}
 
-		var newTokenCode = await CreateVerificationTokenCode(account, cancellationToken);
-		await SendActivationMail(account, cancellationToken, newTokenCode);
+		account.Activate();
+		return AccountActivationResultType.Activated;
+	}
 
-		return AccountActivationResult.WaitConfirm;
+	public async Task ProcessActivateAccountAsync(AccountUser account, CancellationToken cancellationToken = default)
+	{
+		await SendActivationMail(
+			account,
+			await CreateVerificationTokenCode(account, cancellationToken),
+			cancellationToken);
 	}
 
 	private async Task<AccountTokenCode> CreateVerificationTokenCode(AccountUser account,
 		CancellationToken cancellationToken)
 	{
-		var newTokenCode = new AccountTokenCode(account.Email, AccountTokenType.Verification, TimeSpan.FromMinutes(15));
-		await _accountTokenCodeRepository.InsertAsync(newTokenCode, cancellationToken);
-		return newTokenCode;
+		var tokenCode = new AccountTokenCode(account.Email, AccountTokenType.Verification, TimeSpan.FromMinutes(10));
+
+		await _tokenRepository.AddAsync(tokenCode, cancellationToken: cancellationToken);
+		await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+		return tokenCode;
 	}
 
-	private async Task SendActivationMail(AccountUser account, CancellationToken cancellationToken,
-		AccountTokenCode newTokenCode)
+	private async Task SendActivationMail(AccountUser account,
+		AccountTokenCode newTokenCode,
+		CancellationToken cancellationToken = default)
 	{
-		var mail = new MailingTemplate(account.Email, "Verify Account", EmailTemplateNames.VerifyAccount,
+		var mailTemplate = new MailingTemplate(
+			account.Email,
+			"Verify Account",
+			EmailTemplateNames.VerifyAccount,
 			new
 			{
 				ConfirmedUrl =
 					$"{_domainConfiguration}/api/v1/accounts/activate?token={newTokenCode.TokenCode}"
 			});
 
-		await _mailingService.SendEmailAsync(mail, cancellationToken);
+		await _mailingService.SendEmailAsync(mailTemplate, cancellationToken);
 	}
-}
-
-public enum AccountActivationResult
-{
-	WaitConfirm,
-	Activated
 }

@@ -1,9 +1,6 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using OnlineClothes.Application.Features.Cart.Commands.AddItem;
-using OnlineClothes.Application.Features.Cart.Commands.RemoveItem;
-using OnlineClothes.Application.Features.Cart.Queries.GetInfo;
+﻿using Microsoft.AspNetCore.Authorization;
+using OnlineClothes.Application.Features.Carts.Commands.UpdateItemQuantity;
+using OnlineClothes.Application.Features.Carts.Queries.GetInfo;
 
 namespace OnlineClothes.Api.Controllers.V1;
 
@@ -17,26 +14,12 @@ public class CartsController : ApiV1ControllerBase
 	[HttpGet]
 	public async Task<IActionResult> Get()
 	{
-		return ApiResponse(await Mediator.Send(new GetCartInfoQuery()));
+		return HandleApiResponse(await Mediator.Send(new GetCartInfoQuery()));
 	}
 
-	[HttpPut("{productId}/add-item/{quantity}")]
-	public async Task<IActionResult> AddItem(string productId, int quantity)
+	[HttpPut]
+	public async Task<IActionResult> UpdateItem(string sku, int number = 1)
 	{
-		return ApiResponse(await Mediator.Send(new AddCartItemCommand
-		{
-			ProductId = productId,
-			Quantity = quantity
-		}));
-	}
-
-	[HttpPut("{productId}/remove-item/{quantity}")]
-	public async Task<IActionResult> RemoveItem(string productId, int quantity)
-	{
-		return ApiResponse(await Mediator.Send(new RemoveCartItemCommand
-		{
-			ProductId = productId,
-			Quantity = quantity
-		}));
+		return HandleApiResponse(await Mediator.Send(new UpdateCartItemQuantityCommand(sku, number)));
 	}
 }

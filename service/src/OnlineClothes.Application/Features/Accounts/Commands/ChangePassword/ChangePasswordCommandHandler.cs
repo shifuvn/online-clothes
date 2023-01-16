@@ -1,10 +1,5 @@
-﻿using MediatR;
-using Microsoft.Extensions.Logging;
-using OnlineClothes.Domain.Common;
-using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Infrastructure.Services.UserContext.Abstracts;
-using OnlineClothes.Persistence.Extensions;
-using OnlineClothes.Support.HttpResponse;
+﻿using OnlineClothes.Application.Persistence;
+using OnlineClothes.Application.Services.UserContext;
 
 namespace OnlineClothes.Application.Features.Accounts.Commands.ChangePassword;
 
@@ -12,35 +7,38 @@ internal sealed class
 	ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, JsonApiResponse<EmptyUnitResponse>>
 {
 	private readonly IAccountRepository _accountRepository;
-	private readonly ILogger<ChangePasswordCommandHandler> _logger;
+	private readonly IUnitOfWork _unitOfWork;
 	private readonly IUserContext _userContext;
 
-	public ChangePasswordCommandHandler(ILogger<ChangePasswordCommandHandler> logger,
-		IAccountRepository accountRepository,
-		IUserContext userContext)
+	public ChangePasswordCommandHandler(
+		IUserContext userContext,
+		IUnitOfWork unitOfWork,
+		IAccountRepository accountRepository)
 	{
-		_logger = logger;
-		_accountRepository = accountRepository;
 		_userContext = userContext;
+		_unitOfWork = unitOfWork;
+		_accountRepository = accountRepository;
 	}
 
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(ChangePasswordCommand request,
 		CancellationToken cancellationToken)
 	{
-		var account = await _accountRepository.GetOneAsync(_userContext.GetNameIdentifier(), cancellationToken);
+		var account =
+			await _accountRepository.GetByIntKey(_userContext.GetNameIdentifier(), cancellationToken);
 
 		if (!account.VerifyPassword(request.CurrentPassword))
 		{
 			return JsonApiResponse<EmptyUnitResponse>.Fail("Mật khẩu hiện tại không chính xác");
 		}
 
-		var newHashPassword = PasswordHasher.Hash(request.NewPassword);
+		account.SetPassword(request.NewPassword);
+		_accountRepository.UpdateOneField(
+			account,
+			p => p.HashedPassword);
 
-		var updatedResult = await _accountRepository.UpdateOneAsync(account.Id,
-			p => p.Set(acc => acc.HashedPassword, newHashPassword),
-			cancellationToken: cancellationToken);
+		var updatedResult = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-		return updatedResult.Any()
+		return updatedResult
 			? JsonApiResponse<EmptyUnitResponse>.Success()
 			: JsonApiResponse<EmptyUnitResponse>.Fail();
 	}

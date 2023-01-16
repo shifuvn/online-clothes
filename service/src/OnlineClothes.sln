@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineClothes.Domain", "Onl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineClothes.Persistence", "OnlineClothes.Persistence\OnlineClothes.Persistence.csproj", "{691A4C33-5CF7-47F6-992D-DEDF38208C6F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineClothes.Support", "OnlineClothes.Support\OnlineClothes.Support.csproj", "{E917799F-E44B-497A-AFA3-AC2908D82D6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineClothes.BuildIn", "OnlineClothes.BuildIn\OnlineClothes.BuildIn.csproj", "{E917799F-E44B-497A-AFA3-AC2908D82D6D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineClothes.UnitTest", "..\test\OnlineClothes.UnitTest\OnlineClothes.UnitTest.csproj", "{54E2A39B-B432-411A-B8A4-649E1FE36535}"
 EndProject
@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{38F7D2
 		scripts\compose-dev.sh = scripts\compose-dev.sh
 		docker-compose.dev.yaml = docker-compose.dev.yaml
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{5D68081B-424F-4A56-A2A5-E91D915C24DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{54E2A39B-B432-411A-B8A4-649E1FE36535} = {5D68081B-424F-4A56-A2A5-E91D915C24DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E89A7D2F-0C2E-410A-B7D4-C383EA3F7A13}

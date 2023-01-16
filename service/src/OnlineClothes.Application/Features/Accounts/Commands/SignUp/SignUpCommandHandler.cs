@@ -1,13 +1,6 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http;
 using OnlineClothes.Application.Helpers;
-using OnlineClothes.Domain.Common;
-using OnlineClothes.Domain.Entities;
-using OnlineClothes.Domain.Entities.Common;
-using OnlineClothes.Infrastructure.Repositories.Abstracts;
-using OnlineClothes.Support.Builders.Predicate;
-using OnlineClothes.Support.HttpResponse;
+using OnlineClothes.Application.Persistence;
 
 namespace OnlineClothes.Application.Features.Accounts.Commands.SignUp;
 
@@ -16,39 +9,70 @@ internal sealed class
 {
 	private readonly AccountActivationHelper _accountActivationHelper;
 	private readonly IAccountRepository _accountRepository;
+	private readonly ICartRepository _cartRepository;
 	private readonly ILogger<SignUpCommandHandler> _logger;
+	private readonly IUnitOfWork _unitOfWork;
 
-	public SignUpCommandHandler(ILogger<SignUpCommandHandler> logger,
+	public SignUpCommandHandler(
+		AccountActivationHelper accountActivationHelper,
+		IUnitOfWork unitOfWork,
 		IAccountRepository accountRepository,
-		AccountActivationHelper accountActivationHelper)
+		ICartRepository cartRepository,
+		ILogger<SignUpCommandHandler> logger)
 	{
-		_logger = logger;
-		_accountRepository = accountRepository;
 		_accountActivationHelper = accountActivationHelper;
+		_unitOfWork = unitOfWork;
+		_accountRepository = accountRepository;
+		_cartRepository = cartRepository;
+		_logger = logger;
 	}
 
 	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(SignUpCommand request,
 		CancellationToken cancellationToken)
 	{
-		var existingAccount =
-			await _accountRepository.FindOneAsync(FilterBuilder<AccountUser>.Where(p => p.Email == request.Email),
-				cancellationToken);
-
-		if (existingAccount is not null)
+		var existedAccount = await _accountRepository.GetByEmail(request.Email, cancellationToken);
+		if (existedAccount is not null)
 		{
 			return JsonApiResponse<EmptyUnitResponse>.Fail("Tài khoản đã tồn tại");
 		}
 
-		var newAccount = AccountUser.Create(request.Email, request.Password,
-			FullNameHelper.Create(request.FirstName, request.LastName), AccountRole.Client);
 
-		var activateResult = await _accountActivationHelper.StartNewAccount(newAccount, cancellationToken);
+		// begin tx
+		await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
-		await _accountRepository.InsertAsync(newAccount, cancellationToken);
-		_logger.LogInformation("Create new account {Email}", newAccount.Email);
+		var activateResult = await InitiateAccount(request, cancellationToken);
 
-		return activateResult == AccountActivationResult.Activated
-			? JsonApiResponse<EmptyUnitResponse>.Success(StatusCodes.Status201Created)
+		var save = await _unitOfWork.SaveChangesAsync(cancellationToken);
+		if (!save)
+		{
+			return JsonApiResponse<EmptyUnitResponse>.Fail();
+		}
+
+		// commit tx
+		await _unitOfWork.CommitAsync(cancellationToken);
+
+		return activateResult == AccountActivationResultType.Activated
+			? JsonApiResponse<EmptyUnitResponse>.Success(StatusCodes.Status201Created, "Đăng ký tài khoản thành công")
 			: JsonApiResponse<EmptyUnitResponse>.Success(StatusCodes.Status201Created, "Kiểm tra email của bạn");
+	}
+
+	private async Task<AccountActivationResultType> InitiateAccount(
+		SignUpCommand request,
+		CancellationToken cancellationToken = default)
+	{
+		var account = AccountUser.Create(
+			request.Email,
+			request.Password,
+			Fullname.Create(request.FirstName, request.LastName));
+
+		await _accountRepository.AddAsync(account, cancellationToken: cancellationToken);
+
+		await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+		var cart = new AccountCart { AccountId = account.Id };
+
+		await _cartRepository.AddAsync(cart, cancellationToken: cancellationToken);
+
+		return _accountActivationHelper.ActivateNewAccount(account);
 	}
 }

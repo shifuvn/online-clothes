@@ -3,8 +3,15 @@ name: CI/CD
 on:
   push:
     branches: ["main", "master", "develop", "action-workflow"]
+    tags:
+      - "**"
   pull_request:
     branches: ["main", "master", "develop"]
+
+env:
+  WORKING_DIRECTORY: ./service/src
+  REGISTRY: docker.io
+  IMAGE_REPO: online-clothes-api
 
 jobs:
   build-and-test:
@@ -21,29 +28,69 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Restore dependencies
-        working-directory: ${{ secrets.WORKING_DIR }} # working_dir should be folder contain solution file (./service/src)
+        working-directory: ${{ env.WORKING_DIRECTORY }}
         run: dotnet restore OnlineClothes.sln
 
       - name: Build
-        working-directory: ${{ secrets.WORKING_DIR }}
+        working-directory: ${{ env.WORKING_DIRECTORY }}
         run: dotnet build --no-restore OnlineClothes.sln
 
       - name: Test
-        working-directory: ${{ secrets.WORKING_DIR }}
+        working-directory: ${{ env.WORKING_DIRECTORY }}
         run: dotnet test --no-build --verbosity normal OnlineClothes.sln
 
-  docker-build:
-    name: Docker build dev
+  docker-registry:
+    name: Build and push registry
     runs-on: ubuntu-20.04
-    needs: [build-and-test]
+    needs: ["build-and-test"]
+    if: (startsWith(github.ref, 'refs/tags/v'))
 
     steps:
       - name: Setup checkout@v3
         uses: actions/checkout@v3
 
-      - name: Build infra services
-        working-directory: ${{ secrets.WORKING_DIR }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          # Key is named differently to avoid collision
+          key: ${{ runner.os }}-service-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-service-buildx
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract metadata for image
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_REPO }}
+          tags: |
+            type=ref,event=tag
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: ${{ env.WORKING_DIRECTORY }}
+          file: ${{ env.WORKING_DIRECTORY }}/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+      - name: Move cache
         run: |
-          chmod +x ./scripts/github-action/start-compose.sh
-          ./scripts/github-action/start-compose.sh
-        shell: bash
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache

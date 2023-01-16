@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineClothes.Application.Helpers;
@@ -22,5 +21,11 @@ public static class DependencyInjection
 		services.AddTransient<ExceptionHandlingMiddleware>();
 
 		services.AddTransient<AccountActivationHelper>();
+		services.AddTransient<StorageImageFileHelper>();
 	}
+}
+
+public static class ApplicationLayerAssembly
+{
+	public static Assembly ExecutingAssembly => Assembly.GetExecutingAssembly();
 }

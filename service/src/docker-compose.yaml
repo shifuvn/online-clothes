@@ -1,0 +1,44 @@
+version: '3.8'
+
+networks:
+  oop_infra_nw:
+  oop_app_nw:
+
+
+volumes:
+  app-data:
+
+
+services:
+  # database
+  postgresql-db:
+    image: postgres:alpine
+    networks:
+      - oop_infra_nw
+    volumes:
+      - app-data:/var/lib/postgresql/data
+
+  pgbouncer:
+    image: bitnami/pgbouncer
+    networks:
+      - oop_infra_nw
+      - oop_app_nw
+    depends_on:
+      - postgresql-db
+
+  mail-server-smtp:
+    image: marcopas/docker-mailslurper
+    networks:
+      - oop_infra_nw
+
+  app:
+    image: solcr/online-clothes-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - oop_app_nw
+    depends_on:
+      - pgbouncer
+    volumes:
+      - ./docker/certs:/.https:ro

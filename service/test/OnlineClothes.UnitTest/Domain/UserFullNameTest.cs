@@ -1,4 +1,4 @@
-﻿using OnlineClothes.Domain.Entities.Common;
+﻿using OnlineClothes.Domain.Common;
 
 namespace OnlineClothes.UnitTest.Domain;
 
@@ -16,7 +16,7 @@ public class UserFullNameTest
 		var expectedName = first + " " + last;
 
 		// act
-		var fullName = FullNameHelper.Create(first, last);
+		var fullName = Fullname.Create(first, last);
 
 		// assert
 		Assert.Equal(expectedName, fullName.FullName);
@@ -33,7 +33,7 @@ public class UserFullNameTest
 		// arrange
 
 		// act
-		var fullName = FullNameHelper.Create(full);
+		var fullName = Fullname.Create(full);
 
 		// assert
 		Assert.Equal(expectedFirst, fullName.FirstName);
@@ -53,7 +53,7 @@ public class UserFullNameTest
 		// act
 
 		// assert
-		var ex = Assert.Throws<InvalidOperationException>(() => FullNameHelper.Create(first, last));
+		var ex = Assert.Throws<InvalidOperationException>(() => Fullname.Create(first, last));
 		Assert.Equal("FirstName or LastName is invalid", ex.Message);
 	}
 
@@ -70,7 +70,7 @@ public class UserFullNameTest
 		// act
 
 		// assert
-		var ex = Assert.Throws<InvalidOperationException>(() => FullNameHelper.Create(full));
+		var ex = Assert.Throws<InvalidOperationException>(() => Fullname.Create(full));
 		Assert.Equal("FirstName or LastName is invalid", ex.Message);
 	}
 }
