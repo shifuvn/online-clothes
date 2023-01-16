@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: ["main", "master", "develop"]
 
+env:
+  REGISTRY: docker.io
+  IMAGE_REPO: online-clothes-api
+
 jobs:
   build-and-test:
     name: Build and test
@@ -31,3 +35,38 @@ jobs:
       - name: Test
         working-directory: ${{ secrets.WORKING_DIR }}
         run: dotnet test --no-build --verbosity normal OnlineClothes.sln
+
+  docker-registry:
+    name: Build and push registry
+    runs-on: ubuntu-20.04
+    needs: ["build-and-test"]
+    if: (github.ref == 'refs/heads/action-workflow')
+
+    steps:
+      - name: Setup checkout@v3
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract metadata for image
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          - images: ${{ env.REGISTRY }}/${{ env.IMAGE_REPO }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: ${{ secrets.WORKING_DIR }}
+          file: OnlineClothes.Api/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
