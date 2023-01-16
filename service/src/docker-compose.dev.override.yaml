@@ -34,7 +34,7 @@ services:
 
 
   app:
-    image: solcr/online-clothes-api
+    image: solcr/online-clothes-api:dev
     ports:
       - "9080:80"
       - "9443:443"
