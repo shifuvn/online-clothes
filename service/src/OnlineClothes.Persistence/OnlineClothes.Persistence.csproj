@@ -17,9 +17,4 @@
     <ProjectReference Include="..\OnlineClothes.Domain\OnlineClothes.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Internal\Extensions\" />
-    <Folder Include="Uow\" />
-  </ItemGroup>
-
 </Project>
