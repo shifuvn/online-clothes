@@ -2,7 +2,7 @@ SHELL := /bin/bash
 
 SLN_NAME := OnlineClothes
 MIGRATE_EXECUTED_CONTEXT := -p ./$(SLN_NAME).Persistence/ -s ./$(SLN_NAME).Api/
-COMPOSE_CONTEXT := docker-compose.dev.yaml
+COMPOSE_DEV_CONTEXT := docker-compose.dev.override.yaml
 
 .PHONY: docker
 
@@ -23,11 +23,11 @@ migrate-apply:
 migrate-remove:
 	dotnet ef migrations remove $(MIGRATE_EXECUTED_CONTEXT)
 
-build:
-	docker-compose -f $(COMPOSE_CONTEXT) build
+build-dev:
+	docker-compose -f docker-compose.yaml -f $(COMPOSE_DEV_CONTEXT) build
 
-compose-up:
+compose-dev-up:
 	cd ./scripts && bash compose-dev.sh up
 
-compose-down:
+compose-dev-down:
 	cd ./scripts && bash compose-dev.sh down

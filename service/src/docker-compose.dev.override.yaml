@@ -3,11 +3,6 @@ version: '3.8'
 services:
   # database
   postgresql-db:
-    image: postgres:alpine
-    networks:
-      - oop-infra
-    volumes:
-      - app-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:
@@ -16,14 +11,8 @@ services:
       
 
   pgbouncer:
-    image: bitnami/pgbouncer
-    networks:
-      - oop-infra
-      - oop-app
     ports:
       - "6432:6432"
-    depends_on:
-      - postgresql-db
     environment:
       - POSTGRESQL_HOST=postgresql-db
       - POSTGRESQL_PORT=5432
@@ -38,40 +27,23 @@ services:
 
 
   mail-server-smtp:
-    image: marcopas/docker-mailslurper
-    networks:
-      - oop-infra
     ports:
       - "2500:2500"
       - "8080:8080"
       - "8085:8085"
 
+
   app:
     image: solcr/online-clothes-api:dev
-    build:
-      context: .
-      dockerfile: OnlineClothes.Api/Dockerfile
-    networks:
-      - oop-app
     ports:
       - "9080:80"
       - "9443:443"
     depends_on:
       - pgbouncer
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/.https/localhost.pfx
     env_file:
       - ./docker/.env
-    volumes:
-      - ./docker/certs:/.https:ro
-    
 
-networks:
-  oop-infra:
-  oop-app:
-
-
-volumes:
-  app-data:

@@ -28,8 +28,11 @@ public class AppDbContext : DbContext
 	{
 		base.OnConfiguring(optionsBuilder);
 
-		optionsBuilder.UseLoggerFactory(LoggerFactInstance)
-			.EnableSensitiveDataLogging();
+		if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+		{
+			optionsBuilder.UseLoggerFactory(LoggerFactInstance)
+				.EnableSensitiveDataLogging();
+		}
 	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
