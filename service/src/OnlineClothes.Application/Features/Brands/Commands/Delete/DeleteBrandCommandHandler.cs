@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using OnlineClothes.Application.Persistence;
+﻿using OnlineClothes.Application.Persistence;
 
 namespace OnlineClothes.Application.Features.Brands.Commands.Delete;
 
@@ -31,6 +30,7 @@ public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, Jso
 		}
 
 		_logger.LogInformation("Delete brand: {object}", JsonConvert.SerializeObject(brand));
+
 		return JsonApiResponse<EmptyUnitResponse>.Success();
 	}
 }

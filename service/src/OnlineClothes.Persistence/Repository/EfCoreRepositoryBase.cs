@@ -23,15 +23,12 @@ public abstract class EfCoreRepositoryBase<TEntity, TKey> : EfCorePagingReposito
 
 		await DbSet.AddAsync(entity, cancellationToken);
 
-		if (notify)
-		{
-			//await _mediator.Publish(DomainEvent<TEntity>.Create(DomainEventAction.Created, entity), cancellationToken);
-		}
+		AddDomainEventPayload(entity, notify);
 
 		return entity;
 	}
 
-	public virtual async Task<bool> AddBatchAsync(IList<TEntity> entities,
+	public virtual async Task AddBatchAsync(IList<TEntity> entities,
 		bool notify = true,
 		CancellationToken cancellationToken = default)
 	{
@@ -39,13 +36,15 @@ public abstract class EfCoreRepositoryBase<TEntity, TKey> : EfCorePagingReposito
 
 		await DbSet.AddRangeAsync(entities, cancellationToken);
 
-		if (notify)
+		if (!notify)
 		{
-			//await _mediator.Publish(DomainEvent<TEntity>.Create($"Batch{typeof(TEntity)}", DomainEventAction.Created,
-			//	entities), cancellationToken);
+			return;
 		}
 
-		return true;
+		foreach (var entity in entities)
+		{
+			AddDomainEventPayload(entity, notify);
+		}
 	}
 
 	public virtual void Update(TEntity entity,
@@ -54,10 +53,7 @@ public abstract class EfCoreRepositoryBase<TEntity, TKey> : EfCorePagingReposito
 		ArgumentNullException.ThrowIfNull(entity);
 		DbSet.Attach(entity).State = EntityState.Modified;
 
-		if (notify)
-		{
-			//await _mediator.Publish(DomainEvent<TEntity>.Create(DomainEventAction.Updated, entity), cancellationToken);
-		}
+		AddDomainEventPayload(entity, notify);
 	}
 
 	public virtual void UpdateOneField(TEntity entity,
@@ -68,11 +64,7 @@ public abstract class EfCoreRepositoryBase<TEntity, TKey> : EfCorePagingReposito
 		ArgumentNullException.ThrowIfNull(updateDef);
 
 		DbSet.Attach(entity).Property(updateDef).IsModified = true;
-
-		if (notify)
-		{
-			//await _mediator.Publish(DomainEvent<TEntity>.Create(DomainEventAction.Updated, entity), cancellationToken);
-		}
+		AddDomainEventPayload(entity, notify);
 	}
 
 	public virtual void Delete(TEntity entity,
@@ -81,11 +73,7 @@ public abstract class EfCoreRepositoryBase<TEntity, TKey> : EfCorePagingReposito
 		ArgumentNullException.ThrowIfNull(entity);
 
 		DbSet.Attach(entity).State = EntityState.Deleted;
-
-		if (notify)
-		{
-			//await _mediator.Publish(DomainEvent<TEntity>.Create(DomainEventAction.Deleted, entity), cancellationToken);
-		}
+		AddDomainEventPayload(entity, notify);
 	}
 
 	public virtual async Task<TEntity?> FindAndDelete(FilterBuilder<TEntity> filterBuilder,
@@ -105,13 +93,20 @@ public abstract class EfCoreRepositoryBase<TEntity, TKey> : EfCorePagingReposito
 	public virtual void DeleteBatch(FilterBuilder<TEntity> filterBuilder,
 		bool notify = true)
 	{
-		DbSet.RemoveRange(DbSet.Where(filterBuilder.Statement).ToList());
+		var entries = DbSet.Where(filterBuilder.Statement).ToList();
+		DbSet.RemoveRange(entries);
 
+		foreach (var entity in entries)
+		{
+			AddDomainEventPayload(entity, notify);
+		}
+	}
+
+	private static void AddDomainEventPayload(TEntity entity, bool notify)
+	{
 		if (notify)
 		{
-			//await _mediator.Publish(
-			//	DomainEvent<TEntity>.Create($"Batch{nameof(TEntity)}", DomainEventAction.Deleted),
-			//	cancellationToken);
+			entity.AddEventPayload();
 		}
 	}
 }

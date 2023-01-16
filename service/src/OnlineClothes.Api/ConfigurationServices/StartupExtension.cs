@@ -8,7 +8,7 @@ using OnlineClothes.Application.Services.Auth.Models;
 using OnlineClothes.Infrastructure;
 using OnlineClothes.Persistence;
 
-namespace OnlineClothes.Api.Extensions;
+namespace OnlineClothes.Api.ConfigurationServices;
 
 public static class StartupExtension
 {

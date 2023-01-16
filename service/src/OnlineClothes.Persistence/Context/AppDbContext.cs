@@ -19,6 +19,7 @@ public class AppDbContext : DbContext
 				.AddConsole();
 		});
 
+
 	public AppDbContext(DbContextOptions options) : base(options)
 	{
 	}
@@ -38,8 +39,18 @@ public class AppDbContext : DbContext
 		modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 	}
 
-	public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
+	public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
 		CancellationToken cancellationToken = new())
+	{
+		TrackEntitySupportDateTime();
+		return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+	}
+
+
+	/// <summary>
+	/// Solve entity dataTime tracker
+	/// </summary>
+	private void TrackEntitySupportDateTime()
 	{
 		foreach (var entityEntry in ChangeTracker.Entries<IEntityDatetimeSupport>())
 		{
@@ -55,9 +66,6 @@ public class AppDbContext : DbContext
 					break;
 			}
 		}
-
-
-		return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
 	}
 
 	#region Dbset

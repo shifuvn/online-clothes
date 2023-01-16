@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using OnlineClothes.Application.Persistence;
+﻿using OnlineClothes.Application.Persistence;
 
 namespace OnlineClothes.Application.Features.Orders.Commands.Success;
 

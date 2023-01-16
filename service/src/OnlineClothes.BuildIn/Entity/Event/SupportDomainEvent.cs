@@ -1,47 +1,45 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using MediatR;
 using Newtonsoft.Json;
 
 namespace OnlineClothes.BuildIn.Entity.Event;
 
-public class SupportDomainEvent : ISupportDomainEvent
+public abstract class SupportDomainEvent : ISupportDomainEvent
 {
-	[JsonIgnore] [NotMapped] public List<KeyValuePair<string, object?>> PayloadEvents { get; } = new();
+	private readonly List<DomainEventPayload> _eventPayloads = new();
 
-	public void AppendPayloadEvent(string payloadEventName, object? eventPayload = null)
+	[JsonIgnore] public IReadOnlyCollection<DomainEventPayload> EventPayloads => _eventPayloads.AsReadOnly();
+
+	public void AddEventPayload(string? key = null, object? value = null)
 	{
-		PayloadEvents.Add(new KeyValuePair<string, object?>(payloadEventName, eventPayload));
+		var payloadValue = value ?? this;
+		var eventPayload = new DomainEventPayload(ResolvePayloadKey(key), payloadValue);
+
+		_eventPayloads.Add(eventPayload);
 	}
 
-	public virtual KeyValuePair<string, object?> FindPayload(string keyName)
+	private string ResolvePayloadKey(string? key = null)
 	{
-		return PayloadEvents.Count == 0 ? default : PayloadEvents.FirstOrDefault(q => q.Key.Equals(keyName));
-	}
-
-	public virtual TPayload? FindPayload<TPayload>(string keyName)
-	{
-		var payload = FindPayload(keyName);
-		return System.Text.Json.JsonSerializer.Deserialize<TPayload>(payload.Value?.ToString()!);
-	}
-
-	public bool Contains(string keyName)
-	{
-		return PayloadEvents.Count != 0 && PayloadEvents.Select(q => q.Key).ToHashSet().Contains(keyName);
+		return key ?? GetType().Name;
 	}
 }
 
-public interface ISupportDomainEvent
+public interface ISupportDomainEvent : INotification
 {
-	List<KeyValuePair<string, object?>> PayloadEvents { get; }
+	/// <summary>
+	/// Payload of domain event in KEY - VALUE format.
+	/// </summary>
+	IReadOnlyCollection<DomainEventPayload> EventPayloads { get; }
 
 	/// <summary>
-	/// Add payload event content
+	/// Add payload to domain events, if key is null typeof object wil be used as payload key, if value is null entity will add
+	/// itself as payload value.
+	/// to payload
 	/// </summary>
-	/// <param name="payloadEventName"></param>
-	/// <param name="eventPayload"></param>
-	void AppendPayloadEvent(string payloadEventName, object? eventPayload = null);
-
-	KeyValuePair<string, object?> FindPayload(string keyName);
-	TPayload? FindPayload<TPayload>(string keyName);
-
-	bool Contains(string keyName);
+	/// <param name="key"></param>
+	/// <param name="value"></param>
+	void AddEventPayload(string? key = null, object? value = null);
 }
+
+[NotMapped]
+public record DomainEventPayload(string Key, object? Value);

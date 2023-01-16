@@ -25,7 +25,11 @@ internal sealed class MailingService : IMailingService
 		_razorEngineRenderer = razorEngineRenderer;
 	}
 
-	public async Task SendEmailAsync(string to, string subject, string content, string? from = null,
+	public async Task SendEmailAsync(
+		string to,
+		string subject,
+		string content,
+		string? from = null,
 		IList<IFormFile>? attachments = null,
 		CancellationToken cancellationToken = default)
 	{
@@ -66,6 +70,7 @@ internal sealed class MailingService : IMailingService
 		try
 		{
 			await _mailingProvider.SmtpClient().SendAsync(email, cancellationToken);
+			_logger.LogInformation("Send email {subject} to {to}", subject, to);
 		}
 		catch (Exception e)
 		{

@@ -39,7 +39,7 @@ public interface IEfCoreWriteRepository<TEntity, TKey> where TEntity : class, IE
 	/// <param name="notify"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	Task<bool> AddBatchAsync(IList<TEntity> entities, bool notify = true,
+	Task AddBatchAsync(IList<TEntity> entities, bool notify = true,
 		CancellationToken cancellationToken = default);
 
 	#endregion

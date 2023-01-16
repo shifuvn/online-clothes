@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Newtonsoft.Json;
 using OnlineClothes.Application.Helpers;
 using OnlineClothes.Application.Persistence;
 

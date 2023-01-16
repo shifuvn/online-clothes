@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 
 namespace OnlineClothes.Domain.Entities.Aggregate;
 
@@ -17,6 +18,7 @@ public class Category : EntityBase
 	public string Name { get; set; } = null!;
 	public string? Description { get; set; }
 
+	[JsonIgnore]
 	public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new Collection<ProductCategory>();
 
 	public void Update(string newName, string? newDesc)

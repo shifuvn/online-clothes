@@ -31,7 +31,7 @@ public class EfCorePagingRepository<TEntity, TKey> : EfCoreReadOnlyRepositoryBas
 			cancellationToken);
 
 		var result = await entriesQueryable.ToListAsync(cancellationToken);
-		return PagingModel<TEntity>.ToPages(total, result, pageRequest.PageSize);
+		return PagingModel<TEntity>.ToPages(total, result, pageRequest.PageIndex);
 	}
 
 	public virtual async Task<PagingModel<TProject>> PagingAsync<TProject>(
@@ -51,7 +51,7 @@ public class EfCorePagingRepository<TEntity, TKey> : EfCoreReadOnlyRepositoryBas
 			cancellationToken);
 
 		var result = await selectorFunc(entriesQueryable).ToListAsync(cancellationToken);
-		return PagingModel<TProject>.ToPages(total, result, pageRequest.PageSize);
+		return PagingModel<TProject>.ToPages(total, result, pageRequest.PageIndex);
 	}
 
 	private IQueryable<TEntity> BuildPreEntryQueryable(

@@ -1,4 +1,6 @@
-﻿namespace OnlineClothes.Domain.Entities.Aggregate;
+﻿using Newtonsoft.Json;
+
+namespace OnlineClothes.Domain.Entities.Aggregate;
 
 public class Brand : EntityBase
 {
@@ -17,5 +19,5 @@ public class Brand : EntityBase
 	public string? Description { get; set; }
 	public string? ContactEmail { get; set; }
 
-	public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+	[JsonIgnore] public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

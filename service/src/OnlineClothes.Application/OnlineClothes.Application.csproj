@@ -24,4 +24,8 @@
     <ProjectReference Include="..\OnlineClothes.Domain\OnlineClothes.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Accounts\Events\" />
+  </ItemGroup>
+
 </Project>
