@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using OnlineClothes.Application.Features.Accounts.Commands.ChangePassword;
-using OnlineClothes.Application.Features.Accounts.Commands.Reset;
+using OnlineClothes.Application.Features.Accounts.Commands.Recovery;
 using OnlineClothes.Application.Features.Accounts.Commands.SignIn;
 using OnlineClothes.Application.Features.Accounts.Commands.SignUp;
-using OnlineClothes.Application.Features.Accounts.Queries.Activate;
-using OnlineClothes.Application.Features.Accounts.Queries.Recovery;
 using OnlineClothes.Application.Features.Accounts.Queries.ResendActivation;
 
 namespace OnlineClothes.Api.Controllers.V1;
@@ -15,19 +13,6 @@ public class AccountsController : ApiV1ControllerBase
 	{
 	}
 
-	[HttpGet("recovery")]
-	[AllowAnonymous]
-	public async Task<IActionResult> Recovery([FromQuery] RecoveryQuery query)
-	{
-		return HandleApiResponse(await Mediator.Send(query));
-	}
-
-	[HttpGet("activate")]
-	[AllowAnonymous]
-	public async Task<IActionResult> Activate([FromQuery] ActivateQuery query)
-	{
-		return HandleApiResponse(await Mediator.Send(query));
-	}
 
 	[HttpGet("resend-activate")]
 	[AllowAnonymous]
@@ -60,14 +45,14 @@ public class AccountsController : ApiV1ControllerBase
 	}
 
 
-	[HttpPost("reset")]
+	[HttpPost("recovery")]
 	[AllowAnonymous]
-	public async Task<IActionResult> Reset([FromBody] ResetCommand command)
+	public async Task<IActionResult> Reset([FromBody] RecoveryAccountCommand command)
 	{
 		return HandleApiResponse(await Mediator.Send(command));
 	}
 
-	[HttpGet("test-authorize")]
+	[HttpGet("check-authorize")]
 	[Authorize]
 	public IActionResult TestAuthorize()
 	{

@@ -9,11 +9,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include=".\Views\MailTemplates\**">
+    <Content Include=".\HTMLMailTemplates\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <None Remove="HTMLMailTemplates\RecoveryMail.html" />
+    <None Remove="HTMLMailTemplates\ResetPasswordMail.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="HTMLMailTemplates\RecoveryMail.html" />
+    <Content Include="HTMLMailTemplates\ResetPasswordMail.html" />
+  </ItemGroup>
+
   <ItemGroup>
     <Folder Include="logs" />
   </ItemGroup>

@@ -4,18 +4,19 @@ using OnlineClothes.Application.Services.Mailing;
 using OnlineClothes.Application.Services.Mailing.Models;
 using OnlineClothes.Application.StandaloneConfigurations;
 
-namespace OnlineClothes.Application.Features.Accounts.Commands.Reset;
+namespace OnlineClothes.Application.Features.Accounts.Commands.Recovery;
 
-internal sealed class ResetCommandHandler : IRequestHandler<ResetCommand, JsonApiResponse<EmptyUnitResponse>>
+internal sealed class
+	RecoveryAccountCommandHandler : IRequestHandler<RecoveryAccountCommand, JsonApiResponse<EmptyUnitResponse>>
 {
 	private readonly IAccountRepository _accountRepository;
 	private readonly AppDomainConfiguration _domainConfiguration;
-	private readonly ILogger<ResetCommand> _logger;
+	private readonly ILogger<RecoveryAccountCommand> _logger;
 	private readonly IMailingService _mailingService;
 	private readonly ITokenRepository _tokenRepository;
 	private readonly IUnitOfWork _unitOfWork;
 
-	public ResetCommandHandler(ILogger<ResetCommand> logger,
+	public RecoveryAccountCommandHandler(ILogger<RecoveryAccountCommand> logger,
 		IOptions<AppDomainConfiguration> appDomainOptions,
 		IMailingService mailingService,
 		IUnitOfWork unitOfWork,
@@ -30,7 +31,7 @@ internal sealed class ResetCommandHandler : IRequestHandler<ResetCommand, JsonAp
 		_domainConfiguration = appDomainOptions.Value;
 	}
 
-	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(ResetCommand request,
+	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(RecoveryAccountCommand request,
 		CancellationToken cancellationToken)
 	{
 		var account = await _accountRepository.FindOneAsync(
@@ -47,20 +48,22 @@ internal sealed class ResetCommandHandler : IRequestHandler<ResetCommand, JsonAp
 
 		if (saves)
 		{
-			await SendResetAccountEmail(cancellationToken, account, recoveryCode);
+			await SendRecoveryAccountMail(account, recoveryCode, cancellationToken);
 			return JsonApiResponse<EmptyUnitResponse>.Success();
 		}
 
 		return JsonApiResponse<EmptyUnitResponse>.Fail();
 	}
 
-	private async Task SendResetAccountEmail(CancellationToken cancellationToken, AccountUser account,
-		AccountTokenCode recoveryCode)
+	private async Task SendRecoveryAccountMail(
+		AccountUser account,
+		AccountTokenCode recoveryCode,
+		CancellationToken cancellationToken = default)
 	{
-		var mail = new MailingTemplate(account.Email, "Recovery account", EmailTemplateNames.ResetPassword,
+		var mail = new MailingTemplate(account.Email, "Recovery account", EmailTemplateNames.RecoveryPassword,
 			new
 			{
-				RecoveryUrl = $"{_domainConfiguration}/api/v1/accounts/recovery?token={recoveryCode.TokenCode}"
+				RecoveryUrl = $"{_domainConfiguration}/auth/reset-password?token={recoveryCode.TokenCode}"
 			});
 
 		await _mailingService.SendEmailAsync(mail, cancellationToken);

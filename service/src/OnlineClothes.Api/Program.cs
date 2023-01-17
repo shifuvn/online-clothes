@@ -33,6 +33,8 @@ builder.Services.AddControllers()
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddControllersWithViews();
+
 builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
@@ -53,6 +55,7 @@ app.MigrateDatabase();
 
 app.UseCors(StartupExtension.CorsAnyOrigin);
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseSerilogRequestLogging(requestLoggingOptions =>
@@ -69,7 +72,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapDefaultControllerRoute();
 
 app.Start();
 LogKestrelListeningAddress();
