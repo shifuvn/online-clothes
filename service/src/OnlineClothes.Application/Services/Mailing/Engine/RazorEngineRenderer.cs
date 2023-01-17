@@ -5,7 +5,7 @@ namespace OnlineClothes.Application.Services.Mailing.Engine;
 
 public class RazorEngineRenderer
 {
-	private const string RootDirectoryContainTemplate = @"./Views/MailTemplates/";
+	private const string RootDirectoryContainTemplate = @"./HTMLMailTemplates/";
 
 	private readonly ILogger<RazorEngineRenderer> _logger;
 

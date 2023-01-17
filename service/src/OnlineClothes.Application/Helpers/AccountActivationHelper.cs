@@ -71,7 +71,7 @@ public class AccountActivationHelper
 			new
 			{
 				ConfirmedUrl =
-					$"{_domainConfiguration}/api/v1/accounts/activate?token={newTokenCode.TokenCode}"
+					$"{_domainConfiguration}/verified-email?token={newTokenCode.TokenCode}"
 			});
 
 		await _mailingService.SendEmailAsync(mailTemplate, cancellationToken);
