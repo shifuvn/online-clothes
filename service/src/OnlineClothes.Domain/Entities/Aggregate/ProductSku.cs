@@ -6,10 +6,7 @@ namespace OnlineClothes.Domain.Entities.Aggregate;
 
 public class ProductSku : SupportDomainEvent, IEntity<string>
 {
-	[Key]
-	[DatabaseGenerated(DatabaseGeneratedOption.None)]
-	public string Sku { get; set; } = null!;
-
+	[Key] public string Sku { get; set; } = null!;
 	public int ProductId { get; set; }
 	public int InStock { get; set; }
 	public decimal AddOnPrice { get; set; }

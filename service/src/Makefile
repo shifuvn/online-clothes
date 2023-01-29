@@ -20,7 +20,7 @@ migrate-remove:
 
 test:
 	dotnet test --blame --verbosity quiet
-	
+
 build:
 	docker-compose -f docker-compose.yaml -f docker-compose.dev.override.yaml build
 
@@ -28,8 +28,8 @@ publish:
 	docker-compose -f docker-compose.yaml build
 	docker push solcr/online-clothes-api
 
-dev-up:
+docker-up:
 	cd ./scripts && bash compose-dev.sh up
 
-dev-down:
+docker-down:
 	cd ./scripts && bash compose-dev.sh down

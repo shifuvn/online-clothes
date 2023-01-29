@@ -332,12 +332,7 @@ namespace OnlineClothes.Persistence.Migrations
                     b.Property<int>("Size")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TempId1")
-                        .HasColumnType("integer");
-
                     b.HasKey("Sku");
-
-                    b.HasAlternateKey("TempId1");
 
                     b.HasIndex("ImageId")
                         .IsUnique();

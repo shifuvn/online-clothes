@@ -8,7 +8,9 @@ public abstract class SupportDomainEvent : ISupportDomainEvent
 {
 	private readonly List<DomainEventPayload> _eventPayloads = new();
 
-	[JsonIgnore] public IReadOnlyCollection<DomainEventPayload> EventPayloads => _eventPayloads.AsReadOnly();
+	[JsonIgnore]
+	[NotMapped]
+	public IReadOnlyCollection<DomainEventPayload> EventPayloads => _eventPayloads.AsReadOnly();
 
 	public void AddEventPayload(string? key = null, object? value = null)
 	{
@@ -41,5 +43,4 @@ public interface ISupportDomainEvent : INotification
 	void AddEventPayload(string? key = null, object? value = null);
 }
 
-[NotMapped]
 public record DomainEventPayload(string Key, object? Value);
