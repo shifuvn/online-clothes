@@ -1,0 +1,38 @@
+@import "normalize.css";
+
+%colorSystem {
+  --primaryColor: #040e53;
+  --onPrimaryColor: #ffffff;
+  --disabledColor: #e5e6ed;
+  --textColor: #000000;
+  --canvasColor: #939393;
+}
+
+%fontSizeSystem {
+  --heading1: 18px;
+  --heading2: 14px;
+  --heading3: 12px;
+}
+
+:root {
+  @extend %colorSystem;
+  @extend %fontSizeSystem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat";
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  text-rendering: optimizeSpeed;
+}
