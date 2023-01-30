@@ -90,6 +90,7 @@ public class
 		{
 			"price" => product => product.Price,
 			"name" => product => product.Name,
+			"id" => product => product.Id,
 			_ => product => product.Name
 		};
 	}
@@ -100,7 +101,8 @@ public class
 		// Default order behaviour (high => low)
 		public static bool ShouldOrderDescending(string? orderBy)
 		{
-			return string.IsNullOrEmpty(orderBy) || orderBy.Equals(QuerySortOrder.Descending);
+			return string.IsNullOrEmpty(orderBy) ||
+			       orderBy.Equals(QuerySortOrder.Descending, StringComparison.OrdinalIgnoreCase);
 		}
 	}
 }
