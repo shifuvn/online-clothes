@@ -2,8 +2,13 @@
 
 public class ProductSkuDto : ProductSkuBasicDto
 {
-	public ProductSkuDto(int productId, string sku, string name, decimal price, int inStock) : base(productId, sku,
-		name, price, inStock)
+	public ProductSkuDto(
+		int productId,
+		string sku,
+		string name,
+		decimal price,
+		int inStock,
+		DateTime createdAt) : base(productId, sku, name, price, inStock, createdAt)
 	{
 	}
 
@@ -12,12 +17,17 @@ public class ProductSkuDto : ProductSkuBasicDto
 	public ClotheType? Type { get; set; }
 	public BrandDto? Brand { get; set; }
 	public List<CategoryDto> Categories { get; set; } = new();
-	public DateTime CreatedAt { get; set; }
+	public bool IsDeleted { get; set; }
 	public DateTime ModifiedAt { get; set; }
 
 	public new static ProductSkuDto ToModel(ProductSku entity)
 	{
-		return new ProductSkuDto(entity.ProductId, entity.Sku, entity.Product.Name, entity.GetPrice(), entity.InStock)
+		return new ProductSkuDto(
+			entity.ProductId,
+			entity.Sku,
+			entity.Product.Name,
+			entity.GetPrice(), entity.InStock,
+			entity.CreatedAt)
 		{
 			Description = entity.Product.Description,
 			Brand = BrandDto.ToModel(entity.Product.Brand),
@@ -26,8 +36,9 @@ public class ProductSkuDto : ProductSkuBasicDto
 			Categories =
 				entity.Product.ProductCategories.SelectList(category => CategoryDto.ToModel(category.Category)),
 			CreatedAt = entity.CreatedAt,
-			ModifiedAt = entity.ModifiedAt,
-			ImageUrl = entity.Image?.Url
+			ImageUrl = entity.Image?.Url,
+			IsDeleted = entity.IsDeleted,
+			ModifiedAt = entity.ModifiedAt
 		};
 	}
 }

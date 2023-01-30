@@ -19,15 +19,15 @@ public class
 	public async Task<JsonApiResponse<PagingModel<ProductBasicDto>>> Handle(GetPagingProductQuery request,
 		CancellationToken cancellationToken)
 	{
-		var viewModel = await _productRepository.PagingAsync(
+		var data = await _productRepository.PagingAsync(
 			PreSearchQueryable(request),
 			new PagingRequest(request.PageIndex, request.PageSize),
 			ProjectToTypeSelector(),
-			PreOrderQueryable(request),
+			BuildOrderSelector(request),
 			new[] { "ProductSkus", "ThumbnailImage" },
 			cancellationToken);
 
-		return JsonApiResponse<PagingModel<ProductBasicDto>>.Success(data: viewModel);
+		return JsonApiResponse<PagingModel<ProductBasicDto>>.Success(data: data);
 	}
 
 	private static FilterBuilder<Product> PreSearchQueryable(GetPagingProductQuery request)
@@ -77,7 +77,7 @@ public class
 
 	private static
 		Func<IQueryable<Product>, IOrderedQueryable<Product>>
-		PreOrderQueryable(GetPagingProductQuery request)
+		BuildOrderSelector(GetPagingProductQuery request)
 	{
 		return Check.ShouldOrderDescending(request.OrderBy)
 			? query => query.OrderByDescending(SortByDefinition(request.SortBy))
@@ -90,6 +90,8 @@ public class
 		{
 			"price" => product => product.Price,
 			"name" => product => product.Name,
+			"id" => product => product.Id,
+			"created" => product => product.CreatedAt,
 			_ => product => product.Name
 		};
 	}
@@ -100,7 +102,8 @@ public class
 		// Default order behaviour (high => low)
 		public static bool ShouldOrderDescending(string? orderBy)
 		{
-			return string.IsNullOrEmpty(orderBy) || orderBy.Equals(QuerySortOrder.Descending);
+			return string.IsNullOrEmpty(orderBy) ||
+			       orderBy.Equals(QuerySortOrder.Descending, StringComparison.OrdinalIgnoreCase);
 		}
 	}
 }
