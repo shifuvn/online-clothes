@@ -21,10 +21,19 @@ HttpApiProvider.delete = (url, options) => {
   return http.instance.delete(url, options);
 };
 
+HttpApiProvider.getOne = async (url, params) => {
+  const action = "getOne";
+  const configuredUrl = configUrl(url, params, action);
+  let result = await http.instance.get(configuredUrl);
+  let configuredResult = configResult(url, result, action);
+  return configuredResult;
+};
+
 HttpApiProvider.getList = async (url, params, options) => {
-  const configuredUrl = configUrl(url, params);
+  const action = "getList";
+  const configuredUrl = configUrl(url, params, action);
   const result = await http.instance.get(configuredUrl, params, options);
-  return configResult(url, result, "get list");
+  return configResult(url, result, action);
 };
 
 HttpApiProvider.create = async (url, payload) => {

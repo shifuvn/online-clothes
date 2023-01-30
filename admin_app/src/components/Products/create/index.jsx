@@ -18,8 +18,6 @@ const ProductCreate = (props) => {
   const navigate = useNavigate();
 
   const handleSubmit = async (params) => {
-    //console.log(params);
-    //console.log(params.ImageFile.rawFile);
     params.ImageFile = params.ImageFile.rawFile;
     await HttpApiProvider.create("products", params);
     navigate("/products");

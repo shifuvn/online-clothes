@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace OnlineClothes.Application.Features.Products.Commands.EditSkuInfo;
+namespace OnlineClothes.Application.Features.Skus.Commands.EditSkuInfo;
 
 public class EditSkuInfoCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 {

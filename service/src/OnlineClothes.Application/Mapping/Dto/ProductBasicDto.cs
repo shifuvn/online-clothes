@@ -7,6 +7,7 @@ public class ProductBasicDto
 	public decimal Price { get; set; }
 	public List<string> Skus { get; set; } = new();
 	public string? ThumbnailUrl { get; set; }
+	public DateTime CreatedAt { get; set; }
 
 	public static ProductBasicDto ToModel(Product entity)
 	{
@@ -16,7 +17,8 @@ public class ProductBasicDto
 			Name = entity.Name,
 			Price = entity.Price,
 			Skus = entity.ProductSkus.SelectList(q => q.Sku),
-			ThumbnailUrl = entity.ThumbnailImage?.Url
+			ThumbnailUrl = entity.ThumbnailImage?.Url,
+			CreatedAt = entity.CreatedAt
 		};
 	}
 }

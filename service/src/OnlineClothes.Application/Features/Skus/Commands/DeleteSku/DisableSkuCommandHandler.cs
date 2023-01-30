@@ -1,6 +1,6 @@
 ﻿using OnlineClothes.Application.Persistence;
 
-namespace OnlineClothes.Application.Features.Products.Commands.DeleteSku;
+namespace OnlineClothes.Application.Features.Skus.Commands.DeleteSku;
 
 public class DisableSkuCommandHandler : IRequestHandler<DisableSkuCommand, JsonApiResponse<EmptyUnitResponse>>
 {

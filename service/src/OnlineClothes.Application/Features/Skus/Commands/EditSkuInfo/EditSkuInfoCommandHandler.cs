@@ -2,7 +2,7 @@
 using OnlineClothes.Application.Helpers;
 using OnlineClothes.Application.Persistence;
 
-namespace OnlineClothes.Application.Features.Products.Commands.EditSkuInfo;
+namespace OnlineClothes.Application.Features.Skus.Commands.EditSkuInfo;
 
 public class EditSkuInfoCommandHandler : IRequestHandler<EditSkuInfoCommand, JsonApiResponse<EmptyUnitResponse>>
 {

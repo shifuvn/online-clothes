@@ -1,6 +1,6 @@
 ﻿using OnlineClothes.Application.Persistence;
 
-namespace OnlineClothes.Application.Features.Products.Commands.ImportSku;
+namespace OnlineClothes.Application.Features.Skus.Commands.ImportSku;
 
 public class
 	ImportSkuStockCommandHandler : IRequestHandler<ImportSkuStockCommand, JsonApiResponse<EmptyUnitResponse>>

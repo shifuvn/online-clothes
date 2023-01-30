@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineClothes.Application.Persistence;
 
-namespace OnlineClothes.Application.Features.Products.Queries.Detail;
+namespace OnlineClothes.Application.Features.Skus.Queries.Detail;
 
 public class GetSkuDetailQueryHandler : IRequestHandler<GetSkuDetailQuery, JsonApiResponse<ProductSkuDto>>
 {

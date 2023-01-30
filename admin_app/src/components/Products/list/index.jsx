@@ -1,23 +1,25 @@
 import React, { Fragment } from "react";
 import {
+  Button,
   Datagrid,
   EditButton,
   List,
   NumberField,
+  ShowButton,
   TextField
 } from "react-admin";
-import { ThumbnailField } from "../_fields";
+import { ProductPanelField, ThumbnailField } from "../_fields";
 
 const ProductList = () => {
   return (
     <Fragment>
       <List>
-        <Datagrid rowClick="edit">
+        <Datagrid rowClick="show" expand={<ProductPanelField />}>
           <TextField source="id" />
           <TextField source="name" />
-          <ThumbnailField source="thumbnailUrl" />
+          <ThumbnailField source="thumbnailUrl" label="Thumbnail" />
           <NumberField source="price" />
-          <EditButton></EditButton>
+          <EditButton />
         </Datagrid>
       </List>
     </Fragment>

@@ -2,7 +2,7 @@
 using OnlineClothes.Application.Helpers;
 using OnlineClothes.Application.Persistence;
 
-namespace OnlineClothes.Application.Features.Products.Commands.CreateNewSku;
+namespace OnlineClothes.Application.Features.Skus.Commands.CreateNewSku;
 
 public sealed class
 	CreateSkuCommandHandler : IRequestHandler<CreateSkuCommand, JsonApiResponse<EmptyUnitResponse>>

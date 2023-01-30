@@ -1,4 +1,4 @@
-﻿namespace OnlineClothes.Application.Features.Products.Queries.Detail;
+﻿namespace OnlineClothes.Application.Features.Skus.Queries.Detail;
 
 public class GetSkuDetailQuery : IRequest<JsonApiResponse<ProductSkuDto>>
 {

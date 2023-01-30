@@ -2,7 +2,7 @@
 
 public class ProductSkuBasicDto
 {
-	public ProductSkuBasicDto(int productId, string sku, string name, decimal price, int inStock,
+	public ProductSkuBasicDto(int productId, string sku, string name, decimal price, int inStock, DateTime createdAt,
 		string? imageUrl = null)
 	{
 		ProductId = productId;
@@ -10,6 +10,7 @@ public class ProductSkuBasicDto
 		Name = name;
 		Price = price;
 		InStock = inStock;
+		CreatedAt = createdAt;
 		ImageUrl = imageUrl;
 	}
 
@@ -19,6 +20,7 @@ public class ProductSkuBasicDto
 	public decimal Price { get; set; }
 	public int InStock { get; set; }
 	public string? ImageUrl { get; set; }
+	public DateTime CreatedAt { get; set; }
 
 	public static ProductSkuBasicDto ToModel(ProductSku entity)
 	{
@@ -28,6 +30,7 @@ public class ProductSkuBasicDto
 			entity.Product.Name,
 			entity.GetPrice(),
 			entity.InStock,
+			entity.CreatedAt,
 			entity.Image?.Url);
 	}
 }

@@ -1,10 +1,17 @@
 export const processProductQueryParams = (params) => {
-  if (!params) {
+  if (!params || params === undefined) {
     return undefined;
   }
 
+  let query = "";
   const paging = params.pagination;
+  if (paging !== undefined) {
+    query += `pageIndex=${paging.page}&pageSize=${paging.perPage}`;
+  }
+
   const sort = params.sort;
-  let query = `pageIndex=${paging.page}&pageSize=${paging.perPage}&orderBy=${sort.order}&sortBy=${sort.field}`;
+  if (sort !== undefined) {
+    query += `&orderBy=${sort.order}&sortBy=${sort.field}`;
+  }
   return query;
 };

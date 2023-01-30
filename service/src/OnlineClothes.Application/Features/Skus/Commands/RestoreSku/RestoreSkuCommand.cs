@@ -1,4 +1,4 @@
-﻿namespace OnlineClothes.Application.Features.Products.Commands.RestoreSku;
+﻿namespace OnlineClothes.Application.Features.Skus.Commands.RestoreSku;
 
 public class RestoreSkuCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 {

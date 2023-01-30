@@ -1,6 +1,6 @@
 ﻿using OnlineClothes.Application.Persistence;
 
-namespace OnlineClothes.Application.Features.Products.Commands.RestoreSku;
+namespace OnlineClothes.Application.Features.Skus.Commands.RestoreSku;
 
 public class RestoreSkuCommandHandler : IRequestHandler<RestoreSkuCommand, JsonApiResponse<EmptyUnitResponse>>
 {

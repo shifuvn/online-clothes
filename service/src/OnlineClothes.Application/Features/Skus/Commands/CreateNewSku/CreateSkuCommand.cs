@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using OnlineClothes.Application.Commons;
 
-namespace OnlineClothes.Application.Features.Products.Commands.CreateNewSku;
+namespace OnlineClothes.Application.Features.Skus.Commands.CreateNewSku;
 
 public class CreateSkuCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 {
