@@ -42,3 +42,4 @@ services:
       - pgbouncer
     volumes:
       - ./docker/certs:/.https:ro
+      - ~/.aws:/root/.aws
