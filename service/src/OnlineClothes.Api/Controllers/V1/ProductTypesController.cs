@@ -1,6 +1,7 @@
 ﻿using OnlineClothes.Application.Features.ProductTypes.Commands.Create;
 using OnlineClothes.Application.Features.ProductTypes.Commands.Delete;
 using OnlineClothes.Application.Features.ProductTypes.Commands.Edit;
+using OnlineClothes.Application.Features.ProductTypes.Queries.All;
 using OnlineClothes.Application.Features.ProductTypes.Queries.Paging;
 using OnlineClothes.Application.Features.ProductTypes.Queries.Single;
 
@@ -22,6 +23,12 @@ public class ProductTypesController : ApiV1ControllerBase
 	public async Task<IActionResult> Single([FromRoute] int id)
 	{
 		return HandleApiResponse(await Mediator.Send(new GetSingleProductTypeQuery { Id = id }));
+	}
+
+	[HttpGet("all")]
+	public async Task<IActionResult> All()
+	{
+		return HandleApiResponse(await Mediator.Send(new GetAllProductTypeQuery()));
 	}
 
 	[HttpPost]

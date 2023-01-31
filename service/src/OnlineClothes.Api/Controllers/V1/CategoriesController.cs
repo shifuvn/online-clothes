@@ -1,6 +1,7 @@
 ﻿using OnlineClothes.Application.Features.Categories.Commands.Create;
 using OnlineClothes.Application.Features.Categories.Commands.Delete;
 using OnlineClothes.Application.Features.Categories.Commands.Edit;
+using OnlineClothes.Application.Features.Categories.Queries.All;
 using OnlineClothes.Application.Features.Categories.Queries.Paging;
 using OnlineClothes.Application.Features.Categories.Queries.Single;
 
@@ -22,6 +23,12 @@ public class CategoriesController : ApiV1ControllerBase
 	public async Task<IActionResult> GetPaging([FromQuery] GetPagingCategoryQuery request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));
+	}
+
+	[HttpGet("all")]
+	public async Task<IActionResult> GetAll()
+	{
+		return HandleApiResponse(await Mediator.Send(new GetAllCategoryQuery()));
 	}
 
 	[HttpPost]

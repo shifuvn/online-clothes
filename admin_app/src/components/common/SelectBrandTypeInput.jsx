@@ -2,19 +2,19 @@ import React from "react";
 import { SelectInput } from "react-admin";
 import { HttpApiProvider } from "../../services/ApiWrapper";
 
-const SelectTypeInput = (props) => {
+const SelectBrandTypeInput = (props) => {
   const [choices, setChoices] = React.useState([]);
 
   React.useEffect(() => {
-    const fetchAllType = async () => {
-      const result = await HttpApiProvider.get("productTypes/all");
+    const fetchAllBrands = async () => {
+      var result = await HttpApiProvider.get("brands/all");
       setChoices(result.data?.data);
     };
 
-    fetchAllType();
+    fetchAllBrands();
   }, []);
 
   return <SelectInput source={props.source} choices={choices} />;
 };
 
-export default SelectTypeInput;
+export default SelectBrandTypeInput;
