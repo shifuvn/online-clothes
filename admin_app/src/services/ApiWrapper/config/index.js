@@ -13,6 +13,7 @@ export const configUrl = (url, params, action) => {
     case "skus":
     case "productTypes":
     case "categories":
+    case "brands":
       query = handleDefaultConfigUrl(params);
       if (query) {
         requestUrl += `?${query}`;
@@ -29,6 +30,7 @@ export const configResult = (url, result, action) => {
     case "products":
     case "productTypes":
     case "categories":
+    case "brands":
       switch (action) {
         case RaHttpProviderAction.getList:
           return handleDefaultConfigResultGetList(result);

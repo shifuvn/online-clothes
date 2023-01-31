@@ -9,6 +9,7 @@ import {
   ProductTypeList
 } from "../productTypes";
 import { CategoryCreate, CategoryEdit, CategoryList } from "../categories";
+import { BrandCreate, BrandEdit, BrandList } from "../brands";
 
 const WrapperResource = () => {
   return (
@@ -28,6 +29,13 @@ const WrapperResource = () => {
           list={CategoryList}
           create={CategoryCreate}
           edit={CategoryEdit}
+        />
+        <Resource
+          name="brands"
+          options={{ label: "Brand" }}
+          list={BrandList}
+          edit={BrandEdit}
+          create={BrandCreate}
         />
         <Resource
           name="productTypes"
