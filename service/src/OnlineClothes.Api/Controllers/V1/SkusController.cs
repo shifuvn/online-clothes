@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using OnlineClothes.Application.Features.Images.Commands.DeleteSkuImage;
-using OnlineClothes.Application.Features.Images.Commands.ReplaceSkuImage;
 using OnlineClothes.Application.Features.Skus.Commands.CreateNewSku;
 using OnlineClothes.Application.Features.Skus.Commands.DeleteSku;
 using OnlineClothes.Application.Features.Skus.Commands.EditSkuInfo;
@@ -37,8 +36,8 @@ public class SkusController : ApiV1ControllerBase
 		return HandleApiResponse(await Mediator.Send(request));
 	}
 
-	[HttpPut("edit")]
-	public async Task<IActionResult> EditSku([FromBody] EditSkuInfoCommand request)
+	[HttpPut]
+	public async Task<IActionResult> EditSku([FromForm] EditSkuInfoCommand request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));
 	}
@@ -58,11 +57,11 @@ public class SkusController : ApiV1ControllerBase
 	}
 
 
-	[HttpPut("replace-image")]
-	public async Task<IActionResult> ReplaceSkuImage([FromForm] ReplaceSkuImageCommand request)
-	{
-		return HandleApiResponse(await Mediator.Send(request));
-	}
+	//[HttpPut("replace-image")]
+	//public async Task<IActionResult> ReplaceSkuImage([FromForm] ReplaceSkuImageCommand request)
+	//{
+	//	return HandleApiResponse(await Mediator.Send(request));
+	//}
 
 	[HttpDelete("{sku}")]
 	public async Task<IActionResult> DeleteSku(string sku)

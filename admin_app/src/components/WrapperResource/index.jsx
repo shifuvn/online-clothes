@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Admin, Resource } from "react-admin";
 import { HttpApiProvider } from "../../services/ApiWrapper";
 import { ProductList, ProductCreate } from "../products";
-import { ProductEdit, SkuDetailShow, SkuList } from "../sku";
+import { SkuDetailShow, SkuEdit, SkuList } from "../sku";
 import {
   ProductTypeCreate,
   ProductTypeEdit,
@@ -20,9 +20,15 @@ const WrapperResource = () => {
           options={{ label: "Product" }}
           list={ProductList}
           create={ProductCreate}
-          edit={ProductEdit}
+          //  edit={ProductEdit}
         />
-        <Resource name="skus" list={SkuList} show={SkuDetailShow} />
+        <Resource
+          name="skus"
+          options={{ label: "Sku" }}
+          list={SkuList}
+          show={SkuDetailShow}
+          edit={SkuEdit}
+        />
         <Resource
           name="categories"
           options={{ label: "Category" }}

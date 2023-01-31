@@ -1,5 +1,6 @@
 import { BASE_API_DOMAIN_URI } from "../http-instances";
 import { RaHttpProviderAction } from "../http-provider-action";
+import { handleSkuGetListResult } from "./skuProvider";
 
 export const configUrl = (url, params, action) => {
   let requestUrl = `${BASE_API_DOMAIN_URI}/${url}`;
@@ -44,7 +45,7 @@ export const configResult = (url, result, action) => {
     case "skus":
       switch (action) {
         case RaHttpProviderAction.getList:
-          return handleDefaultConfigResultGetList(result);
+          return handleSkuGetListResult(result);
 
         case RaHttpProviderAction.getOne:
           let data = {};
@@ -87,7 +88,6 @@ const handleDefaultConfigResultGetList = (result) => {
     id: item.id,
     ...item
   }));
-  console.log("data", data);
   const total = result?.data?.data?.totalItems;
   return { data, total };
 };

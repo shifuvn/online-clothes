@@ -91,7 +91,7 @@ public class
 	{
 		var orderItems = cart.Items.Select(cartItem => new OrderItem
 		{
-			OrderId = 0, ProductSkuId = cartItem.ProductSkuId, Price = cartItem.ProductSku.GetPrice(),
+			OrderId = 0, ProductSkuId = cartItem.ProductSkuId, Price = cartItem.ProductSku.TotalPrice(),
 			Quantity = cartItem.Quantity
 		}).ToList();
 

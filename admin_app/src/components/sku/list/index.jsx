@@ -16,7 +16,7 @@ const SkuList = () => {
           <TextField source="sku" />
           <TextField source="name" />
           <ImageField source="imageUrl" label="Image" />
-          <NumberField source="price" />
+          <NumberField source="totalPrice" />
           <NumberField source="inStock" />
           <BooleanField source="isDeleted" label="Deleted" />
         </Datagrid>

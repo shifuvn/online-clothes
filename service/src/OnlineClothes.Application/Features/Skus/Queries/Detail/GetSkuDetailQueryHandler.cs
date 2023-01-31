@@ -22,6 +22,8 @@ public class GetSkuDetailQueryHandler : IRequestHandler<GetSkuDetailQuery, JsonA
 			.ThenInclude(sku => sku.ProductCategories)
 			.ThenInclude(sku => sku.Category)
 			.Include(sku => sku.Image)
+			.Include(sku => sku.Product)
+			.ThenInclude(sku => sku.ProductType)
 			.FirstOrDefaultAsync(sku => sku.Sku.Equals(request.Sku), cancellationToken);
 
 		if (product is null)
@@ -29,7 +31,7 @@ public class GetSkuDetailQueryHandler : IRequestHandler<GetSkuDetailQuery, JsonA
 			return JsonApiResponse<ProductSkuDto>.Fail();
 		}
 
-		var viewModel = ProductSkuDto.ToModel(product);
+		var viewModel = new ProductSkuDto(product);
 		return JsonApiResponse<ProductSkuDto>.Success(data: viewModel);
 	}
 }

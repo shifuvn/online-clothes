@@ -38,6 +38,6 @@ public class CartItem
 
 	public decimal IntoMoney()
 	{
-		return ProductSku.GetPrice() * Quantity;
+		return ProductSku.TotalPrice() * Quantity;
 	}
 }

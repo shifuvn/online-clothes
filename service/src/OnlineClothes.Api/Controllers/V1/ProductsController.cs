@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using OnlineClothes.Application.Features.Products.Commands.CreateNewProductSeri;
+using OnlineClothes.Application.Features.Products.Commands.Create;
 using OnlineClothes.Application.Features.Products.Commands.DeleteProduct;
 using OnlineClothes.Application.Features.Products.Commands.EditProductInfo;
 using OnlineClothes.Application.Features.Products.Commands.PromoteThumbnail;
@@ -32,13 +32,13 @@ public class ProductsController : ApiV1ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreateProduct([FromForm] CreateNewProductCommand request)
+	public async Task<IActionResult> CreateProduct([FromForm] CreateProductCommand request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));
 	}
 
 
-	[HttpPut("edit")]
+	[HttpPut]
 	public async Task<IActionResult> EditProduct([FromBody] EditProductCommand request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));

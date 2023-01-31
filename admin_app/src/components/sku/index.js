@@ -1,5 +1,5 @@
 import SkuList from "./list";
 import SkuDetailShow from "./show";
-import ProductEdit from "../products/edit";
+import SkuEdit from "./edit";
 
-export { SkuList, SkuDetailShow, ProductEdit };
+export { SkuList, SkuDetailShow, SkuEdit };
