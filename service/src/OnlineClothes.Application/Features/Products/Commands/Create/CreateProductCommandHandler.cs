@@ -2,20 +2,20 @@
 using OnlineClothes.Application.Helpers;
 using OnlineClothes.Application.Persistence;
 
-namespace OnlineClothes.Application.Features.Products.Commands.CreateNewProductSeri;
+namespace OnlineClothes.Application.Features.Products.Commands.Create;
 
 public class
-	CreateNewProductCommandHandler : IRequestHandler<CreateNewProductCommand, JsonApiResponse<EmptyUnitResponse>>
+	CreateProductCommandHandler : IRequestHandler<CreateProductCommand, JsonApiResponse<EmptyUnitResponse>>
 {
-	private readonly ILogger<CreateNewProductCommandHandler> _logger;
+	private readonly ILogger<CreateProductCommandHandler> _logger;
 	private readonly IMapper _mapper;
 	private readonly IProductRepository _productRepository;
 	private readonly ISkuRepository _skuRepository;
 	private readonly StorageImageFileHelper _storageImageFileHelper;
 	private readonly IUnitOfWork _unitOfWork;
 
-	public CreateNewProductCommandHandler(
-		ILogger<CreateNewProductCommandHandler> logger,
+	public CreateProductCommandHandler(
+		ILogger<CreateProductCommandHandler> logger,
 		IProductRepository productRepository,
 		IUnitOfWork unitOfWork,
 		IMapper mapper,
@@ -30,7 +30,7 @@ public class
 		_storageImageFileHelper = storageImageFileHelper;
 	}
 
-	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(CreateNewProductCommand request,
+	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(CreateProductCommand request,
 		CancellationToken cancellationToken)
 	{
 		if (await CheckExistedSku(request.Sku))
@@ -41,7 +41,7 @@ public class
 		// begin tx
 		await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
-		var product = _mapper.Map<CreateNewProductCommand, Product>(request);
+		var product = _mapper.Map<CreateProductCommand, Product>(request);
 
 		if (request.ImageFile is not null)
 		{

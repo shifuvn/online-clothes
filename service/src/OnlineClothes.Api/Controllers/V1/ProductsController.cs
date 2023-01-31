@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using OnlineClothes.Application.Features.Products.Commands.CreateNewProductSeri;
+using OnlineClothes.Application.Features.Products.Commands.Create;
 using OnlineClothes.Application.Features.Products.Commands.DeleteProduct;
 using OnlineClothes.Application.Features.Products.Commands.EditProductInfo;
 using OnlineClothes.Application.Features.Products.Commands.PromoteThumbnail;
 using OnlineClothes.Application.Features.Products.Commands.RestoreProduct;
 using OnlineClothes.Application.Features.Products.Queries.Paging;
 using OnlineClothes.Application.Features.Products.Queries.ProductImages;
+using OnlineClothes.Application.Features.Products.Queries.Single;
 
 namespace OnlineClothes.Api.Controllers.V1;
 
@@ -13,6 +14,12 @@ public class ProductsController : ApiV1ControllerBase
 {
 	public ProductsController(IMediator mediator) : base(mediator)
 	{
+	}
+
+	[HttpGet("{id:int}")]
+	public async Task<IActionResult> GetSingle([FromRoute] int id)
+	{
+		return HandleApiResponse(await Mediator.Send(new GetSingleProductQuery { Id = id }));
 	}
 
 
@@ -32,13 +39,13 @@ public class ProductsController : ApiV1ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreateProduct([FromForm] CreateNewProductCommand request)
+	public async Task<IActionResult> CreateProduct([FromForm] CreateProductCommand request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));
 	}
 
 
-	[HttpPut("edit")]
+	[HttpPut]
 	public async Task<IActionResult> EditProduct([FromBody] EditProductCommand request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));

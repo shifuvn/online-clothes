@@ -290,7 +290,7 @@ namespace OnlineClothes.Persistence.Migrations
                     b.Property<int?>("ThumbnailImageId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("Type")
+                    b.Property<int?>("TypeId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -299,6 +299,8 @@ namespace OnlineClothes.Persistence.Migrations
 
                     b.HasIndex("ThumbnailImageId")
                         .IsUnique();
+
+                    b.HasIndex("TypeId");
 
                     b.ToTable("Products");
                 });
@@ -340,6 +342,32 @@ namespace OnlineClothes.Persistence.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductSkus");
+                });
+
+            modelBuilder.Entity("OnlineClothes.Domain.Entities.Aggregate.ProductType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("OnlineClothes.Domain.Entities.CartItem", b =>
@@ -438,7 +466,13 @@ namespace OnlineClothes.Persistence.Migrations
                         .HasForeignKey("OnlineClothes.Domain.Entities.Aggregate.Product", "ThumbnailImageId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("OnlineClothes.Domain.Entities.Aggregate.ProductType", "ProductType")
+                        .WithMany("Products")
+                        .HasForeignKey("TypeId");
+
                     b.Navigation("Brand");
+
+                    b.Navigation("ProductType");
 
                     b.Navigation("ThumbnailImage");
                 });
@@ -550,6 +584,11 @@ namespace OnlineClothes.Persistence.Migrations
                     b.Navigation("CartItems");
 
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("OnlineClothes.Domain.Entities.Aggregate.ProductType", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

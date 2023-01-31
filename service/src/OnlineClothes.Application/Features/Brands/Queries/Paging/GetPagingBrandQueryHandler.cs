@@ -1,44 +1,41 @@
-﻿using AutoMapper;
-using OnlineClothes.Application.Mapping.ViewModels;
+﻿using OnlineClothes.Application.Features.Brands.Queries.Single;
 using OnlineClothes.Application.Persistence;
 using OnlineClothes.Domain.Paging;
 
 namespace OnlineClothes.Application.Features.Brands.Queries.Paging;
 
 public class GetPagingBrandQueryHandler : IRequestHandler<GetPagingBrandQuery,
-	JsonApiResponse<PagingModel<BrandViewModel>>>
+	JsonApiResponse<PagingModel<GetSingleBrandQueryViewModel>>>
 {
 	private readonly IBrandRepository _brandRepository;
-	private readonly IMapper _mapper;
 
-	public GetPagingBrandQueryHandler(IBrandRepository brandRepository, IMapper mapper)
+	public GetPagingBrandQueryHandler(IBrandRepository brandRepository)
 	{
 		_brandRepository = brandRepository;
-		_mapper = mapper;
 	}
 
-	public async Task<JsonApiResponse<PagingModel<BrandViewModel>>> Handle(GetPagingBrandQuery request,
+	public async Task<JsonApiResponse<PagingModel<GetSingleBrandQueryViewModel>>> Handle(GetPagingBrandQuery request,
 		CancellationToken cancellationToken)
 	{
 		var pagingModel = await _brandRepository.PagingAsync(
 			FilterBuilder<Brand>.True(),
 			new PagingRequest(request),
-			SelectorFunc(),
-			DefaultOrderByFunc(),
+			BuildProjectSelector(),
+			BuildOrderSelector(),
 			null,
 			cancellationToken);
 
-		return JsonApiResponse<PagingModel<BrandViewModel>>.Success(data: pagingModel);
+		return JsonApiResponse<PagingModel<GetSingleBrandQueryViewModel>>.Success(data: pagingModel);
 	}
 
-	private Func<IQueryable<Brand>, IQueryable<BrandViewModel>>
-		SelectorFunc()
+	private static Func<IQueryable<Brand>, IQueryable<GetSingleBrandQueryViewModel>>
+		BuildProjectSelector()
 	{
-		return q => q.Select(item => _mapper.Map<BrandViewModel>(item));
+		return q => q.Select(item => new GetSingleBrandQueryViewModel(item));
 	}
 
 	private static Func<IQueryable<Brand>, IOrderedQueryable<Brand>>
-		DefaultOrderByFunc()
+		BuildOrderSelector()
 	{
 		return brands => brands.OrderBy(q => q.Id);
 	}

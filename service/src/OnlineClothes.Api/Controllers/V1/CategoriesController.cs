@@ -1,6 +1,7 @@
 ﻿using OnlineClothes.Application.Features.Categories.Commands.Create;
 using OnlineClothes.Application.Features.Categories.Commands.Delete;
 using OnlineClothes.Application.Features.Categories.Commands.Edit;
+using OnlineClothes.Application.Features.Categories.Queries.All;
 using OnlineClothes.Application.Features.Categories.Queries.Paging;
 using OnlineClothes.Application.Features.Categories.Queries.Single;
 
@@ -13,31 +14,37 @@ public class CategoriesController : ApiV1ControllerBase
 	}
 
 	[HttpGet("{id:int}")]
-	public async Task<IActionResult> GetSingleCategory(int id)
+	public async Task<IActionResult> GetSingle(int id)
 	{
 		return HandleApiResponse(await Mediator.Send(new GetSingleCategoryQuery(id)));
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> GetPagingCategory([FromQuery] PagingRequest pageRequest)
+	public async Task<IActionResult> GetPaging([FromQuery] GetPagingCategoryQuery request)
 	{
-		return HandleApiResponse(await Mediator.Send(new GetPagingCategoryQuery(pageRequest)));
+		return HandleApiResponse(await Mediator.Send(request));
+	}
+
+	[HttpGet("all")]
+	public async Task<IActionResult> GetAll()
+	{
+		return HandleApiResponse(await Mediator.Send(new GetAllCategoryQuery()));
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreateCategory([FromBody] CreateNewCategoryCommand request)
+	public async Task<IActionResult> Create([FromBody] CreateCategoryCommand request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));
 	}
 
 	[HttpPut]
-	public async Task<IActionResult> EditCategory([FromBody] EditCategoryCommand request)
+	public async Task<IActionResult> Edit([FromBody] EditCategoryCommand request)
 	{
 		return HandleApiResponse(await Mediator.Send(request));
 	}
 
 	[HttpDelete("{id:int}")]
-	public async Task<IActionResult> DeleteCategory(int id)
+	public async Task<IActionResult> Delete(int id)
 	{
 		return HandleApiResponse(await Mediator.Send(new DeleteCategoryCommand { Id = id }));
 	}

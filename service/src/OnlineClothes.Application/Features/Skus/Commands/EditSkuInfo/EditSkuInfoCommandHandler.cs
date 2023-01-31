@@ -42,7 +42,10 @@ public class EditSkuInfoCommandHandler : IRequestHandler<EditSkuInfoCommand, Jso
 		_skuRepository.Update(sku);
 		_mapper.Map(request, sku);
 
-		//await _storageImageFileHelper.ReplaceImageFile(sku, request.ImageFile);
+		if (request.ImageFile is not null)
+		{
+			await _storageImageFileHelper.AddOrUpdateSkuImageAsync(sku, request.ImageFile, cancellationToken);
+		}
 
 		var save = await _unitOfWork.SaveChangesAsync(cancellationToken);
 		if (!save)

@@ -72,14 +72,14 @@ public class
 	private static Func<IQueryable<Product>, IQueryable<ProductBasicDto>>
 		ProjectToTypeSelector()
 	{
-		return product => product.Select(q => ProductBasicDto.ToModel(q));
+		return product => product.Select(q => new ProductBasicDto(q));
 	}
 
 	private static
 		Func<IQueryable<Product>, IOrderedQueryable<Product>>
 		BuildOrderSelector(GetPagingProductQuery request)
 	{
-		return Check.ShouldOrderDescending(request.OrderBy)
+		return QuerySortOrder.IsDescending(request.OrderBy)
 			? query => query.OrderByDescending(SortByDefinition(request.SortBy))
 			: query => query.OrderBy(SortByDefinition(request.SortBy));
 	}
@@ -94,16 +94,5 @@ public class
 			"created" => product => product.CreatedAt,
 			_ => product => product.Name
 		};
-	}
-
-	// Include all check method handler
-	private static class Check
-	{
-		// Default order behaviour (high => low)
-		public static bool ShouldOrderDescending(string? orderBy)
-		{
-			return string.IsNullOrEmpty(orderBy) ||
-			       orderBy.Equals(QuerySortOrder.Descending, StringComparison.OrdinalIgnoreCase);
-		}
 	}
 }

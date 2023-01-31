@@ -1,25 +1,22 @@
-import { processProductQueryParams } from "./productProvider";
-import { processSkyQueryParams } from "./skuProvider";
 import { BASE_API_DOMAIN_URI } from "../http-instances";
+import { RaHttpProviderAction } from "../http-provider-action";
+import { handleSkuGetListResult } from "./skuProvider";
 
 export const configUrl = (url, params, action) => {
   let requestUrl = `${BASE_API_DOMAIN_URI}/${url}`;
-  if (action === "getOne") {
+  if (action === RaHttpProviderAction.getOne) {
     requestUrl += `/${params.id}`;
   }
   console.log("requestUrl", requestUrl);
   let query;
   switch (url) {
     case "products":
-      query = processProductQueryParams(params);
-      if (query !== undefined) {
-        requestUrl += `?${query}`;
-      }
-      return requestUrl;
-
     case "skus":
-      query = processSkyQueryParams(params);
-      if (query !== undefined) {
+    case "productTypes":
+    case "categories":
+    case "brands":
+      query = handleDefaultConfigUrl(params);
+      if (query) {
         requestUrl += `?${query}`;
       }
       return requestUrl;
@@ -30,32 +27,28 @@ export const configUrl = (url, params, action) => {
 };
 
 export const configResult = (url, result, action) => {
-  let data = {};
   switch (url) {
     case "products":
+    case "productTypes":
+    case "categories":
+    case "brands":
       switch (action) {
-        case "getList":
-          data = result?.data?.data?.items?.map((item, idx) => ({
-            id: item.id,
-            ...item
-          }));
-          const total = result?.data?.data?.totalItems;
-          return { data, total };
+        case RaHttpProviderAction.getList:
+          return handleDefaultConfigResultGetList(result);
+
+        case RaHttpProviderAction.getOne:
+          return handleDefaultConfigResultGetOne(result);
 
         default:
           return result;
       }
     case "skus":
       switch (action) {
-        case "getList":
-          data = result?.data?.data?.items?.map((item, idx) => ({
-            id: item.id,
-            ...item
-          }));
-          const total = result?.data?.data?.totalItems;
-          return { data, total };
+        case RaHttpProviderAction.getList:
+          return handleSkuGetListResult(result);
 
-        case "getOne":
+        case RaHttpProviderAction.getOne:
+          let data = {};
           data = result?.data?.data ?? {};
           data.id = data.sku;
           return { data };
@@ -63,7 +56,43 @@ export const configResult = (url, result, action) => {
         default:
           return result;
       }
+
     default:
       return result;
   }
+};
+
+const handleDefaultConfigUrl = (params) => {
+  if (!params || params === undefined) {
+    return undefined;
+  }
+
+  let query = "";
+  const paging = params.pagination;
+  if (paging !== undefined) {
+    query += `pageIndex=${paging.page}&pageSize=${paging.perPage}`;
+  }
+
+  const sort = params.sort;
+  if (sort !== undefined) {
+    query += `&orderBy=${sort.order}&sortBy=${sort.field}`;
+  }
+  return query;
+};
+
+/**
+ * Handle getList result
+ */
+const handleDefaultConfigResultGetList = (result) => {
+  const data = result?.data?.data?.items?.map((item, idx) => ({
+    id: item.id,
+    ...item
+  }));
+  const total = result?.data?.data?.totalItems;
+  return { data, total };
+};
+
+const handleDefaultConfigResultGetOne = (result) => {
+  const data = result?.data.data ?? {};
+  return { data };
 };

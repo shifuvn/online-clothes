@@ -23,7 +23,7 @@ public class
 			new PagingRequest(request.PageIndex, request.PageSize),
 			BuildProjectSelector(),
 			BuildOrderSelector(request),
-			new[] { "Product" },
+			new[] { "Product", "Image" },
 			cancellationToken);
 
 		return JsonApiResponse<PagingModel<ProductSkuBasicDto>>.Success(data: data);
@@ -42,14 +42,14 @@ public class
 
 	private static Func<IQueryable<ProductSku>, IQueryable<ProductSkuBasicDto>> BuildProjectSelector()
 	{
-		return sku => sku.Select(q => ProductSkuBasicDto.ToModel(q));
+		return sku => sku.Select(q => new ProductSkuBasicDto(q));
 	}
 
 	private static
 		Func<IQueryable<ProductSku>, IOrderedQueryable<ProductSku>>
 		BuildOrderSelector(GetPagingSkuQuery request)
 	{
-		return Check.ShouldOrderDescending(request.OrderBy)
+		return QuerySortOrder.IsDescending(request.OrderBy)
 			? query => query.OrderByDescending(SortByDefinition(request.SortBy))
 			: query => query.OrderBy(SortByDefinition(request.SortBy));
 	}
@@ -58,21 +58,10 @@ public class
 	{
 		return sortBy?.ToLower() switch
 		{
-			"price" => product => product.AddOnPrice + product.Product.Price,
+			"totalprice" => product => product.AddOnPrice + product.Product.Price,
 			"sku" => product => product.Sku,
 			"created" => product => product.CreatedAt,
 			_ => product => product.CreatedAt
 		};
-	}
-
-	// Include all check method handler
-	private static class Check
-	{
-		// Default order behaviour (high => low)
-		public static bool ShouldOrderDescending(string? orderBy)
-		{
-			return string.IsNullOrEmpty(orderBy) ||
-			       orderBy.Equals(QuerySortOrder.Descending, StringComparison.OrdinalIgnoreCase);
-		}
 	}
 }

@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Http;
 using OnlineClothes.Application.Commons;
 using OnlineClothes.Application.Persistence.Schemas.Products;
 
-namespace OnlineClothes.Application.Features.Products.Commands.CreateNewProductSeri;
+namespace OnlineClothes.Application.Features.Products.Commands.Create;
 
-public class CreateNewProductCommand : PutProductInRepoObject, IRequest<JsonApiResponse<EmptyUnitResponse>>
+public class CreateProductCommand : PutProductInRepoObject, IRequest<JsonApiResponse<EmptyUnitResponse>>
 {
 	// default sku of product
 	public string Sku { get; set; } = null!;
@@ -17,9 +17,9 @@ public class CreateNewProductCommand : PutProductInRepoObject, IRequest<JsonApiR
 	public IFormFile? ImageFile { get; set; }
 }
 
-public class CreateNewProductCommandValidation : AbstractValidator<CreateNewProductCommand>
+public class CreateProductCommandValidation : AbstractValidator<CreateProductCommand>
 {
-	public CreateNewProductCommandValidation()
+	public CreateProductCommandValidation()
 	{
 		RuleFor(q => q.Sku)
 			.Matches(new Regex(RegexPattern.ValidSku))

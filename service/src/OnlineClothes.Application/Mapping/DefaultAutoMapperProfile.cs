@@ -2,11 +2,10 @@
 using OnlineClothes.Application.Features.Brands.Commands.Create;
 using OnlineClothes.Application.Features.Brands.Commands.Edit;
 using OnlineClothes.Application.Features.Categories.Commands.Edit;
-using OnlineClothes.Application.Features.Products.Commands.CreateNewProductSeri;
+using OnlineClothes.Application.Features.Products.Commands.Create;
 using OnlineClothes.Application.Features.Products.Commands.EditProductInfo;
 using OnlineClothes.Application.Features.Skus.Commands.CreateNewSku;
 using OnlineClothes.Application.Features.Skus.Commands.EditSkuInfo;
-using OnlineClothes.Application.Mapping.ViewModels;
 using OnlineClothes.Application.Persistence.Schemas.Products;
 using OnlineClothes.Domain.Entities;
 
@@ -29,8 +28,6 @@ public class DefaultAutoMapperProfile : Profile
 			.ForMember(dest => dest.ProductCategories, opt => opt.Ignore());
 
 		// Viewmodel
-		CreateMap<BrandViewModel, Brand>().ReverseMap();
-		CreateMap<CategoryViewModel, Category>().ReverseMap();
 
 		// Verified used
 
@@ -38,7 +35,7 @@ public class DefaultAutoMapperProfile : Profile
 		CreateMap<Product, ProductBasicDto>();
 		CreateMap<CreateSkuCommand, ProductSku>();
 
-		CreateMap<CreateNewProductCommand, Product>()
+		CreateMap<CreateProductCommand, Product>()
 			.ForMember(dest => dest.ProductCategories,
 				opt => opt.MapFrom(src =>
 					src.CategoryIds.Select(x => new ProductCategory { CategoryId = x, ProductId = 0 })))

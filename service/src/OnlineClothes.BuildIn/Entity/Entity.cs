@@ -8,15 +8,15 @@ public abstract class EntityBase : EntityBase<int>
 {
 }
 
-public abstract class EntityBase<TKey> : SupportDomainEvent, IEntity<TKey>
+public abstract class EntityBase<TKey> : SupportDomainEvent, IEntity<TKey>, IEntityDatetimeSupport
 {
-	public DateTime CreatedAt { get; set; }
-	public DateTime ModifiedAt { get; set; }
-
 	[Key]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	[Required]
 	public TKey Id { get; set; } = default!;
+
+	public DateTime CreatedAt { get; set; }
+	public DateTime ModifiedAt { get; set; }
 }
 
 public abstract class EntityNonDateTimeBase<TKey> : SupportDomainEvent, IEntity<TKey>

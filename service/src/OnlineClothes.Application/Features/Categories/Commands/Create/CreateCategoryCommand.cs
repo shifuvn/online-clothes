@@ -2,9 +2,9 @@
 
 namespace OnlineClothes.Application.Features.Categories.Commands.Create;
 
-public class CreateNewCategoryCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
+public class CreateCategoryCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 {
-	public CreateNewCategoryCommand(string name, string? description)
+	public CreateCategoryCommand(string name, string? description)
 	{
 		Name = name;
 		Description = description;
@@ -14,7 +14,7 @@ public class CreateNewCategoryCommand : IRequest<JsonApiResponse<EmptyUnitRespon
 	public string? Description { get; init; }
 }
 
-public sealed class CreateNewCategoryCommandValidation : AbstractValidator<CreateNewCategoryCommand>
+public sealed class CreateNewCategoryCommandValidation : AbstractValidator<CreateCategoryCommand>
 {
 	public CreateNewCategoryCommandValidation()
 	{
