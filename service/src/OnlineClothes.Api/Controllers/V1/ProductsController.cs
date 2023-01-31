@@ -6,6 +6,7 @@ using OnlineClothes.Application.Features.Products.Commands.PromoteThumbnail;
 using OnlineClothes.Application.Features.Products.Commands.RestoreProduct;
 using OnlineClothes.Application.Features.Products.Queries.Paging;
 using OnlineClothes.Application.Features.Products.Queries.ProductImages;
+using OnlineClothes.Application.Features.Products.Queries.Single;
 
 namespace OnlineClothes.Api.Controllers.V1;
 
@@ -13,6 +14,12 @@ public class ProductsController : ApiV1ControllerBase
 {
 	public ProductsController(IMediator mediator) : base(mediator)
 	{
+	}
+
+	[HttpGet("{id:int}")]
+	public async Task<IActionResult> GetSingle([FromRoute] int id)
+	{
+		return HandleApiResponse(await Mediator.Send(new GetSingleProductQuery { Id = id }));
 	}
 
 

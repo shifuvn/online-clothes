@@ -24,8 +24,12 @@ public class ProductRepository : EfCoreRepositoryBase<Product, int>, IProductRep
 	public override async Task<Product> GetByIntKey(int key, CancellationToken cancellationToken = default)
 	{
 		var entry = await DbSet.AsQueryable()
+			.Include(q => q.ProductSkus)
 			.Include(q => q.ThumbnailImage)
 			.Include(q => q.ProductCategories)
+			.ThenInclude(q => q.Category)
+			.Include(q => q.Brand)
+			.Include(q => q.ProductType)
 			.FirstAsync(q => q.Id == key, cancellationToken);
 
 		return entry;

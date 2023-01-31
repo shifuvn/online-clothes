@@ -72,7 +72,7 @@ public class
 	private static Func<IQueryable<Product>, IQueryable<ProductBasicDto>>
 		ProjectToTypeSelector()
 	{
-		return product => product.Select(q => ProductBasicDto.ToModel(q));
+		return product => product.Select(q => new ProductBasicDto(q));
 	}
 
 	private static

@@ -16,6 +16,6 @@ public class GetSingleProductQueryHandler : IRequestHandler<GetSingleProductQuer
 	{
 		var product = await _productRepository.GetByIntKey(request.Id, cancellationToken);
 
-		return JsonApiResponse<ProductBasicDto>.Success(data: ProductBasicDto.ToModel(product));
+		return JsonApiResponse<ProductBasicDto>.Success(data: new ProductBasicDto(product));
 	}
 }
