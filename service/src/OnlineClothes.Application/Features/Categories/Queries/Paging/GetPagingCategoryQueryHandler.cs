@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using AutoMapper;
+using OnlineClothes.Application.Commons;
 using OnlineClothes.Application.Features.Categories.Queries.Single;
 using OnlineClothes.Application.Persistence;
 using OnlineClothes.Domain.Paging;
@@ -24,14 +26,14 @@ public class GetPagingCategoryQueryHandler : IRequestHandler<GetPagingCategoryQu
 			FilterBuilder<Category>.True(),
 			new PagingRequest(request.PageIndex, request.PageSize),
 			BuildProjectSelector(),
-			BuildOrderSelector(),
+			BuildOrderSelector(request),
 			null,
 			cancellationToken);
 
 		return JsonApiResponse<PagingModel<GetSingleCategoryQueryViewModel>>.Success(data: paging);
 	}
 
-	private Func<IQueryable<Category>, IQueryable<GetSingleCategoryQueryViewModel>>
+	private static Func<IQueryable<Category>, IQueryable<GetSingleCategoryQueryViewModel>>
 		BuildProjectSelector()
 	{
 		return q => q.Select(item => new GetSingleCategoryQueryViewModel(item));
@@ -39,8 +41,21 @@ public class GetPagingCategoryQueryHandler : IRequestHandler<GetPagingCategoryQu
 
 	private static
 		Func<IQueryable<Category>, IOrderedQueryable<Category>>
-		BuildOrderSelector()
+		BuildOrderSelector(GetPagingCategoryQuery request)
 	{
-		return category => category.OrderBy(q => q.Id);
+		return QuerySortOrder.IsDescending(request.OrderBy)
+			? query => query.OrderByDescending(SortByDefinition(request.SortBy))
+			: query => query.OrderBy(SortByDefinition(request.SortBy));
+	}
+
+	private static Expression<Func<Category, object>> SortByDefinition(string? sortBy)
+	{
+		return sortBy?.ToLower() switch
+		{
+			"id" => product => product.Id,
+			"name" => product => product.Name,
+			"created" => product => product.CreatedAt,
+			_ => product => product.Name
+		};
 	}
 }

@@ -19,9 +19,9 @@ public class CategoriesController : ApiV1ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> GetPaging([FromQuery] PagingRequest pageRequest)
+	public async Task<IActionResult> GetPaging([FromQuery] GetPagingCategoryQuery request)
 	{
-		return HandleApiResponse(await Mediator.Send(new GetPagingCategoryQuery(pageRequest)));
+		return HandleApiResponse(await Mediator.Send(request));
 	}
 
 	[HttpPost]
