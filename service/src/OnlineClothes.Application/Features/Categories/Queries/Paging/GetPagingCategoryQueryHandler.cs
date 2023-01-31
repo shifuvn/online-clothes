@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using OnlineClothes.Application.Mapping.ViewModels;
+using OnlineClothes.Application.Features.Categories.Queries.Single;
 using OnlineClothes.Application.Persistence;
 using OnlineClothes.Domain.Paging;
 
 namespace OnlineClothes.Application.Features.Categories.Queries.Paging;
 
 public class GetPagingCategoryQueryHandler : IRequestHandler<GetPagingCategoryQuery,
-	JsonApiResponse<PagingModel<CategoryViewModel>>>
+	JsonApiResponse<PagingModel<GetSingleCategoryQueryViewModel>>>
 {
 	private readonly ICategoryRepository _categoryRepository;
 	private readonly IMapper _mapper;
@@ -17,29 +17,29 @@ public class GetPagingCategoryQueryHandler : IRequestHandler<GetPagingCategoryQu
 		_mapper = mapper;
 	}
 
-	public async Task<JsonApiResponse<PagingModel<CategoryViewModel>>> Handle(
+	public async Task<JsonApiResponse<PagingModel<GetSingleCategoryQueryViewModel>>> Handle(
 		GetPagingCategoryQuery request, CancellationToken cancellationToken)
 	{
 		var paging = await _categoryRepository.PagingAsync(
 			FilterBuilder<Category>.True(),
 			new PagingRequest(request.PageIndex, request.PageSize),
-			SelectorFunc(),
-			DefaultOrderByFunc(),
+			BuildProjectSelector(),
+			BuildOrderSelector(),
 			null,
 			cancellationToken);
 
-		return JsonApiResponse<PagingModel<CategoryViewModel>>.Success(data: paging);
+		return JsonApiResponse<PagingModel<GetSingleCategoryQueryViewModel>>.Success(data: paging);
 	}
 
-	private Func<IQueryable<Category>, IQueryable<CategoryViewModel>>
-		SelectorFunc()
+	private Func<IQueryable<Category>, IQueryable<GetSingleCategoryQueryViewModel>>
+		BuildProjectSelector()
 	{
-		return q => q.Select(item => _mapper.Map<CategoryViewModel>(item));
+		return q => q.Select(item => new GetSingleCategoryQueryViewModel(item));
 	}
 
 	private static
 		Func<IQueryable<Category>, IOrderedQueryable<Category>>
-		DefaultOrderByFunc()
+		BuildOrderSelector()
 	{
 		return category => category.OrderBy(q => q.Id);
 	}

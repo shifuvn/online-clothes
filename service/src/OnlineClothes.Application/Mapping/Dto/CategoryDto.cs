@@ -9,16 +9,13 @@ public class CategoryDto
 		Description = description;
 	}
 
-	public CategoryDto()
+	public CategoryDto(Category domain) : this(domain.Id, domain.Name, domain.Description)
 	{
+		CreatedAt = domain.CreatedAt;
 	}
 
 	public int Id { get; set; }
-	public string Name { get; set; } = null!;
+	public string Name { get; set; }
 	public string? Description { get; set; }
-
-	public static CategoryDto ToModel(Category entity)
-	{
-		return new CategoryDto(entity.Id, entity.Name, entity.Description);
-	}
+	public DateTime CreatedAt { get; set; }
 }

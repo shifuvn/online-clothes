@@ -54,7 +54,6 @@ public class UnitOfWork : IUnitOfWork
 	{
 		try
 		{
-			_dbContext.ChangeTracker.AutoDetectChangesEnabled = true;
 			PushDomainEventsToQueueOnSave();
 
 			var saveChanges = _dbContext.SaveChanges() > 0;
@@ -72,7 +71,6 @@ public class UnitOfWork : IUnitOfWork
 	{
 		try
 		{
-			_dbContext.ChangeTracker.AutoDetectChangesEnabled = true;
 			PushDomainEventsToQueueOnSave();
 
 			var saveChanges = await _dbContext.SaveChangesAsync(cancellationToken) > 0;

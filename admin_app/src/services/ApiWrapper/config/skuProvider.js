@@ -1,18 +1,17 @@
 export const processSkyQueryParams = (params) => {
-  if (!params || params == undefined) {
+  if (!params || params === undefined) {
     return undefined;
   }
 
-  let query;
+  let query = "";
   const paging = params.pagination;
-  if (paging) {
+  if (paging !== undefined) {
     query += `pageIndex=${paging.page}&pageSize=${paging.perPage}`;
   }
 
   const sort = params.sort;
-  if (sort) {
-    query += `&orderBy=${sort.order}& sortBy=${sort.field}`;
+  if (sort !== undefined) {
+    query += `&orderBy=${sort.order}&sortBy=${sort.field}`;
   }
-
   return query;
 };

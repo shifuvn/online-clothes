@@ -24,4 +24,12 @@
     <ProjectReference Include="..\OnlineClothes.Domain\OnlineClothes.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\ProductTypes\Commands\Create\" />
+    <Folder Include="Features\ProductTypes\Commands\Delete\" />
+    <Folder Include="Features\ProductTypes\Commands\Edit\" />
+    <Folder Include="Features\ProductTypes\Queries\Paging\" />
+    <Folder Include="Features\ProductTypes\Queries\Single\" />
+  </ItemGroup>
+
 </Project>

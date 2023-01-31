@@ -287,6 +287,9 @@ namespace OnlineClothes.Persistence.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
+                    b.Property<int?>("ProductTypeId")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("ThumbnailImageId")
                         .HasColumnType("integer");
 
@@ -296,6 +299,8 @@ namespace OnlineClothes.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("ProductTypeId");
 
                     b.HasIndex("ThumbnailImageId")
                         .IsUnique();
@@ -340,6 +345,32 @@ namespace OnlineClothes.Persistence.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductSkus");
+                });
+
+            modelBuilder.Entity("OnlineClothes.Domain.Entities.Aggregate.ProductType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("OnlineClothes.Domain.Entities.CartItem", b =>
@@ -432,6 +463,10 @@ namespace OnlineClothes.Persistence.Migrations
                     b.HasOne("OnlineClothes.Domain.Entities.Aggregate.Brand", "Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandId");
+
+                    b.HasOne("OnlineClothes.Domain.Entities.Aggregate.ProductType", null)
+                        .WithMany("Products")
+                        .HasForeignKey("ProductTypeId");
 
                     b.HasOne("OnlineClothes.Domain.Entities.Aggregate.ImageObject", "ThumbnailImage")
                         .WithOne()
@@ -550,6 +585,11 @@ namespace OnlineClothes.Persistence.Migrations
                     b.Navigation("CartItems");
 
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("OnlineClothes.Domain.Entities.Aggregate.ProductType", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

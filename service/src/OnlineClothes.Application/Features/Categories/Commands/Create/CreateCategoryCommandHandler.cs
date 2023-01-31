@@ -3,13 +3,13 @@
 namespace OnlineClothes.Application.Features.Categories.Commands.Create;
 
 public sealed class
-	CreateNewCategoryCommandHandler : IRequestHandler<CreateNewCategoryCommand, JsonApiResponse<EmptyUnitResponse>>
+	CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, JsonApiResponse<EmptyUnitResponse>>
 {
 	private readonly ICategoryRepository _categoryRepository;
-	private readonly ILogger<CreateNewCategoryCommandHandler> _logger;
+	private readonly ILogger<CreateCategoryCommandHandler> _logger;
 	private readonly IUnitOfWork _unitOfWork;
 
-	public CreateNewCategoryCommandHandler(ILogger<CreateNewCategoryCommandHandler> logger,
+	public CreateCategoryCommandHandler(ILogger<CreateCategoryCommandHandler> logger,
 		ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
 	{
 		_logger = logger;
@@ -17,7 +17,7 @@ public sealed class
 		_unitOfWork = unitOfWork;
 	}
 
-	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(CreateNewCategoryCommand request,
+	public async Task<JsonApiResponse<EmptyUnitResponse>> Handle(CreateCategoryCommand request,
 		CancellationToken cancellationToken)
 	{
 		var category = new Category(request.Name, request.Description);

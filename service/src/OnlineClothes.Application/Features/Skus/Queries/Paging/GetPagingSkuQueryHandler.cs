@@ -23,7 +23,7 @@ public class
 			new PagingRequest(request.PageIndex, request.PageSize),
 			BuildProjectSelector(),
 			BuildOrderSelector(request),
-			new[] { "Product" },
+			new[] { "Product", "Image" },
 			cancellationToken);
 
 		return JsonApiResponse<PagingModel<ProductSkuBasicDto>>.Success(data: data);

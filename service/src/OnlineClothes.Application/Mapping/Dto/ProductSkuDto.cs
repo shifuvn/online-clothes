@@ -8,7 +8,8 @@ public class ProductSkuDto : ProductSkuBasicDto
 		string name,
 		decimal price,
 		int inStock,
-		DateTime createdAt) : base(productId, sku, name, price, inStock, createdAt)
+		DateTime createdAt,
+		bool isDeleted) : base(productId, sku, name, price, inStock, createdAt, isDeleted)
 	{
 	}
 
@@ -17,28 +18,33 @@ public class ProductSkuDto : ProductSkuBasicDto
 	public ClotheType? Type { get; set; }
 	public BrandDto? Brand { get; set; }
 	public List<CategoryDto> Categories { get; set; } = new();
-	public bool IsDeleted { get; set; }
 	public DateTime ModifiedAt { get; set; }
 
 	public new static ProductSkuDto ToModel(ProductSku entity)
 	{
-		return new ProductSkuDto(
+		var result = new ProductSkuDto(
 			entity.ProductId,
 			entity.Sku,
 			entity.Product.Name,
 			entity.GetPrice(), entity.InStock,
-			entity.CreatedAt)
+			entity.CreatedAt,
+			entity.IsDeleted)
 		{
 			Description = entity.Product.Description,
-			Brand = BrandDto.ToModel(entity.Product.Brand),
 			Size = entity.Size,
 			Type = entity.Product.Type,
 			Categories =
-				entity.Product.ProductCategories.SelectList(category => CategoryDto.ToModel(category.Category)),
+				entity.Product.ProductCategories.SelectList(category => new CategoryDto(category.Category)),
 			CreatedAt = entity.CreatedAt,
 			ImageUrl = entity.Image?.Url,
-			IsDeleted = entity.IsDeleted,
 			ModifiedAt = entity.ModifiedAt
 		};
+
+		if (entity.Product.Brand is not null)
+		{
+			result.Brand = new BrandDto(entity.Product.Brand);
+		}
+
+		return result;
 	}
 }
