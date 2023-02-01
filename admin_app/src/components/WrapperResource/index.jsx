@@ -1,7 +1,12 @@
 import React, { Fragment } from "react";
-import { Admin, Resource } from "react-admin";
+import { Admin, CustomRoutes, Resource } from "react-admin";
 import { HttpApiProvider } from "../../services/ApiWrapper";
-import { ProductList, ProductCreate, ProductEdit } from "../products";
+import {
+  ProductList,
+  ProductCreate,
+  ProductEdit,
+  CreateSkuComponent
+} from "../products";
 import { SkuDetailShow, SkuEdit, SkuList } from "../sku";
 import {
   ProductTypeCreate,
@@ -10,11 +15,18 @@ import {
 } from "../productTypes";
 import { CategoryCreate, CategoryEdit, CategoryList } from "../categories";
 import { BrandCreate, BrandEdit, BrandList } from "../brands";
+import { Route } from "react-router-dom";
 
 const WrapperResource = () => {
   return (
     <Fragment>
       <Admin dataProvider={HttpApiProvider}>
+        <CustomRoutes>
+          <Route
+            path="/products/:id/create-sku"
+            element={<CreateSkuComponent />}
+          />
+        </CustomRoutes>
         <Resource
           name="products"
           options={{ label: "Product" }}

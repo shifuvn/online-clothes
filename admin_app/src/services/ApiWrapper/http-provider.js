@@ -43,6 +43,14 @@ HttpApiProvider.create = async (url, payload) => {
   return { data: { ...result } };
 };
 
+HttpApiProvider.createForm = async (url, payload) => {
+  const configuredUrl = configUrl(url);
+  http.instance.defaults.headers["Content-Type"] = "multipart/form-data";
+
+  var result = await http.instance.post(configuredUrl, payload);
+  return { data: { ...result } };
+};
+
 HttpApiProvider.update = async (url, payload) => {
   var configuredUrl = configUrl(url);
   var result = await http.instance.put(configuredUrl, payload);
