@@ -12,8 +12,13 @@ const removeAccessToken = () => {
   localStorage.removeItem(ACCESS_TOKEN_KEY);
 };
 
+const checkAccessToken = () => {
+  return getAccessToken() !== undefined;
+};
+
 export const TokenManage = {
   getAccessToken,
   setAccessToken,
-  removeAccessToken
+  removeAccessToken,
+  checkAccessToken
 };
