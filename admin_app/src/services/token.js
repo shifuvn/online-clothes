@@ -1,6 +1,6 @@
 import storage from "./local-storage";
 
-const ACCESS_TOKEN_KEY = "access_token";
+export const ACCESS_TOKEN_KEY = "access_token";
 
 export const getAccessToken = () => {
   return storage.get(ACCESS_TOKEN_KEY);

@@ -53,12 +53,7 @@ export const configResult = (url, result, action, isFilterById = false) => {
 };
 
 const handleDefaultConfigUrl = (url, params, action) => {
-  console.log("url", url);
-  console.log("params", params);
-
   let requestUrl = `${BASE_API_DOMAIN_URI}/${url}`;
-
-  console.log("requestUrl", requestUrl);
 
   switch (action) {
     case RaHttpProviderAction.getOne:
@@ -99,7 +94,7 @@ const handleDefaultConfigUrl = (url, params, action) => {
     requestUrl += query;
   }
 
-  console.log("result url", requestUrl);
+  console.log("RequestUrl", requestUrl);
   return requestUrl;
 };
 

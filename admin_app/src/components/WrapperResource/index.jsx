@@ -16,11 +16,12 @@ import {
 import { CategoryCreate, CategoryEdit, CategoryList } from "../categories";
 import { BrandCreate, BrandEdit, BrandList } from "../brands";
 import { Route } from "react-router-dom";
+import { authProvider } from "../../services/Auth";
 
 const WrapperResource = () => {
   return (
     <Fragment>
-      <Admin dataProvider={HttpApiProvider}>
+      <Admin dataProvider={HttpApiProvider} authProvider={authProvider}>
         <CustomRoutes>
           <Route
             path="/products/:id/create-sku"
