@@ -33,7 +33,12 @@ public class
 	private static FilterBuilder<Product> PreSearchQueryable(GetPagingProductQuery request)
 	{
 		// default will query publish product
-		var filterBuilder = new FilterBuilder<Product>(q => q.IsPublish);
+		var filterBuilder = new FilterBuilder<Product>().Empty();
+
+		if (!request.IncludeAll)
+		{
+			filterBuilder.And(q => q.IsPublish);
+		}
 
 		AppendFilterKeyword(request, filterBuilder);
 		AppendFilterCategory(request, filterBuilder);

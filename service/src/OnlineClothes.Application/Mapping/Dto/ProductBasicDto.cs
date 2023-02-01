@@ -6,6 +6,7 @@ public class ProductBasicDto
 	{
 		Id = domain.Id;
 		Name = domain.Name;
+		Description = domain.Description;
 		Price = domain.Price;
 		Skus = domain.ProductSkus.SelectList(q => new SkuInfo(q.Sku, q.IsDeleted));
 		Brand = domain.Brand is null ? null : new BrandDto(domain.Brand);
@@ -18,6 +19,7 @@ public class ProductBasicDto
 
 	public int Id { get; set; }
 	public string Name { get; set; }
+	public string? Description { get; set; }
 	public decimal Price { get; set; }
 	public List<SkuInfo> Skus { get; set; }
 	public BrandDto? Brand { get; set; }

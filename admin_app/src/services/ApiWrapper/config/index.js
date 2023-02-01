@@ -67,7 +67,7 @@ const handleDefaultConfigUrl = (params) => {
     return undefined;
   }
 
-  let query = "";
+  let query = "IncludeAll=true&";
   const paging = params.pagination;
   if (paging !== undefined) {
     query += `pageIndex=${paging.page}&pageSize=${paging.perPage}`;

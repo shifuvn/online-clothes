@@ -32,6 +32,13 @@ public class
 	private static FilterBuilder<ProductSku> BuildSearchQuery(GetPagingSkuQuery request)
 	{
 		var filterBuilder = new FilterBuilder<ProductSku>().Empty();
+
+		if (!request.IncludeAll)
+		{
+			filterBuilder.And(q => !q.IsDeleted);
+		}
+
+
 		if (!string.IsNullOrEmpty(request.SkuKeyword?.Trim()))
 		{
 			filterBuilder.And(sku => sku.Sku.Contains(request.SkuKeyword, StringComparison.OrdinalIgnoreCase));

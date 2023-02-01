@@ -25,6 +25,7 @@ public class DefaultAutoMapperProfile : Profile
 		CreateMap<CreateSkuCommand, PutProductInRepoObject>();
 		CreateMap<PutProductInRepoObject, Product>()
 			.ForMember(dest => dest.BrandId, opt => opt.Condition(q => q.BrandId is not null && q.BrandId != 0))
+			.ForMember(dest => dest.TypeId, opt => opt.Condition(q => q.TypeId is not null && q.TypeId != 0))
 			.ForMember(dest => dest.ProductCategories, opt => opt.Ignore());
 
 		// Viewmodel

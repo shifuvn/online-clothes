@@ -12,4 +12,5 @@ public class GetPagingSkuQuery : PagingRequest, IRequest<JsonApiResponse<PagingM
 	public string? OrderBy { get; set; }
 
 	public string? SortBy { get; set; }
+	[DefaultValue(false)] public bool IncludeAll { get; set; }
 }

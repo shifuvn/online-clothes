@@ -1,5 +1,7 @@
 import React, { Fragment } from "react";
 import {
+  BooleanField,
+  Button,
   Datagrid,
   EditButton,
   List,
@@ -17,6 +19,7 @@ const ProductList = () => {
           <TextField source="name" />
           <ThumbnailField source="thumbnailUrl" label="Thumbnail" />
           <NumberField source="price" />
+          <BooleanField source="isPublish" label="Published" />
           <EditButton />
         </Datagrid>
       </List>

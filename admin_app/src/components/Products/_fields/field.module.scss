@@ -17,3 +17,15 @@
 .productPanelButton {
   margin-left: 32px;
 }
+
+.imageListRoot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  overflow: hidden;
+}
+
+.imageList {
+  flex-wrap: nowrap;
+  transform: translateZ(0);
+}

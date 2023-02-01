@@ -1,7 +1,23 @@
-import { Button, SimpleShowLayout, useRecordContext } from "react-admin";
+import {
+  Checkbox,
+  FormControlLabel,
+  IconButton,
+  ImageList,
+  ImageListItem,
+  ImageListItemBar
+} from "@mui/material";
+import {
+  Button,
+  ImageField,
+  SimpleShowLayout,
+  useRecordContext
+} from "react-admin";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 import styles from "./field.module.scss";
+import { HttpApiProvider } from "../../../services/ApiWrapper";
+import SingleLineImageList from "./SingleImageList";
 
 export const ThumbnailField = ({ source }) => {
   const record = useRecordContext();
@@ -34,7 +50,7 @@ export const ProductPanelField = ({ source }) => {
 };
 
 const ProductSkuField = (props) => {
-  const skuId = props.sku;
+  const skuId = props.sku.id;
   const navigate = useNavigate();
 
   const handleClickDetail = (e) => {
@@ -44,7 +60,13 @@ const ProductSkuField = (props) => {
   };
   return (
     <div className={styles.blockField}>
-      {skuId}
+      <span style={{ minWidth: "100px" }}>{skuId}</span>
+      <FormControlLabel
+        style={{ marginLeft: "30px" }}
+        label="Deleted"
+        control={<Checkbox checked={props.sku.isDeleted} disabled />}
+      />
+
       <div className={styles.productPanelButton}>
         <Button onClick={handleClickDetail} name="Detail" label="Detail" />
       </div>
