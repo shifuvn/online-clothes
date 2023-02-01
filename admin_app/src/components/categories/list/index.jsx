@@ -15,7 +15,10 @@ const CategoryList = () => {
   return (
     <Fragment>
       <List>
-        <Datagrid expand={CategoryListPanelField}>
+        <Datagrid
+          expand={CategoryListPanelField}
+          isRowSelectable={(record) => false}
+        >
           <TextField source="id" />
           <TextField source="name" />
           <TextField source="createdAt" />

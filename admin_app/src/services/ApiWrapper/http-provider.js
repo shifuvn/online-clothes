@@ -33,7 +33,11 @@ HttpApiProvider.getOne = async (url, params) => {
 HttpApiProvider.getList = async (url, params, options) => {
   const configuredUrl = configUrl(url, params, RaHttpProviderAction.getList);
   const result = await http.instance.get(configuredUrl, params, options);
-  return configResult(url, result, RaHttpProviderAction.getList);
+
+  const isFilterById =
+    params?.filter?.id !== undefined || params?.filter?.sku !== undefined;
+
+  return configResult(url, result, RaHttpProviderAction.getList, isFilterById);
 };
 
 HttpApiProvider.create = async (url, payload) => {

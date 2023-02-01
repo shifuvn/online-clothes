@@ -6,7 +6,7 @@ public class UnauthorizedException : HttpException
 {
 	private const int Code = StatusCodes.Status401Unauthorized;
 
-	public UnauthorizedException() : base(Code, "You are not authorized")
+	public UnauthorizedException() : base(Code, "Chưa đăng nhập")
 	{
 	}
 }

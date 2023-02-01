@@ -5,7 +5,7 @@ const ProductTypeList = () => {
   return (
     <Fragment>
       <List>
-        <Datagrid>
+        <Datagrid isRowSelectable={(record) => false}>
           <TextField source="id" />
           <TextField source="name" />
           <TextField source="createdAt" />

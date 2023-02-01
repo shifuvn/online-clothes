@@ -39,9 +39,9 @@ public class
 		}
 
 
-		if (!string.IsNullOrEmpty(request.SkuKeyword?.Trim()))
+		if (!string.IsNullOrEmpty(request.Keyword?.Trim()))
 		{
-			filterBuilder.And(sku => sku.Sku.Contains(request.SkuKeyword, StringComparison.OrdinalIgnoreCase));
+			filterBuilder.And(sku => sku.Sku.ToLower().Contains(request.Keyword.ToLower()));
 		}
 
 		return filterBuilder;

@@ -28,7 +28,7 @@ public class GetSkuDetailQueryHandler : IRequestHandler<GetSkuDetailQuery, JsonA
 
 		if (product is null)
 		{
-			return JsonApiResponse<ProductSkuDto>.Fail();
+			return JsonApiResponse<ProductSkuDto>.Success();
 		}
 
 		var viewModel = new ProductSkuDto(product);
