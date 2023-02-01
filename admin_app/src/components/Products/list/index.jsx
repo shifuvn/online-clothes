@@ -1,26 +1,36 @@
 import React, { Fragment } from "react";
 import {
   BooleanField,
-  Button,
   Datagrid,
   EditButton,
   List,
   NumberField,
-  TextField
+  TextField,
+  TextInput
 } from "react-admin";
 import { ProductPanelField, ThumbnailField } from "../_fields";
+import CreateSkuButton from "./CreateSkuButton";
 
-const ProductList = () => {
+const productFilter = [
+  <TextInput source="id" />,
+  <TextInput source="keyword" />
+];
+
+const ProductList = (props) => {
   return (
     <Fragment>
-      <List>
-        <Datagrid expand={<ProductPanelField />}>
+      <List {...props} filters={productFilter}>
+        <Datagrid
+          expand={<ProductPanelField />}
+          isRowSelectable={(record) => false}
+        >
           <TextField source="id" />
           <TextField source="name" />
           <ThumbnailField source="thumbnailUrl" label="Thumbnail" />
           <NumberField source="price" />
           <BooleanField source="isPublish" label="Published" />
           <EditButton />
+          <CreateSkuButton />
         </Datagrid>
       </List>
     </Fragment>

@@ -1,23 +1,9 @@
-import {
-  Checkbox,
-  FormControlLabel,
-  IconButton,
-  ImageList,
-  ImageListItem,
-  ImageListItemBar
-} from "@mui/material";
-import {
-  Button,
-  ImageField,
-  SimpleShowLayout,
-  useRecordContext
-} from "react-admin";
+import { Checkbox, FormControlLabel } from "@mui/material";
+import { Button, SimpleShowLayout, useRecordContext } from "react-admin";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 
 import styles from "./field.module.scss";
-import { HttpApiProvider } from "../../../services/ApiWrapper";
-import SingleLineImageList from "./SingleImageList";
 
 export const ThumbnailField = ({ source }) => {
   const record = useRecordContext();

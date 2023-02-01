@@ -17,6 +17,8 @@ import { CategoryCreate, CategoryEdit, CategoryList } from "../categories";
 import { BrandCreate, BrandEdit, BrandList } from "../brands";
 import { Route } from "react-router-dom";
 import { authProvider } from "../../services/Auth";
+import OrderList from "../orders/list";
+import OrderShow from "../orders/show";
 
 const WrapperResource = () => {
   return (
@@ -34,6 +36,12 @@ const WrapperResource = () => {
           list={ProductList}
           create={ProductCreate}
           edit={ProductEdit}
+        />
+        <Resource
+          name="orders"
+          options={{ label: "Order" }}
+          list={OrderList}
+          show={OrderShow}
         />
         <Resource
           name="skus"

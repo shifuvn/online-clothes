@@ -9,6 +9,7 @@ export const configUrl = (url, params, action) => {
     case "productTypes":
     case "categories":
     case "brands":
+    case "orders":
       return handleDefaultConfigUrl(url, params, action);
 
     default:
@@ -22,6 +23,7 @@ export const configResult = (url, result, action, isFilterById = false) => {
     case "productTypes":
     case "categories":
     case "brands":
+    case "orders":
       switch (action) {
         case RaHttpProviderAction.getList:
           return handleDefaultConfigResultGetList(result, isFilterById);

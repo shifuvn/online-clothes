@@ -1,5 +1,6 @@
 import axios from "axios";
 import token from "../token";
+import { toast } from "react-toastify";
 
 export const BASE_API_DOMAIN_URI = process.env.REACT_APP_API_DOMAIN;
 const API_HEADER_AUTH_KEY = "Authorization";
@@ -23,11 +24,31 @@ const injectToken = (config) => {
   }
 };
 
+const handleResponse = (response) => {
+  if (response.data.IsError || response.data.isError) {
+    const msg = response.data?.Message ?? response.data?.message;
+    toast.warn(msg);
+  }
+
+  return response;
+};
+
+const handleError = (error) => {
+  console.log(error);
+  const msg = error.response.data?.Message ?? error.response.data?.message;
+  toast.error(msg);
+  return error.response;
+};
+
 export class HttpInstance {
   singleton = null;
 
   get instance() {
     return this.singleton !== null ? this.singleton : this.initHttpInstance();
+  }
+
+  constructor() {
+    this.initHttpInstance();
   }
 
   initHttpInstance() {
@@ -37,16 +58,13 @@ export class HttpInstance {
       timeout: 3000
     });
 
+    // Intercept request
     http.interceptors.request.use(injectToken, (err) => {
       Promise.reject(err);
     });
 
-    http.interceptors.response.use(
-      (res) => res,
-      (err) => {
-        return Promise.reject(err);
-      }
-    );
+    //  Handle response
+    http.interceptors.response.use(handleResponse, handleError);
 
     this.singleton = http;
     return http;

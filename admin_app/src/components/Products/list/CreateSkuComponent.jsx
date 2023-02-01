@@ -8,8 +8,7 @@ import {
   SimpleForm,
   SimpleShowLayout,
   TextField,
-  TextInput,
-  Toolbar
+  TextInput
 } from "react-admin";
 import { useNavigate, useParams } from "react-router-dom";
 import { HttpApiProvider } from "../../../services/ApiWrapper";
@@ -41,7 +40,7 @@ const CreateSkuComponent = () => {
       ImageFile: params.ImageFile?.rawFile
     };
     var result = await HttpApiProvider.createForm("skus", payload);
-    if (result.data.status == 201) {
+    if (result.data.status === 201) {
       const path = `/skus/${payload.Sku}/show`;
       navigate(path);
     }
