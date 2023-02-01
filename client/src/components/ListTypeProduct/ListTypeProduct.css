@@ -1,0 +1,30 @@
+.listTypeProduct {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  margin-top: 20px;
+}
+.itemListProduct {
+  cursor: pointer;
+  display: flex;
+  border: 2px solid;
+  padding: 5px 20px;
+  height: 90px;
+  width: 211px;
+  align-items: center;
+  justify-content: center;
+}
+.itemListProduct img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  flex: 5;
+}
+.text {
+  font-weight: bold;
+  padding-left: 30px;
+  font-weight: 700px;
+  flex: 3;
+}

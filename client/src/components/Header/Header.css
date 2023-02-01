@@ -1,0 +1,61 @@
+.header {
+  width: 100%;
+  display: flex;
+  font-size: 14px;
+  line-height: 21px;
+  padding: 0 15px;
+  position: fixed;
+  background: white;
+  z-index: 999;
+}
+
+.leftHeader {
+  display: flex;
+  flex: 8;
+  text-align: left;
+}
+
+.itemLeftHeader {
+  color: black;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 13px 15px;
+  text-decoration: none;
+}
+
+.rightHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 2;
+  text-align: right;
+}
+
+.itemRightHeader {
+  height: 35px;
+}
+
+.icon {
+  cursor: pointer;
+  color: white;
+  background-color: black;
+}
+
+.iconCart {
+  position: absolute;
+  top: 3px;
+  position: absolute;
+  right: 30px;
+}
+
+.quantity {
+  top: -15px;
+  text-align: center;
+  background: red;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  color: white;
+  position: relative;
+  left: 20px;
+}
