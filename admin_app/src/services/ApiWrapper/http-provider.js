@@ -18,8 +18,9 @@ HttpApiProvider.put = (url, params, options) => {
   return http.instance.put(url, params, options);
 };
 
-HttpApiProvider.delete = (url, options) => {
-  return http.instance.delete(url, options);
+HttpApiProvider.delete = (url, params) => {
+  const deleteUrl = url + `/${params.id}`;
+  return http.instance.delete(deleteUrl);
 };
 
 HttpApiProvider.getOne = async (url, params) => {
@@ -64,6 +65,13 @@ HttpApiProvider.updateForm = async (url, payload) => {
 
   var result = await http.instance.put(configuredUrl, payload);
 
+  return { data: { ...result } };
+};
+
+HttpApiProvider.deleteOne = async (url, params) => {
+  console.log("deleteOne", url, params);
+  var configuredUrl = configUrl(url, params);
+  var result = await http.instance.delete(configuredUrl);
   return { data: { ...result } };
 };
 

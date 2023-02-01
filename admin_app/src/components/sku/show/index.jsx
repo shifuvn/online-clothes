@@ -8,7 +8,8 @@ import {
   NumberField,
   Show,
   SimpleShowLayout,
-  TextField
+  TextField,
+  BooleanField
 } from "react-admin";
 
 const SkuDetailShow = () => {
@@ -31,6 +32,7 @@ const SkuDetailShow = () => {
               <ChipField source="name" />
             </SingleFieldList>
           </ArrayField>
+          <BooleanField source="isDeleted" />
           <TextField source="createdAt" /> {/*TODO: parse time*/}
           <ImageField source="imageUrl" label="Image" />
           <EditButton />

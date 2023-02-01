@@ -4,7 +4,8 @@ import {
   SimpleForm,
   NumberInput,
   ImageInput,
-  ImageField
+  ImageField,
+  BooleanInput
 } from "react-admin";
 import SelectSizeTypeInput from "../../common/SelectSizeTypeInput";
 import { toPascalCase } from "../../../helpers/conventionCase";
@@ -34,6 +35,7 @@ const SkuEdit = () => {
           <NumberInput source="addOnPrice" />
           <NumberInput source="inStock" />
           <SelectSizeTypeInput source="size" />
+          <BooleanInput source="isDeleted" />
           <ImageInput source="imageFile">
             <ImageField source="src" />
           </ImageInput>
