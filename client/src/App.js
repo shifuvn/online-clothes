@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Routes, Route, Outlet, Link } from "react-router-dom";
 import DetailProduct from './pages/DetailProduct/DetailProduct';
