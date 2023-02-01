@@ -1,11 +1,13 @@
 import React, { Fragment } from "react";
-import { Datagrid, EditButton, List, TextField } from "react-admin";
+import { Datagrid, EditButton, List, TextField, TextInput } from "react-admin";
+
+const brandFilter = [<TextInput source="id" label="Id" />];
 
 const BrandList = () => {
   return (
     <Fragment>
-      <List>
-        <Datagrid>
+      <List filters={brandFilter}>
+        <Datagrid isRowSelectable={(record) => false}>
           <TextField source="id" />
           <TextField source="name" />
           <TextField source="description" />

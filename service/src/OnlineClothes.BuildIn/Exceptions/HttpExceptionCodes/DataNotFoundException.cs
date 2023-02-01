@@ -4,10 +4,10 @@ namespace OnlineClothes.BuildIn.Exceptions.HttpExceptionCodes;
 
 public class DataNotFoundException : HttpException
 {
-	private const int Code = StatusCodes.Status400BadRequest;
+	private const int Code = StatusCodes.Status200OK;
 
 
-	public DataNotFoundException() : this("Data not found")
+	public DataNotFoundException() : this("Không tìm thấy yêu cầu")
 	{
 	}
 

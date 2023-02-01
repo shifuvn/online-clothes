@@ -26,12 +26,15 @@ public class JsonApiResponse<TResponse>
 
 	public object? Errors { get; set; }
 
-	[JsonIgnore] public bool IsError => Status is >= 400 and <= 599;
+	[JsonIgnore] public bool IsError { get; set; }
 
 	public static JsonApiResponse<TResponse> Success(int? code = null, string? message = null,
-		TResponse? data = default)
+		TResponse? data = default, bool isError = false)
 	{
-		return new JsonApiResponse<TResponse>(code ?? 200, message, data);
+		return new JsonApiResponse<TResponse>(code ?? 200, message, data)
+		{
+			IsError = isError
+		};
 	}
 
 	public static JsonApiResponse<TResponse> Created(string? message = null, TResponse? data = default)
@@ -39,10 +42,14 @@ public class JsonApiResponse<TResponse>
 		return new JsonApiResponse<TResponse>(StatusCodes.Status201Created, message, data);
 	}
 
-	public static JsonApiResponse<TResponse> Fail(string? message = null, TResponse? data = default)
+	public static JsonApiResponse<TResponse> Fail(string? message = null, TResponse? data = default,
+		bool isError = true)
 	{
-		message ??= "Cannot find anything!";
-		return new JsonApiResponse<TResponse>(400, message, data);
+		message ??= "Không tìm thấy yêu cầu";
+		return new JsonApiResponse<TResponse>(400, message, data)
+		{
+			IsError = isError
+		};
 	}
 }
 

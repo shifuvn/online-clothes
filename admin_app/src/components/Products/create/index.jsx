@@ -10,15 +10,16 @@ import {
 } from "react-admin";
 import { useNavigate } from "react-router-dom";
 import { HttpApiProvider } from "../../../services/ApiWrapper";
+import SelectBrandTypeInput from "../../common/SelectBrandTypeInput";
+import SelectCategoryInput from "../../common/SelectCategoryInput";
 import SelectSizeTypeInput from "../../common/SelectSizeTypeInput";
 import SelectTypeInput from "../../common/SelectTypeInput";
-//import { parseToFormData } from "../../../helpers";
 
 const ProductCreate = (props) => {
   const navigate = useNavigate();
 
   const handleSubmit = async (params) => {
-    params.ImageFile = params.ImageFile.rawFile;
+    params.ImageFile = params.ImageFile?.rawFile ?? undefined;
     await HttpApiProvider.create("products", params);
     navigate("/products");
   };
@@ -38,8 +39,10 @@ const ProductCreate = (props) => {
           <NumberInput source="SkuInStock" min={0} label="Number" />
           <NumberInput source="Price" />
           <NumberInput source="SkuAddOnPrice" min={0} label="Add on price" />
+          <SelectCategoryInput source="CategoryIds" />
           <SelectTypeInput source="Type" />
           <SelectSizeTypeInput source="SkuSize" />
+          <SelectBrandTypeInput source="BrandId" />
           <ImageInput source="ImageFile" label="Image">
             <ImageField source="src" />
           </ImageInput>

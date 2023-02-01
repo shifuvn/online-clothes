@@ -5,14 +5,17 @@ import {
   ImageField,
   TextField,
   NumberField,
-  BooleanField
+  BooleanField,
+  TextInput
 } from "react-admin";
+
+const skuFilter = [<TextInput source="keyword" label="SKU search" />];
 
 const SkuList = () => {
   return (
     <Fragment>
-      <List>
-        <Datagrid rowClick="show">
+      <List filters={skuFilter}>
+        <Datagrid rowClick="show" isRowSelectable={(record) => false}>
           <TextField source="sku" />
           <TextField source="name" />
           <ImageField source="imageUrl" label="Image" />

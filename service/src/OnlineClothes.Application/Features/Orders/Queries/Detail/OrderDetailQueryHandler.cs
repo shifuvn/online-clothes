@@ -25,7 +25,7 @@ public class OrderDetailQueryHandler : IRequestHandler<OrderDetailQuery, JsonApi
 			return JsonApiResponse<OrderDto>.Fail();
 		}
 
-		var viewModel = OrderDto.ToModel(order);
+		var viewModel = new OrderDto(order);
 		return JsonApiResponse<OrderDto>.Success(data: viewModel);
 	}
 

@@ -4,13 +4,16 @@ import {
   SimpleForm,
   NumberInput,
   ImageInput,
-  ImageField
+  ImageField,
+  BooleanInput
 } from "react-admin";
 import SelectSizeTypeInput from "../../common/SelectSizeTypeInput";
 import { toPascalCase } from "../../../helpers/conventionCase";
 import { HttpApiProvider } from "../../../services/ApiWrapper";
+import { useNavigate } from "react-router-dom";
 
 const SkuEdit = () => {
+  const navigate = useNavigate();
   const postField = ["sku", "addOnPrice", "inStock", "size", "imageFile"];
 
   const handleSubmit = async (params) => {
@@ -22,6 +25,7 @@ const SkuEdit = () => {
     });
 
     await HttpApiProvider.updateForm("skus", postObj);
+    navigate("/skus");
   };
 
   return (
@@ -31,6 +35,7 @@ const SkuEdit = () => {
           <NumberInput source="addOnPrice" />
           <NumberInput source="inStock" />
           <SelectSizeTypeInput source="size" />
+          <BooleanInput source="isDeleted" />
           <ImageInput source="imageFile">
             <ImageField source="src" />
           </ImageInput>

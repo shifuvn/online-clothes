@@ -1,8 +1,11 @@
 import React from "react";
-import { SelectArrayInput } from "react-admin";
+import { SelectArrayInput, useRecordContext } from "react-admin";
 import { HttpApiProvider } from "../../services/ApiWrapper";
 
 const SelectCategoryInput = (props) => {
+  const record = useRecordContext();
+  const categoryIds = record?.category?.map((cate, idx) => cate.id) ?? [];
+
   const [choices, setChoices] = React.useState([]);
 
   React.useEffect(() => {
@@ -14,7 +17,13 @@ const SelectCategoryInput = (props) => {
     fetchAllCate();
   }, []);
 
-  return <SelectArrayInput choices={choices} source={props.source} />;
+  return (
+    <SelectArrayInput
+      choices={choices}
+      source={props.source}
+      defaultValue={categoryIds}
+    />
+  );
 };
 
 export default SelectCategoryInput;

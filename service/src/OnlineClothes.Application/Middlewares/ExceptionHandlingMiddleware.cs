@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using OnlineClothes.BuildIn.JsonSerializer;
+using DataNotFoundException = OnlineClothes.BuildIn.Exceptions.HttpExceptionCodes.DataNotFoundException;
 
 namespace OnlineClothes.Application.Middlewares;
 
@@ -32,6 +33,11 @@ public class ExceptionHandlingMiddleware : IMiddleware
 		var (statusCode, trace) = GetStatusCode(exception);
 
 		var responseEx = new JsonApiResponse<EmptyUnitResponse>(statusCode, exception.Message, default, trace);
+
+		if (exception is DataNotFoundException)
+		{
+			responseEx.IsError = true;
+		}
 
 		httpContext.Response.ContentType = "application/json";
 		httpContext.Response.StatusCode = statusCode;
