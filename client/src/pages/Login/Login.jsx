@@ -1,102 +1,103 @@
-import React, { useState } from "react"
-import "bootstrap/dist/css/bootstrap.min.css"
-import './Login.css';
-const LogSign = () => {
-    let [LoginSignUpMode, setLoginSignUpMode] = useState("signin")
+import styled from "styled-components";
 
-    const changeLoginSignUpMode = () => {
-        setLoginSignUpMode(LoginSignUpMode === "signin" ? "signup" : "signin")
-    }
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
+import { TokenManage } from "../../services";
+import { Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-    if (LoginSignUpMode === "signin") {
-        return (
-            <div className="LoginSignUp-form-container">
-                <form className="LoginSignUp-form">
-                    <div className="LoginSignUp-form-content">
-                        <h3 className="LoginSignUp-form-title">Sign In</h3>
-                        <div className="text-center">
-                            Not registered yet?{" "}
-                            <span className="link-primary" onClick={changeLoginSignUpMode}>
-                                Sign Up
-                            </span>
-                        </div>
-                        <div className="form-group mt-3">
-                            <label>Email address</label>
-                            <input
-                                type="email"
-                                className="form-control mt-1"
-                                placeholder="Enter email"
-                            />
-                        </div>
-                        <div className="form-group mt-3">
-                            <label>Password</label>
-                            <input
-                                type="password"
-                                className="form-control mt-1"
-                                placeholder="Enter password"
-                            />
-                        </div>
-                        <div className="d-grid gap-2 mt-3">
-                            <button type="submit" className="btn btn-primary">
-                                Submit
-                            </button>
-                        </div>
-                        <p className="text-center mt-2">
-                            Forgot <a href="#">password?</a>
-                        </p>
-                    </div>
-                </form>
-            </div>
-        )
-    }
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.5)
+    ),
+    url("https://images.pexels.com/photos/6984650/pexels-photo-6984650.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
+      center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
-    return (
-        <div className="LoginSignUp-form-container">
-            <form className="LoginSignUp-form">
-                <div className="LoginSignUp-form-content">
-                    <h3 className="LoginSignUp-form-title">Sign In</h3>
-                    <div className="text-center">
-                        Already registered?{" "}
-                        <span className="link-primary" onClick={changeLoginSignUpMode}>
-                            Sign In
-                        </span>
-                    </div>
-                    <div className="form-group mt-3">
-                        <label>Full Name</label>
-                        <input
-                            type="email"
-                            className="form-control mt-1"
-                            placeholder="e.g Jane Doe"
-                        />
-                    </div>
-                    <div className="form-group mt-3">
-                        <label>Email address</label>
-                        <input
-                            type="email"
-                            className="form-control mt-1"
-                            placeholder="Email Address"
-                        />
-                    </div>
-                    <div className="form-group mt-3">
-                        <label>Password</label>
-                        <input
-                            type="password"
-                            className="form-control mt-1"
-                            placeholder="Password"
-                        />
-                    </div>
-                    <div className="d-grid gap-2 mt-3">
-                        <button type="submit" className="btn btn-primary">
-                            Submit
-                        </button>
-                    </div>
-                    <p className="text-center mt-2">
-                        Forgot <a href="#">password?</a>
-                    </p>
-                </div>
-            </form>
-        </div>
-    )
-}
+const Wrapper = styled.div`
+  width: 25%;
+  padding: 20px;
+  background-color: white;
+  
+`;
 
-export default LogSign
+const Title = styled.h1`
+  font-size: 24px;
+  font-weight: 300;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  flex: 1;
+  min-width: 40%;
+  margin: 10px 0;
+  padding: 10px;
+`;
+
+const Button = styled.button`
+  width: 40%;
+  border: none;
+  padding: 15px 20px;
+  background-color: teal;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 10px;
+`;
+
+const Linkk = styled.a`
+  margin: 5px 0px;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+`;
+
+const Login = () => {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    axios.post('https://localhost:9443/api/v1/Accounts/sign-in', { email, password })
+      .then((res) => {
+        console.log("day la res", res);
+        TokenManage.setAccessToken(res.data.data.accessToken);
+        toast.success("login successs");
+      })
+      .catch((err) => {
+
+        console.log("day la err", err);
+        toast.error(err.response.data.message);
+      })
+
+  }
+  return (
+    <Container>
+      <Wrapper>
+        <Title>SIGN IN</Title>
+        <Form>
+          <Input type="text" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
+          <Input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="password" />
+          <Button onClick={handleLogin}>LOGIN</Button>
+          <Link style={{ "margin": "5px 0px", "fontSize": "12px", "textDecoration": "underline", "cursor": "pointer" }}>DO NOT YOU REMEMBER THE PASSWORD?</Link>
+          <Link to='/sigup' style={{ "margin": "5px 0px", "fontSize": "12px", "textDecoration": "underline", "cursor": "pointer" }}>CREATE A NEW ACCOUNT</Link>
+        </Form>
+      </Wrapper>
+    </Container>
+  );
+};
+
+export default Login;
