@@ -8,18 +8,12 @@ import {
   CreateSkuComponent
 } from "../products";
 import { SkuDetailShow, SkuEdit, SkuList } from "../sku";
-import {
-  ProductTypeCreate,
-  ProductTypeEdit,
-  ProductTypeList
-} from "../productTypes";
 import { CategoryCreate, CategoryEdit, CategoryList } from "../categories";
 import { BrandCreate, BrandEdit, BrandList } from "../brands";
 import { Route } from "react-router-dom";
 import { authProvider } from "../../services/Auth";
 import OrderList from "../orders/list";
 import OrderShow from "../orders/show";
-import ChangePasswordComponent from "../changePassword";
 
 const WrapperResource = () => {
   return (
@@ -64,13 +58,6 @@ const WrapperResource = () => {
           list={BrandList}
           edit={BrandEdit}
           create={BrandCreate}
-        />
-        <Resource
-          name="productTypes"
-          options={{ label: "Product Type" }}
-          list={ProductTypeList}
-          create={ProductTypeCreate}
-          edit={ProductTypeEdit}
         />
       </Admin>
     </Fragment>

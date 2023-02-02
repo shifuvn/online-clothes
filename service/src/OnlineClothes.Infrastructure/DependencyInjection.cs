@@ -41,8 +41,7 @@ public static class DependencyInjection
 			.AddTransient<IOrderRepository, OrderRepository>()
 			.AddTransient<IProductRepository, ProductRepository>()
 			.AddTransient<ISkuRepository, ProductSkuRepository>()
-			.AddTransient<IImageRepository, ImageRepository>()
-			.AddTransient<IProductTypeRepository, ProductTypeRepository>();
+			.AddTransient<IImageRepository, ImageRepository>();
 	}
 
 	public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)

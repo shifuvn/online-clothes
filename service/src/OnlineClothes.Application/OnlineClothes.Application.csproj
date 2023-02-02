@@ -27,12 +27,6 @@
   <ItemGroup>
     <Folder Include="Features\Brands\Queries\All\" />
     <Folder Include="Features\Categories\Queries\All\" />
-    <Folder Include="Features\ProductTypes\Commands\Create\" />
-    <Folder Include="Features\ProductTypes\Commands\Delete\" />
-    <Folder Include="Features\ProductTypes\Commands\Edit\" />
-    <Folder Include="Features\ProductTypes\Queries\All\" />
-    <Folder Include="Features\ProductTypes\Queries\Paging\" />
-    <Folder Include="Features\ProductTypes\Queries\Single\" />
   </ItemGroup>
 
 </Project>

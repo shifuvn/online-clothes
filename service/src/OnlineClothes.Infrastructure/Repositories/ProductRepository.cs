@@ -29,7 +29,6 @@ public class ProductRepository : EfCoreRepositoryBase<Product, int>, IProductRep
 			.Include(q => q.ProductCategories)
 			.ThenInclude(q => q.Category)
 			.Include(q => q.Brand)
-			.Include(q => q.ProductType)
 			.FirstAsync(q => q.Id == key, cancellationToken);
 
 		return entry;

@@ -85,7 +85,6 @@ public class AppDbContext : DbContext
 	public DbSet<Order> Orders { get; set; } = null!;
 	public DbSet<OrderItem> OrderItems { get; set; } = null!;
 	public DbSet<ImageObject> Images { get; set; } = null!;
-	public DbSet<ProductType> ProductTypes { get; set; } = null!;
 
 	#endregion
 }
