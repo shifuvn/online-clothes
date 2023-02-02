@@ -59,6 +59,7 @@ const CreateSkuComponent = () => {
         toolbar={<SaveButton />}
       >
         <TextInput source="Sku" validate={required()} />
+        <TextInput source="DisplaySkuName" />
         <NumberInput source="AddOnPrice" min={0} />
         <NumberInput source="InStock" min={0} />
         <SelectSizeTypeInput source="Size" />

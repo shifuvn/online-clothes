@@ -19,6 +19,7 @@ import { Route } from "react-router-dom";
 import { authProvider } from "../../services/Auth";
 import OrderList from "../orders/list";
 import OrderShow from "../orders/show";
+import ChangePasswordComponent from "../changePassword";
 
 const WrapperResource = () => {
   return (

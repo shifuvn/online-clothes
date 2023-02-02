@@ -11,6 +11,7 @@ public class CreateProductCommand : PutProductInRepoObject, IRequest<JsonApiResp
 {
 	// default sku of product
 	public string Sku { get; set; } = null!;
+	public string? DisplaySkuName { get; set; }
 	[DefaultValue(0)] public int SkuInStock { get; set; }
 	[DefaultValue(0)] public decimal SkuAddOnPrice { get; set; }
 	public ClotheSizeType SkuSize { get; set; }

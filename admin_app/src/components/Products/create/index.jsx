@@ -36,6 +36,7 @@ const ProductCreate = (props) => {
             style={{ width: "50%" }}
           />
           <TextInput source="Sku" />
+          <TextInput source="DisplaySkuName" />
           <NumberInput source="SkuInStock" min={0} label="Number" />
           <NumberInput source="Price" />
           <NumberInput source="SkuAddOnPrice" min={0} label="Add on price" />

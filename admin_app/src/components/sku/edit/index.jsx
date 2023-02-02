@@ -5,7 +5,8 @@ import {
   NumberInput,
   ImageInput,
   ImageField,
-  BooleanInput
+  BooleanInput,
+  TextInput
 } from "react-admin";
 import SelectSizeTypeInput from "../../common/SelectSizeTypeInput";
 import { toPascalCase } from "../../../helpers/conventionCase";
@@ -14,7 +15,14 @@ import { useNavigate } from "react-router-dom";
 
 const SkuEdit = () => {
   const navigate = useNavigate();
-  const postField = ["sku", "addOnPrice", "inStock", "size", "imageFile"];
+  const postField = [
+    "sku",
+    "displaySkuName",
+    "addOnPrice",
+    "inStock",
+    "size",
+    "imageFile"
+  ];
 
   const handleSubmit = async (params) => {
     params.imageFile = params.imageFile?.rawFile;
@@ -32,6 +40,7 @@ const SkuEdit = () => {
     <Fragment>
       <Edit>
         <SimpleForm sanitizeEmptyValues onSubmit={handleSubmit}>
+          <TextInput source="displaySkuName" />
           <NumberInput source="addOnPrice" />
           <NumberInput source="inStock" />
           <SelectSizeTypeInput source="size" />

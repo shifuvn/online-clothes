@@ -8,7 +8,7 @@ public class ProductBasicDto
 		Name = domain.Name;
 		Description = domain.Description;
 		Price = domain.Price;
-		Skus = domain.ProductSkus.SelectList(q => new SkuInfo(q.Sku, q.IsDeleted));
+		Skus = domain.ProductSkus.SelectList(q => new SkuInfo(q.Sku, q.IsDeleted, q.DisplaySkuName));
 		Brand = domain.Brand is null ? null : new BrandDto(domain.Brand);
 		Type = domain.ProductType is null ? null : new ProductTypeDto(domain.ProductType);
 		Category = domain.ProductCategories.SelectList(q => new CategoryDto(q.Category));
@@ -31,13 +31,15 @@ public class ProductBasicDto
 
 	public class SkuInfo
 	{
-		public SkuInfo(string id, bool isDeleted)
+		public SkuInfo(string id, bool isDeleted, string? displaySkuName)
 		{
 			Id = id;
 			IsDeleted = isDeleted;
+			DisplaySkuName = displaySkuName;
 		}
 
 		public string Id { get; set; }
+		public string? DisplaySkuName { get; set; }
 		public bool IsDeleted { get; set; }
 	}
 }
