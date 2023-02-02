@@ -10,6 +10,7 @@ public class CreateSkuCommand : IRequest<JsonApiResponse<EmptyUnitResponse>>
 {
 	public int ProductId { get; set; }
 	public string Sku { get; set; } = null!;
+	public string? DisplaySkuName { get; set; }
 	[DefaultValue(0)] public decimal AddOnPrice { get; set; }
 	[DefaultValue(0)] public int InStock { get; set; }
 	[DefaultValue(ClotheSizeType.NoSize)] public ClotheSizeType Size { get; set; }

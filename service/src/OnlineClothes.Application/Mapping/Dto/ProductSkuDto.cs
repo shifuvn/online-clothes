@@ -2,17 +2,6 @@
 
 public class ProductSkuDto : ProductSkuBasicDto
 {
-	public ProductSkuDto(
-		int productId,
-		string sku,
-		string name,
-		decimal price,
-		decimal addOnPrice,
-		int inStock,
-		bool isDeleted) : base(productId, sku, name, price, addOnPrice, inStock, isDeleted)
-	{
-	}
-
 	public ProductSkuDto(ProductSku domain) : base(domain)
 	{
 		Description = domain.Product.Description;

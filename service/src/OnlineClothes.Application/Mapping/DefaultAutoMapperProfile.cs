@@ -45,6 +45,7 @@ public class DefaultAutoMapperProfile : Profile
 				new()
 				{
 					Sku = src.Sku,
+					DisplaySkuName = src.DisplaySkuName,
 					AddOnPrice = src.SkuAddOnPrice,
 					InStock = src.SkuInStock,
 					Size = src.SkuSize

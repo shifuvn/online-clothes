@@ -5,6 +5,7 @@ public class ProductSkuBasicDto
 	public ProductSkuBasicDto(
 		int productId,
 		string sku,
+		string? displaySkuName,
 		string name,
 		decimal price,
 		decimal addOnPrice,
@@ -13,6 +14,7 @@ public class ProductSkuBasicDto
 		string? imageUrl = null)
 	{
 		ProductId = productId;
+		DisplaySkuName = displaySkuName;
 		Sku = sku;
 		Name = name;
 		Price = price;
@@ -25,6 +27,7 @@ public class ProductSkuBasicDto
 	public ProductSkuBasicDto(ProductSku domain) : this(
 		domain.ProductId,
 		domain.Sku,
+		domain.DisplaySkuName,
 		domain.Product.Name,
 		domain.Product.Price,
 		domain.AddOnPrice,
@@ -38,6 +41,7 @@ public class ProductSkuBasicDto
 
 	public int ProductId { get; set; }
 	public string Sku { get; set; }
+	public string? DisplaySkuName { get; set; }
 	public string Name { get; set; }
 	public decimal Price { get; set; }
 	public decimal AddOnPrice { get; set; }
