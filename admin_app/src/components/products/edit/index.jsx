@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 import { HttpApiProvider } from "../../../services/ApiWrapper";
 import SelectBrandTypeInput from "../../common/SelectBrandTypeInput";
 import SelectCategoryInput from "../../common/SelectCategoryInput";
-import SelectTypeInput from "../../common/SelectTypeInput";
 import SingleLineImageList from "../_fields/SingleImageList";
 
 const ProductEdit = (props) => {
@@ -44,7 +43,6 @@ const ProductEdit = (props) => {
           <TextInput source="name" />
           <TextInput source="description" multiline />
           <NumberInput source="price" min={0} />
-          <SelectTypeInput source="type.id" />
           <SelectBrandTypeInput source="brand.id" />
           <SelectCategoryInput source="categories" />
           <BooleanInput source="isPublish" />

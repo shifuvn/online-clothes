@@ -10,7 +10,6 @@ public class ProductBasicDto
 		Price = domain.Price;
 		Skus = domain.ProductSkus.SelectList(q => new SkuInfo(q.Sku, q.IsDeleted, q.DisplaySkuName));
 		Brand = domain.Brand is null ? null : new BrandDto(domain.Brand);
-		Type = domain.ProductType is null ? null : new ProductTypeDto(domain.ProductType);
 		Category = domain.ProductCategories.SelectList(q => new CategoryDto(q.Category));
 		ThumbnailUrl = domain.ThumbnailImage?.Url;
 		IsPublish = domain.IsPublish;
@@ -23,7 +22,6 @@ public class ProductBasicDto
 	public decimal Price { get; set; }
 	public List<SkuInfo> Skus { get; set; }
 	public BrandDto? Brand { get; set; }
-	public ProductTypeDto? Type { get; set; }
 	public List<CategoryDto> Category { get; set; }
 	public string? ThumbnailUrl { get; set; }
 	public bool IsPublish { get; set; }

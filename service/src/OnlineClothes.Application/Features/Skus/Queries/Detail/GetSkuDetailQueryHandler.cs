@@ -23,7 +23,6 @@ public class GetSkuDetailQueryHandler : IRequestHandler<GetSkuDetailQuery, JsonA
 			.ThenInclude(sku => sku.Category)
 			.Include(sku => sku.Image)
 			.Include(sku => sku.Product)
-			.ThenInclude(sku => sku.ProductType)
 			.FirstOrDefaultAsync(sku => sku.Sku.Equals(request.Sku), cancellationToken);
 
 		if (product is null)

@@ -13,7 +13,6 @@ import { HttpApiProvider } from "../../../services/ApiWrapper";
 import SelectBrandTypeInput from "../../common/SelectBrandTypeInput";
 import SelectCategoryInput from "../../common/SelectCategoryInput";
 import SelectSizeTypeInput from "../../common/SelectSizeTypeInput";
-import SelectTypeInput from "../../common/SelectTypeInput";
 
 const ProductCreate = (props) => {
   const navigate = useNavigate();
@@ -41,7 +40,6 @@ const ProductCreate = (props) => {
           <NumberInput source="Price" />
           <NumberInput source="SkuAddOnPrice" min={0} label="Add on price" />
           <SelectCategoryInput source="CategoryIds" />
-          <SelectTypeInput source="Type" />
           <SelectSizeTypeInput source="SkuSize" />
           <SelectBrandTypeInput source="BrandId" />
           <ImageInput source="ImageFile" label="Image">
