@@ -2,5 +2,5 @@
 
 public static class RegexPattern
 {
-	public const string ValidSku = "^[\\w-]+$";
+	public const string ValidSku = "^[\\w-.]+$";
 }
