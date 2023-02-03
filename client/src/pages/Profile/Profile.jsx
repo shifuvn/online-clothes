@@ -1,7 +1,18 @@
 import React from "react";
 import "./Profile.css";
 import Header from "../../components/Header/Header"
+import { Navigate, useNavigate } from "react-router-dom";
+
 const Profile = () => {
+  const navigate = useNavigate();
+  const handleLogOut = (e) => {
+    e.preventDefault();
+
+
+    navigate('/login');
+
+
+  }
   return (
     <div>
       <link
@@ -28,7 +39,7 @@ const Profile = () => {
           <i className="fa fa-facebook" />
         </a>
         <p>
-          <button>Contact</button>
+          <button onClick={handleLogOut}>Log Out</button>
         </p>
       </div>
     </div>

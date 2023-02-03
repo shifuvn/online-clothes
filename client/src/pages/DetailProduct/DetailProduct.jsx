@@ -5,7 +5,17 @@ import "./DetailProduct.css";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { cartContext } from "../../Context/cartContext";
+import { Navigate, useNavigate } from "react-router-dom";
 const DetailProduct = () => {
+  const navigate = useNavigate();
+  const handleAddtoCart = (e) => {
+    e.preventDefault();
+
+
+    navigate('/Cart');
+
+
+  }
   const { id } = useParams();
   console.log(id);
   const [img, setImg] = useState('');
@@ -40,7 +50,7 @@ const DetailProduct = () => {
         </div>
         <div className="info">
           <div className="title">{title}</div>
-          <div className="sku">{id}</div>
+          <div className="sku">Sku:   {id}</div>
           <div className="pricee">{price}</div>
           <div className="color">Màu sắc:</div>
           <div className="flex-color">
@@ -50,7 +60,7 @@ const DetailProduct = () => {
           </div>
           {stock ? <div>{`san pham con ${stock}`}</div> : null}
           <div className="addcart">
-            <button>Them vao gio hang</button>
+            <button onClick={handleAddtoCart}>Thêm vào giỏ hàng</button>
           </div>
         </div>
 

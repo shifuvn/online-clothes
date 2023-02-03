@@ -93,7 +93,7 @@ const Login = () => {
           <Input type="text" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
           <Input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="password" />
           <Button onClick={handleLogin}>LOGIN</Button>
-          <Linkk style={{ "margin": "5px 0px", "fontSize": "12px", "textDecoration": "underline", "cursor": "pointer" }}>DO NOT YOU REMEMBER THE PASSWORD?</Linkk>
+
           <Link to='/sigup' style={{ "margin": "5px 0px", "fontSize": "12px", "textDecoration": "underline", "cursor": "pointer" }}>CREATE A NEW ACCOUNT</Link>
         </Form>
       </Wrapper>
