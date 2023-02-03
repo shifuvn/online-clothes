@@ -1,0 +1,15 @@
+.cart-item-container {
+    width: 80%;
+    padding: 50px;
+    display: flex;
+    gap: 100px;
+    margin: 20px;
+    align-items: center;
+    border: 1px solid;
+}
+
+.img-cart {
+    width: 85px;
+    height: 85px;
+
+}

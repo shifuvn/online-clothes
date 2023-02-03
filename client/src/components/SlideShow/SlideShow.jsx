@@ -3,9 +3,10 @@ import "react-slideshow-image/dist/styles.css";
 import "./SlideShow.css";
 const SlideShow = () => {
   const images = [
-    "https://upload.wikimedia.org/wikipedia/en/b/bd/Doraemon_character.png",
-    "https://doraemon2112shop.com/wp-content/uploads/2020/08/59875579_634137807060090_2576955986480726016_n.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShNPuH2nc8pfTXq_YYNRGrm6Ah5gwtF1PT8Q&usqp=CAU",
+    //"https://upload.wikimedia.org/wikipedia/en/b/bd/Doraemon_character.png",
+    "https://img.cdn.vncdn.io/cdn-pos/556e88-134541/bn/20221017_H1V8ft5tHMMRPqWiPJowfRfB.png",
+    "https://img.cdn.vncdn.io/cdn-pos/556e88-134541/bn/20221017_Djad5my0bhW1MTBHzWa62jC1.png",
+    "https://img.cdn.vncdn.io/cdn-pos/556e88-134541/bn/20221017_Cfh2S6fkB2j5E8ECbg5x72CO.png",
   ];
   const proprietes = {
     duration: 2000,
