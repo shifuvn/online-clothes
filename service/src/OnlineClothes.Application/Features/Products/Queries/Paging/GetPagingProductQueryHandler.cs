@@ -19,21 +19,26 @@ public class
 	public async Task<JsonApiResponse<PagingModel<ProductBasicDto>>> Handle(GetPagingProductQuery request,
 		CancellationToken cancellationToken)
 	{
-		var viewModel = await _productRepository.PagingAsync(
+		var data = await _productRepository.PagingAsync(
 			PreSearchQueryable(request),
 			new PagingRequest(request.PageIndex, request.PageSize),
 			ProjectToTypeSelector(),
-			PreOrderQueryable(request),
+			BuildOrderSelector(request),
 			new[] { "ProductSkus", "ThumbnailImage" },
 			cancellationToken);
 
-		return JsonApiResponse<PagingModel<ProductBasicDto>>.Success(data: viewModel);
+		return JsonApiResponse<PagingModel<ProductBasicDto>>.Success(data: data);
 	}
 
 	private static FilterBuilder<Product> PreSearchQueryable(GetPagingProductQuery request)
 	{
 		// default will query publish product
-		var filterBuilder = new FilterBuilder<Product>(q => q.IsPublish);
+		var filterBuilder = new FilterBuilder<Product>().Empty();
+
+		if (!request.IncludeAll)
+		{
+			filterBuilder.And(q => q.IsPublish);
+		}
 
 		AppendFilterKeyword(request, filterBuilder);
 		AppendFilterCategory(request, filterBuilder);
@@ -72,14 +77,14 @@ public class
 	private static Func<IQueryable<Product>, IQueryable<ProductBasicDto>>
 		ProjectToTypeSelector()
 	{
-		return product => product.Select(q => ProductBasicDto.ToModel(q));
+		return product => product.Select(q => new ProductBasicDto(q));
 	}
 
 	private static
 		Func<IQueryable<Product>, IOrderedQueryable<Product>>
-		PreOrderQueryable(GetPagingProductQuery request)
+		BuildOrderSelector(GetPagingProductQuery request)
 	{
-		return Check.ShouldOrderDescending(request.OrderBy)
+		return QuerySortOrder.IsDescending(request.OrderBy)
 			? query => query.OrderByDescending(SortByDefinition(request.SortBy))
 			: query => query.OrderBy(SortByDefinition(request.SortBy));
 	}
@@ -90,17 +95,9 @@ public class
 		{
 			"price" => product => product.Price,
 			"name" => product => product.Name,
+			"id" => product => product.Id,
+			"created" => product => product.CreatedAt,
 			_ => product => product.Name
 		};
-	}
-
-	// Include all check method handler
-	private static class Check
-	{
-		// Default order behaviour (high => low)
-		public static bool ShouldOrderDescending(string? orderBy)
-		{
-			return string.IsNullOrEmpty(orderBy) || orderBy.Equals(QuerySortOrder.Descending);
-		}
 	}
 }

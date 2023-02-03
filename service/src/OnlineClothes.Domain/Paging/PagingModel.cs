@@ -31,6 +31,8 @@ public class PagingModel<T>
 		}
 	}
 
+	[JsonProperty("totalItems")] public long TotalItems => total;
+
 	[JsonProperty("currentPage")] public int PageIndex { get; set; }
 
 	public static PagingModel<T> ToPages(long total, ICollection<T> items, int pageIndex)

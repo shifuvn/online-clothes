@@ -22,7 +22,7 @@ public class CartItemDto
 		return new CartItemDto
 		{
 			Quantity = entity.Quantity,
-			ProductSku = ProductSkuBasicDto.ToModel(entity.ProductSku)
+			ProductSku = new ProductSkuBasicDto(entity.ProductSku)
 		};
 	}
 }

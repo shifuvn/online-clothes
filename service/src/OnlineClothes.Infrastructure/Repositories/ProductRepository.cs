@@ -21,6 +21,19 @@ public class ProductRepository : EfCoreRepositoryBase<Product, int>, IProductRep
 		_mapper = mapper;
 	}
 
+	public override async Task<Product> GetByIntKey(int key, CancellationToken cancellationToken = default)
+	{
+		var entry = await DbSet.AsQueryable()
+			.Include(q => q.ProductSkus)
+			.Include(q => q.ThumbnailImage)
+			.Include(q => q.ProductCategories)
+			.ThenInclude(q => q.Category)
+			.Include(q => q.Brand)
+			.FirstAsync(q => q.Id == key, cancellationToken);
+
+		return entry;
+	}
+
 	public async Task EditOneAsync(
 		int id,
 		PutProductInRepoObject @object,
@@ -30,25 +43,11 @@ public class ProductRepository : EfCoreRepositoryBase<Product, int>, IProductRep
 			.Include(product => product.ProductCategories)
 			.FirstAsync(product => product.Id == id, cancellationToken);
 
-		var currentProductCategoryIds = product.ProductCategories.SelectList(pc => pc.CategoryId);
-		var newIncomeCategoryIds = @object.CategoryIds.Except(currentProductCategoryIds).ToList();
 
 		Update(product);
 		_mapper.Map(@object, product);
 
-		if (newIncomeCategoryIds.Count == 0)
-		{
-			return; // skip if no category change
-		}
-
-		var navigationCategories =
-			newIncomeCategoryIds.SelectList(x => new ProductCategory { ProductId = product.Id, CategoryId = x });
-
-		var productCategoriesList = product.ProductCategories.ToList();
-		productCategoriesList.RemoveAll(q => !@object.CategoryIds.Contains(q.CategoryId));
-		productCategoriesList.AddRange(navigationCategories);
-
-		// re-assign
-		product.ProductCategories = productCategoriesList;
+		product.ProductCategories =
+			@object.CategoryIds.SelectList(x => new ProductCategory { ProductId = product.Id, CategoryId = x });
 	}
 }

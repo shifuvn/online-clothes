@@ -14,4 +14,6 @@ public class GetPagingProductQuery : PagingRequest, IRequest<JsonApiResponse<Pag
 	public string? SortBy { get; set; }
 	public int? CategoryId { get; set; } // filter by category
 	public int? BrandId { get; set; } // filter by brand
+
+	[DefaultValue(false)] public bool IncludeAll { get; set; }
 }

@@ -22,19 +22,16 @@ public class Product : EntityBase
 		string? description,
 		decimal price,
 		int? brandId,
-		ClotheType? type,
 		bool isDeleted = false) : this(name, price, isDeleted)
 	{
 		Description = description;
 		BrandId = brandId;
-		Type = type;
 	}
 
 	public string Name { get; set; } = null!;
 	public string? Description { get; set; }
 	public decimal Price { get; set; }
 	[DefaultValue(null)] public int? BrandId { get; set; }
-	public ClotheType? Type { get; set; }
 	[DefaultValue(true)] public bool IsPublish { get; set; }
 	public int? ThumbnailImageId { get; set; }
 

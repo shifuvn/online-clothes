@@ -24,4 +24,9 @@
     <ProjectReference Include="..\OnlineClothes.Domain\OnlineClothes.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Brands\Queries\All\" />
+    <Folder Include="Features\Categories\Queries\All\" />
+  </ItemGroup>
+
 </Project>

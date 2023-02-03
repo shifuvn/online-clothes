@@ -4,12 +4,10 @@ using Newtonsoft.Json;
 
 namespace OnlineClothes.Domain.Entities.Aggregate;
 
-public class ProductSku : SupportDomainEvent, IEntity<string>
+public class ProductSku : SupportDomainEvent, IEntity<string>, IEntityDatetimeSupport
 {
-	[Key]
-	[DatabaseGenerated(DatabaseGeneratedOption.None)]
-	public string Sku { get; set; } = null!;
-
+	[Key] public string Sku { get; set; } = null!;
+	public string? DisplaySkuName { get; set; }
 	public int ProductId { get; set; }
 	public int InStock { get; set; }
 	public decimal AddOnPrice { get; set; }
@@ -52,7 +50,7 @@ public class ProductSku : SupportDomainEvent, IEntity<string>
 		InStock -= number;
 	}
 
-	public decimal GetPrice()
+	public decimal TotalPrice()
 	{
 		return Product.Price + AddOnPrice;
 	}

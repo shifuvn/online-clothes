@@ -6,7 +6,7 @@ public class BadRequestException : HttpException
 {
 	private const int Code = StatusCodes.Status400BadRequest;
 
-	public BadRequestException() : this("Bad request")
+	public BadRequestException() : this("Yêu cầu không hợp lệ")
 	{
 	}
 

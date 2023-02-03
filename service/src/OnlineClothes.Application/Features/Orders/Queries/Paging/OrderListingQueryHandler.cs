@@ -37,7 +37,7 @@ public class OrderListingQueryHandler : IRequestHandler<OrderListingQuery, JsonA
 
 	private Func<IQueryable<Order>, IQueryable<OrderDto>> SelectorFunc()
 	{
-		return queryable => queryable.Select(order => OrderDto.ToModel(order));
+		return queryable => queryable.Select(order => new OrderDto(order));
 	}
 
 	private FilterBuilder<Order> PreparePredicate()

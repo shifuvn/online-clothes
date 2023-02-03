@@ -2,32 +2,16 @@
 
 public class ProductSkuDto : ProductSkuBasicDto
 {
-	public ProductSkuDto(int productId, string sku, string name, decimal price, int inStock) : base(productId, sku,
-		name, price, inStock)
+	public ProductSkuDto(ProductSku domain) : base(domain)
 	{
+		Description = domain.Product.Description;
+		Size = domain.Size.ToString();
+		Brand = domain.Product.Brand is null ? null : new BrandDto(domain.Product.Brand!);
+		Categories = domain.Product.ProductCategories.SelectList(cate => new CategoryDto(cate.Category));
 	}
 
 	public string? Description { get; set; }
-	public ClotheSizeType? Size { get; set; }
-	public ClotheType? Type { get; set; }
+	public string? Size { get; set; }
 	public BrandDto? Brand { get; set; }
 	public List<CategoryDto> Categories { get; set; } = new();
-	public DateTime CreatedAt { get; set; }
-	public DateTime ModifiedAt { get; set; }
-
-	public new static ProductSkuDto ToModel(ProductSku entity)
-	{
-		return new ProductSkuDto(entity.ProductId, entity.Sku, entity.Product.Name, entity.GetPrice(), entity.InStock)
-		{
-			Description = entity.Product.Description,
-			Brand = BrandDto.ToModel(entity.Product.Brand),
-			Size = entity.Size,
-			Type = entity.Product.Type,
-			Categories =
-				entity.Product.ProductCategories.SelectList(category => CategoryDto.ToModel(category.Category)),
-			CreatedAt = entity.CreatedAt,
-			ModifiedAt = entity.ModifiedAt,
-			ImageUrl = entity.Image?.Url
-		};
-	}
 }

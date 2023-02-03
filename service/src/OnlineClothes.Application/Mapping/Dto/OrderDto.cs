@@ -2,33 +2,32 @@
 
 public class OrderDto
 {
-	public int Id { get; set; }
-	public string Email { get; set; } = null!;
-	public OrderState State { get; set; }
-	public decimal TotalPaid { get; set; }
-	public bool IsPaid { get; set; }
-	public string Address { get; set; } = null!;
-	public string? Note { get; set; }
-	public List<OrderItemDto> Items { get; set; } = new();
-
-	public static OrderDto ToModel(Order entity)
+	public OrderDto(Order domain)
 	{
 		var items = new List<OrderItemDto>();
-		if (entity.Items.Any())
+		if (domain.Items.Any())
 		{
-			items = entity.Items.SelectList(OrderItemDto.ToModel);
+			items = domain.Items.SelectList(OrderItemDto.ToModel);
 		}
 
-		return new OrderDto
-		{
-			Id = entity.Id,
-			Email = entity.Account.Email,
-			State = entity.State,
-			TotalPaid = entity.TotalPaid,
-			IsPaid = entity.IsPaid,
-			Address = entity.Address,
-			Note = entity.Note,
-			Items = items
-		};
+		Id = domain.Id;
+		Email = domain.Account.Email;
+		State = domain.State.ToString();
+		TotalPaid = domain.TotalPaid;
+		IsPaid = domain.IsPaid;
+		Address = domain.Address;
+		Note = domain.Note;
+		Items = items;
+		CreatedAt = domain.CreatedAt;
 	}
+
+	public int Id { get; set; }
+	public string Email { get; set; }
+	public string State { get; set; }
+	public decimal TotalPaid { get; set; }
+	public bool IsPaid { get; set; }
+	public string Address { get; set; }
+	public string? Note { get; set; }
+	public List<OrderItemDto> Items { get; set; }
+	public DateTime CreatedAt { get; set; }
 }

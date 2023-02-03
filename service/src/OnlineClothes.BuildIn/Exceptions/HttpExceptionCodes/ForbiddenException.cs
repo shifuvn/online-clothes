@@ -7,7 +7,7 @@ public class ForbiddenException : HttpException
 	private const int Code = StatusCodes.Status403Forbidden;
 
 
-	public ForbiddenException() : base(Code, "You have no right to perform this action")
+	public ForbiddenException() : base(Code, "Không có quyền truy cập")
 	{
 	}
 }

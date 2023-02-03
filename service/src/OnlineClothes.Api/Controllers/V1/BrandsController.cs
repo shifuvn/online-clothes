@@ -1,6 +1,7 @@
 ﻿using OnlineClothes.Application.Features.Brands.Commands.Create;
 using OnlineClothes.Application.Features.Brands.Commands.Delete;
 using OnlineClothes.Application.Features.Brands.Commands.Edit;
+using OnlineClothes.Application.Features.Brands.Queries.All;
 using OnlineClothes.Application.Features.Brands.Queries.Paging;
 using OnlineClothes.Application.Features.Brands.Queries.Single;
 
@@ -22,6 +23,12 @@ public class BrandsController : ApiV1ControllerBase
 	public async Task<IActionResult> GetPaging([FromQuery] PagingRequest pageRequest)
 	{
 		return HandleApiResponse(await Mediator.Send(new GetPagingBrandQuery(pageRequest)));
+	}
+
+	[HttpGet("all")]
+	public async Task<IActionResult> GetAll()
+	{
+		return HandleApiResponse(await Mediator.Send(new GetAllBrandQuery()));
 	}
 
 	[HttpPost]

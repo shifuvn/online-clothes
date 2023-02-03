@@ -1,0 +1,33 @@
+@import "normalize.css";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+%colorSystem {
+  --primaryColor: #040e53;
+  --onPrimaryColor: #ffffff;
+  --disabledColor: #e5e6ed;
+  --textColor: #000000;
+  --canvasColor: #939393;
+}
+
+%fontSizeSystem {
+  --heading1: 18px;
+  --heading2: 14px;
+  --heading3: 12px;
+}
+
+:root {
+  @extend %colorSystem;
+  @extend %fontSizeSystem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat";
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  text-rendering: optimizeSpeed;
+}
