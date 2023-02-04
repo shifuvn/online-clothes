@@ -1,0 +1,89 @@
+version: '3.8'
+
+networks:
+  oop_infra_nw:
+  oop_app_nw:
+  oop_spa_nw:
+
+
+volumes:
+  app-data:
+
+
+services:
+  # database
+  postgresql-db:
+    image: postgres:alpine
+    networks:
+      - oop_infra_nw
+    volumes:
+      - app-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres@123
+      - POSTGRES_DATABASE=OnlineClothe
+
+  pgbouncer:
+    image: bitnami/pgbouncer
+    networks:
+      - oop_infra_nw
+      - oop_app_nw
+    depends_on:
+      - postgresql-db
+    ports:
+      - "6432:6432"
+    environment:
+      - POSTGRESQL_HOST=postgresql-db
+      - POSTGRESQL_PORT=5432
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=postgres@123
+      - POSTGRESQL_DATABASE=OnlineClothe
+      - PGBOUNCER_PORT=6432
+      - PGBOUNCER_BIND_ADDRESS=0.0.0.0
+      - PGBOUNCER_EXTRA_FLAGS=--verbose
+      - PGBOUNCER_DATABASE=OnlineClothe
+      - PGBOUNCER_DEFAULT_POOL_SIZE=50
+
+  mail-server-smtp:
+    image: marcopas/docker-mailslurper
+    networks:
+      - oop_infra_nw
+    ports:
+      - "2500:2500"
+      - "8080:8080"
+      - "8085:8085"
+
+  app:
+    networks:
+      - oop_app_nw
+
+    volumes:
+      - ./conf/certs:/.https:ro
+      - ~/.aws:/root/.aws
+    image: solcr/online-clothes-api:dev
+    ports:
+      - "9080:80"
+      - "9443:443"
+    depends_on:
+      - pgbouncer
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/.https/localhost.pfx
+    env_file:
+      - ./conf/env/.env
+
+  client-app:
+    image: solcr/online-clothes-client:latest
+    ports:
+      - "80:3000"
+    networks:
+      - oop_spa_nw
+
+  admin-app:
+    image: solcr/online-clothes-admin:latest
+    ports:
+      - "81:3000"
+    networks:
+      - oop_spa_nw

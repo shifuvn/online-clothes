@@ -2,7 +2,7 @@ import axios from "axios";
 import { TokenManage } from "./TokenManage";
 import { toast } from "react-toastify";
 
-export const BASE_API_DOMAIN_URL = "https://localhost:5556/api/v1";
+export const BASE_API_DOMAIN_URL = "https://localhost:9443/api/v1";
 const API_HEADER_AUTH_KEY = "Authorization";
 const DEFAULT_HEADERS = {
   Accept: "application/json",
