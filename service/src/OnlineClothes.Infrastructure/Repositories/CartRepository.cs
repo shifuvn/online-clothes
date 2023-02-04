@@ -19,6 +19,9 @@ public class CartRepository : EfCoreRepositoryBase<AccountCart, int>, ICartRepos
 			.Include(cart => cart.Items)
 			.ThenInclude(cartItem => cartItem.ProductSku)
 			.ThenInclude(productSku => productSku.Product)
+			.Include(q => q.Items)
+			.ThenInclude(q => q.ProductSku)
+			.ThenInclude(q => q.Image)
 			.FirstAsync(cart => cart.AccountId.Equals(_userContext.GetNameIdentifier()));
 
 		return cart;
