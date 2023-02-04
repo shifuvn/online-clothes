@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.ComponentModel;
+using FluentValidation;
 
 namespace OnlineClothes.Application.Features.Carts.Commands.UpdateItemQuantity;
 
@@ -15,7 +16,7 @@ public class UpdateCartItemQuantityCommand : IRequest<JsonApiResponse<EmptyUnitR
 	}
 
 	public string Sku { get; set; } = null!;
-	public int Number { get; set; }
+	[DefaultValue(1)] public int Number { get; set; }
 }
 
 public class UpdateCartItemQuantityCommandValidation : AbstractValidator<UpdateCartItemQuantityCommand>

@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { Search, ShoppingCartOutlined } from "@material-ui/icons";
 import { Badge, Container } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
+import { TokenManage } from "../../services/TokenManage";
+import { UserManage } from "../../services/UserManage";
+import UserDropDown from "./UserDropDown";
 
 const Wrapper = styled.div`
   padding: 10px 20px;
@@ -62,6 +65,10 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  const clickCart = (e) => {
+    navigate("/cart");
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -75,10 +82,16 @@ const Navbar = () => {
           <Logo>ONLINE CLOTHE.</Logo>
         </Center>
         <Right>
-          <MenuItem onClick={clickRegister}>Register</MenuItem>
-          <MenuItem onClick={clickLogin}>Sign in</MenuItem>
-          <MenuItem>
-            <Badge badgeContent={4} color="primary">
+          {TokenManage.isAuth() ? (
+            <UserDropDown />
+          ) : (
+            <>
+              <MenuItem onClick={clickRegister}>Register</MenuItem>
+              <MenuItem onClick={clickLogin}>Sign in</MenuItem>
+            </>
+          )}
+          <MenuItem onClick={clickCart}>
+            <Badge badgeContent={0} color="primary">
               <ShoppingCartOutlined />
             </Badge>
           </MenuItem>

@@ -110,6 +110,7 @@ const ProductDetail = () => {
   const params = useParams();
   const [product, setProduct] = React.useState({});
   const [allSkus, setAllSkus] = React.useState([]);
+  const [quantity, setQuantity] = React.useState(1);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -122,6 +123,24 @@ const ProductDetail = () => {
 
     fetchData();
   }, [params.id]);
+
+  const handleClickQuantity = (value) => {
+    const newValue = quantity + value;
+    if (newValue < 1) {
+      setQuantity(1);
+      return;
+    }
+    setQuantity(newValue);
+  };
+
+  const handleAddCart = async (e) => {
+    const payload = {
+      sku: params.id,
+      number: quantity
+    };
+
+    const result = await apiClient.put(`Carts`, payload);
+  };
 
   return (
     <Container>
@@ -137,11 +156,19 @@ const ProductDetail = () => {
           <FilterSkuOptions skus={allSkus} />
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove
+                onClick={(e) => {
+                  handleClickQuantity(-1);
+                }}
+              />
+              <Amount>{quantity}</Amount>
+              <Add
+                onClick={(e) => {
+                  handleClickQuantity(1);
+                }}
+              />
             </AmountContainer>
-            <Button>Add cart</Button>
+            <Button onClick={handleAddCart}>Add cart</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>

@@ -2,7 +2,7 @@ import axios from "axios";
 import { TokenManage } from "./TokenManage";
 import { toast } from "react-toastify";
 
-export const BASE_API_DOMAIN_URL = "https://localhost:9443/api/v1";
+export const BASE_API_DOMAIN_URL = "https://localhost:5556/api/v1";
 const API_HEADER_AUTH_KEY = "Authorization";
 const DEFAULT_HEADERS = {
   Accept: "application/json",
@@ -75,6 +75,24 @@ const post = async (url, payload) => {
   return result;
 };
 
+const put = async (url, payload) => {
+  const result = await client.put(url, payload);
+
+  if (result.status < 300 && result.status >= 200) {
+    const msg = result.data?.message || result.data?.Message;
+    if (msg) {
+      toast.success(msg);
+    }
+  } else if (result.status >= 400) {
+    const msg = result.data?.message || result.data?.Message;
+    if (msg) {
+      toast.error(msg);
+    }
+  }
+
+  return result;
+};
+
 const get = async (url, config) => {
   const result = await client.get(url, config);
   return result.data;
@@ -82,7 +100,8 @@ const get = async (url, config) => {
 
 const apiClient = {
   post,
-  get
+  get,
+  put
 };
 
 export { apiClient };

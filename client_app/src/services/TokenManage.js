@@ -16,9 +16,14 @@ const checkAccessToken = () => {
   return getAccessToken() !== undefined;
 };
 
+const isAuth = () => {
+  return getAccessToken() !== undefined && getAccessToken() !== null;
+};
+
 export const TokenManage = {
   getAccessToken,
   setAccessToken,
   removeAccessToken,
-  checkAccessToken
+  checkAccessToken,
+  isAuth
 };

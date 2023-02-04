@@ -57,9 +57,15 @@ const ContactItem = styled.div`
 
 const Footer = () => {
   return (
-    <Container>
+    <Container
+      style={{
+        marginTop: "80px",
+        paddingTop: "32px",
+        borderTop: "1px solid #000"
+      }}
+    >
       <Left>
-        <Logo>LAMA.</Logo>
+        <Logo>ONLINE CLOTHE.</Logo>
         <Desc>
           There are many variations of passages of Lorem Ipsum available, but
           the majority have suffered alteration in some form, by injected

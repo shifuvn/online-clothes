@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { apiClient } from "../../services";
 import { TokenManage } from "../../services/TokenManage";
+import { UserManage } from "../../services/UserManage";
 
 const Container = styled.div`
   width: 100vw;
@@ -72,6 +73,8 @@ const Login = () => {
     const result = await apiClient.post("/Accounts/sign-in", payload);
     if (result.status === 200) {
       TokenManage.setAccessToken(result.data.data.accessToken);
+      const profileResponse = await apiClient.get(`/Profiles`);
+      UserManage.setCurrentUser(profileResponse?.data);
       navigate("/");
     }
   };
