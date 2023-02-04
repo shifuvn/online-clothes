@@ -18,8 +18,8 @@ public class CartsController : ApiV1ControllerBase
 	}
 
 	[HttpPut]
-	public async Task<IActionResult> UpdateItem(string sku, int number = 1)
+	public async Task<IActionResult> UpdateItem([FromBody] UpdateCartItemQuantityCommand request)
 	{
-		return HandleApiResponse(await Mediator.Send(new UpdateCartItemQuantityCommand(sku, number)));
+		return HandleApiResponse(await Mediator.Send(request));
 	}
 }

@@ -74,7 +74,7 @@ public class
 
 		_logger.LogInformation("Create order: {object}", JsonConvert.SerializeObject(order));
 
-		return JsonApiResponse<EmptyUnitResponse>.Created();
+		return JsonApiResponse<EmptyUnitResponse>.Created("Tạo đơn hàng thành công");
 	}
 
 	private async Task<Order> ProcessNewOrder(CheckoutOrderCommand request, CancellationToken cancellationToken,

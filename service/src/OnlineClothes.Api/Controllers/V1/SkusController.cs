@@ -6,6 +6,7 @@ using OnlineClothes.Application.Features.Skus.Commands.EditSkuInfo;
 using OnlineClothes.Application.Features.Skus.Commands.ImportSku;
 using OnlineClothes.Application.Features.Skus.Commands.RestoreSku;
 using OnlineClothes.Application.Features.Skus.Queries.Detail;
+using OnlineClothes.Application.Features.Skus.Queries.OtherSku;
 using OnlineClothes.Application.Features.Skus.Queries.Paging;
 
 namespace OnlineClothes.Api.Controllers.V1;
@@ -28,6 +29,13 @@ public class SkusController : ApiV1ControllerBase
 	public async Task<IActionResult> GetDetail(string sku)
 	{
 		return HandleApiResponse(await Mediator.Send(new GetSkuDetailQuery(sku)));
+	}
+
+	[HttpGet("others/{productId:int}")]
+	[AllowAnonymous]
+	public async Task<IActionResult> GetAllOtherSku(int productId)
+	{
+		return HandleApiResponse(await Mediator.Send(new GetAllSkuInTheSameProductQuery { ProductId = productId }));
 	}
 
 	[HttpPost]
@@ -55,13 +63,6 @@ public class SkusController : ApiV1ControllerBase
 	{
 		return HandleApiResponse(await Mediator.Send(new RestoreSkuCommand(sku)));
 	}
-
-
-	//[HttpPut("replace-image")]
-	//public async Task<IActionResult> ReplaceSkuImage([FromForm] ReplaceSkuImageCommand request)
-	//{
-	//	return HandleApiResponse(await Mediator.Send(request));
-	//}
 
 	[HttpDelete("{sku}")]
 	public async Task<IActionResult> DeleteSku(string sku)

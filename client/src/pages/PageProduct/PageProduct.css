@@ -1,0 +1,17 @@
+.container-page-product {
+  padding: 50px;
+  padding-top: 100px;
+}
+
+.product {
+  gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 30px;
+}
+
+.container_button {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 200px;
+}

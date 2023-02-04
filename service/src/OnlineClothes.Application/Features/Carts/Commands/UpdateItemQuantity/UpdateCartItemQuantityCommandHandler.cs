@@ -47,6 +47,6 @@ public class
 
 		return !save
 			? JsonApiResponse<EmptyUnitResponse>.Fail()
-			: JsonApiResponse<EmptyUnitResponse>.Success();
+			: JsonApiResponse<EmptyUnitResponse>.Success(message: "Thêm sản phẩm thành công");
 	}
 }
