@@ -1,16 +1,8 @@
 import React from "react";
-import styled from "styled-components";
 import { apiClient } from "../../../services";
 import ProductItem from "./ProductItem";
 import { Pagination } from "@mui/material";
 import { Container, Grid } from "@material-ui/core";
-
-//const Container = styled.div`
-//  padding: 20px;
-//  display: flex;
-//  flex-wrap: wrap;
-//  justify-content: space-between;
-//`;
 
 const ProductContainer = () => {
   const [products, setProducts] = React.useState([]);
@@ -40,17 +32,23 @@ const ProductContainer = () => {
   };
 
   return (
-    <Container style={{ marginTop: " 40px" }}>
-      <Grid container>
+    <Container style={{ marginTop: "40px" }}>
+      <Grid container spacing={4} justify="center">
         {products &&
           products.map((item, idx) => {
             return (
-              <Grid xs={3} key={idx}>
-                <ProductItem source={item} />
+              <Grid item xs={3} key={idx}>
+                <ProductItem
+                  imageUrl={item.thumbnailUrl}
+                  sku={item.skus[0].id}
+                  name={item.name}
+                  price={item.price}
+                />
               </Grid>
             );
           })}
       </Grid>
+
       <div
         style={{
           width: "90%",

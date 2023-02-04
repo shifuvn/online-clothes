@@ -27,6 +27,7 @@
   <ItemGroup>
     <Folder Include="Features\Brands\Queries\All\" />
     <Folder Include="Features\Categories\Queries\All\" />
+    <Folder Include="Features\Skus\Queries\OtherSku\" />
   </ItemGroup>
 
 </Project>

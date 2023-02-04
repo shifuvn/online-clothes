@@ -1,92 +1,45 @@
 import React from "react";
-import {
-  FavoriteBorderOutlined,
-  SearchOutlined,
-  ShoppingCartOutlined
-} from "@material-ui/icons";
-import styled from "styled-components";
 import FallBackNoImage from "../../../resources/images/fallback-no-product-image.jpg";
+import { useNavigate } from "react-router-dom";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  CardActions,
+  Button
+} from "@material-ui/core";
+import { toVnd } from "../../../utils";
 
-const Info = styled.div`
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.5s ease;
-  cursor: pointer;
-`;
+const ProductItem = ({ sku, imageUrl, name, price, description }) => {
+  const navigate = useNavigate();
 
-const Container = styled.div`
-  flex: 1;
-  margin: 5px;
-  min-width: 280px;
-  height: 350px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f5fbfd;
-  position: relative;
-  &:hover ${Info} {
-    opacity: 1;
-  }
-`;
+  const handleClickDetail = () => {
+    const path = `product/${sku}`;
+    navigate(path);
+  };
 
-const Circle = styled.div`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background-color: white;
-  position: absolute;
-`;
-
-const Image = styled.img`
-  height: 75%;
-  z-index: 2;
-`;
-
-const Icon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px;
-  transition: all 0.5s ease;
-  &:hover {
-    background-color: #e9f5f5;
-    transform: scale(1.1);
-  }
-`;
-
-const ProductItem = ({ source }) => {
   return (
-    <Container>
-      <Circle />
-      <Image
-        style={{ width: "100%" }}
-        src={source.thumbnailUrl || FallBackNoImage}
+    <Card style={{ maxWidth: "100%" }}>
+      <CardMedia
+        style={{ paddingTop: "100%", objectFit: "contain" }}
+        image={imageUrl || FallBackNoImage}
       />
-      <Info>
-        <Icon>
-          <ShoppingCartOutlined />
-        </Icon>
-        <Icon>
-          <SearchOutlined />
-        </Icon>
-        <Icon>
-          <FavoriteBorderOutlined />
-        </Icon>
-      </Info>
-    </Container>
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {toVnd(price)}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small" onClick={handleClickDetail}>
+          Detail
+        </Button>
+        <Button size="small">Add to cart</Button>
+      </CardActions>
+    </Card>
   );
 };
 
